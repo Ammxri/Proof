@@ -111,6 +111,31 @@ keinen bezahlten Zugang.
   ausdrücklich deterministisch und teilt den Faktenkatalog mit der Fieber-Domäne.
 - B: Brustschmerz (ESC-Leitlinien). Braucht neue Faktentypen (EKG, Troponin-Verlauf).
 
+### B10 Quellen der 70 migrierten Laborregeln – offen (U3, 08.11.2026)
+Befund aus der maschinellen Erfassung von `DDX_REGELN` (nur gelesen, SHA-256 der Datei `6a82aa96…12c4b`):
+- 73 Einträge, davon 70 mit Inhalt. Zusammen sind es 194 Diagnosetexte über 47 Testcodes. Nach A-32 (eine Regel je
+  Ziel) werden daraus rund 190 Regeln.
+- Die Texte sind Lehrbuchzuordnungen, z. B. „AP erniedrigt → Zinkmangel“. Für fast keine gibt es eine
+  Originalpublikation oder eine Leitlinie mit genau dieser Aussage. Die Quellenregel aus D-04 erlaubt aber nur diese
+  beiden Arten.
+- `GENERELL_HOCH` ist ein Rückfall ohne Laborbedingung: Er greift, wenn keine andere Regel greift, und enthält keine
+  Diagnose. Als Regel über Fakten lässt er sich nicht ausdrücken.
+- Ein Eintrag bezeichnet einen anderen Laborwert als gedacht: `UR` hat in SynthEHR den Referenzbereich 3–8,5 mmol/L und
+  ist damit Harnstoff. `UR_HOCH` führt im Prototyp aber zu Hyperurikämie.
+
+Optionen:
+- **A (Empfehlung):** Für die migrierten Laborregeln sind zusätzlich Nachschlagewerke mit geprüften Bedingungen
+  zugelassen, je Laborabweichung ein Kapitel (z. B. StatPearls im NCBI Bookshelf, je Kapitel CC BY-NC-ND 4.0, dazu die
+  Nutzungsbedingungen von StatPearls).
+  - Übernommen werden nur Tatsache und Fundstelle, in eigener Formulierung.
+  - Eine Zuordnung, die das Kapitel nicht belegt, wird nicht zur Regel; die Migrationstabelle vermerkt das.
+  - `GENERELL_HOCH` wird begründet ausgelassen; damit sind 69 von 70 Einträgen migriert (PRD: 60+).
+  - Für Fieberregeln und Warnzeichen bleibt D-04 unverändert.
+- B: D-04 gilt streng auch für die Laborregeln. Viele Zuordnungen bleiben ohne Quelle und werden nicht migriert. Die
+  60+ der PRD sind dann gefährdet.
+- C: Alle Zuordnungen werden migriert, mit deutlich markierter Platzhalterquelle („Quelle ausstehend“). Die Quellen
+  lieferst du oder die ärztliche Prüfung nach. PR-K08 bleibt bis dahin „teilweise“, und das Release ist gesperrt.
+
 ## Annahmen (Nicht-Blocker)
 
 **A-01 Freigabemodus.** A: Nach der Konzeptfreigabe arbeite ich die Phasen autonom durch. Ich stoppe trotzdem bei

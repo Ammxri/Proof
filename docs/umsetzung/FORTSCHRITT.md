@@ -11,9 +11,31 @@
   Abhängigkeit zu NeuroGrid.
 - **Plan:** U1–U14 aus [KONZEPT.md](KONZEPT.md); v0.1 = U1–U9, v0.5 = U10–U12, v1.0 = U13–U14; GO-1 vor U13.
 
-**Nächster Schritt:** U3 (Fieber-Regelpaket und Migration). Zuerst kommen der SynthEHR-Lauf und der Profilbau (A-56).
+**Nächster Schritt:** U3 (Fieber-Regelpaket und Migration). Der SynthEHR-Lauf ist erledigt. Offen ist der Blocker
+B10 (Quellen der migrierten Laborregeln); danach folgen der Profilbau (A-56) und die Inhalte.
 
 ## Verlauf
+
+### 08.11.2026 – U3 begonnen: SynthEHR-Lauf und Blocker B10
+**SynthEHR-Lauf (D-03).** Befehl, im Ordner `proof/.local/synthehr/` und mit der Umgebungsvariable nur für diesen
+Prozess:
+
+```
+DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 SynthEHR.exe -d Biochemistry -s 42 <proof/.local/synthehr> 5000 100000
+```
+
+- SynthEHR 2.0.1 aus `Diagohelp\SynthEHR-cli-win-x64`, nur ausgeführt; die Ordnerliste ist vorher und nachher gleich.
+- Lauf am 08.11.2026 von 14:33:53 bis 14:34:06 UTC, Exit 0.
+- Ergebnis: `Biochemistry.csv`, 100 000 Zeilen, 5000 Patienten, 626 Testcodes, SHA-256
+  `ae28f46c86b0f8fb4cce67b50c1681f1def2ea4a1b7f668ca72c43e4190be799`.
+- Stichprobe der Referenzbereiche: CRP 0–10 mg/L, ALT 5–55 U/L, AP 30–130 U/L, Bilirubin 0–21 µmol/L, Albumin
+  35–50 g/L, Kreatinin 44–80 µmol/L, Harnstoff 2,5–7,8 mmol/L, Kalium 3,5–5,3 mmol/L, Natrium 133–146 mmol/L, Laktat
+  0,7–1,8 mmol/L.
+- Negative Werte kommen vor (z. B. 5. Perzentil CRP −54 mg/L). Sie werden beim Profilbau verworfen und gezählt (D-03).
+- Leukozyten fehlen (D-03); für CK, Harnsäure und eGFR fehlen die Referenzbereiche.
+
+**Prototyp erfasst** (nur gelesen): `DDX_REGELN` hat 73 Einträge, davon 70 mit Inhalt, zusammen 194 Diagnosetexte über
+47 Testcodes. Daraus ergibt sich B10 (ENTSCHEIDUNGEN.md).
 
 ### 08.11.2026 – U2 Regelmotor
 **Umgesetzt** (`src/proof_rules/`):
