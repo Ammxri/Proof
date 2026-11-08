@@ -1,0 +1,26 @@
+# Python and tooling
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+build/
+dist/
+
+# Proof working data: cache, runs, private sets, PDF browser (A-19, A-22, A-40)
+.proof/
+
+# Unversioned local inputs: PRD copy, SynthEHR output (D-03)
+.local/
+
+# Secrets are read from the environment only; never commit an env file
+.env
+.env.*
+!.env.example
+
+# Built static leaderboard (published only with approval)
+site/

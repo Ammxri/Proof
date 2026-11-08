@@ -1,0 +1,75 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "proof"
+dynamic = ["version"]
+description = "Deterministic robustness test for clinical language models. Evaluation tool and open dataset, not a medical device."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "Apache-2.0"
+license-files = ["LICENSE", "LICENSE-DATA", "NOTICE"]
+authors = [{ name = "Ammar Ahad" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+dependencies = [
+    "pydantic>=2.14.3",
+    "pyyaml>=6.0.3",
+    "typer>=0.28.0",
+]
+
+[project.scripts]
+proof = "proof.cli:main"
+
+[dependency-groups]
+dev = [
+    "pip-audit>=2.10.1",
+    "pip-licenses>=5.5.5",
+    "pytest>=9.2.0",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.17.4",
+]
+
+[tool.hatch.version]
+path = "src/proof/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/proof", "src/proof_rules"]
+
+[tool.hatch.build.targets.sdist]
+only-include = ["src", "tests", "tools", "README.md", "LICENSE", "LICENSE-DATA", "NOTICE", "pyproject.toml"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+src = ["src", "tests", "tools"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF"]
+# Chinese punctuation in zh texts is intended.
+allowed-confusables = ["，", "：", "；", "（", "）"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-markers", "--strict-config"]
+xfail_strict = true
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+source = ["proof", "proof_rules"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+skip_covered = true

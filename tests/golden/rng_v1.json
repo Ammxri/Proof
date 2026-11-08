@@ -1,0 +1,8 @@
+{
+  "_about": "Golden values of proof.core.rng (stream format proof-rng-v1). They must be identical on Windows and Linux and must never change; a change breaks the reproducibility of every published case (A-06).",
+  "bits64": [6905831320729180979, 11245492522780096928, 17030707437568160535],
+  "below_seq_1000": [558, 160, 173, 48, 782, 505, 645, 541, 43, 495],
+  "shuffled_10": [5, 9, 3, 4, 2, 0, 8, 7, 1, 6],
+  "weighted_1_2_7": [2, 2, 2, 1, 2, 2, 1, 2, 0, 2],
+  "child_bits64": 5142886898951622149
+}

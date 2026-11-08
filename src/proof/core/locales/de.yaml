@@ -1,0 +1,4 @@
+# Texte für Nutzer auf Deutsch. Schlüssel identisch in zh.yaml und en.yaml.
+disclaimer:
+  category: Proof ist ein Evaluationswerkzeug und offener Datensatz, kein Medizinprodukt und nicht für die Patientenversorgung bestimmt.
+  reference: Proof misst Übereinstimmung mit einer offengelegten Referenz, nicht klinische Wahrheit.

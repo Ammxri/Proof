@@ -1,0 +1,4 @@
+# User-facing texts in English. Keys are identical in zh.yaml and de.yaml.
+disclaimer:
+  category: Proof is an evaluation tool and open dataset, not a medical device, and not intended for patient care.
+  reference: Proof measures agreement with a disclosed reference, not clinical truth.

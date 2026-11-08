@@ -1,0 +1,4 @@
+# 面向用户的中文文本（简体）。键与 en.yaml、de.yaml 相同。
+disclaimer:
+  category: Proof 是评测工具和开放数据集，不是医疗器械，不用于患者诊疗。
+  reference: Proof 衡量的是与公开参考标准的一致性，而非临床真实情况。

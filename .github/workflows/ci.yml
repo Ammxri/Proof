@@ -1,0 +1,65 @@
+name: ci
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and Python 3.12
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: "0.13.0"
+          python-version: "3.12"
+          enable-cache: true
+
+      - name: Install locked environment
+        run: uv sync --locked
+
+      - name: Lint
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+
+      - name: Test suite with coverage
+        run: uv run pytest --cov --cov-report=term-missing
+
+      - name: Licence gate (PR-C03)
+        run: uv run python tools/check_licenses.py
+
+      - name: Known vulnerabilities
+        run: uv run pip-audit --progress-spinner off --skip-editable
+
+      - name: Build and install the wheel into a fresh environment
+        run: |
+          rm -rf dist fresh
+          uv build
+          uv venv fresh --python 3.12
+          uv pip install --python fresh dist/*.whl
+          if [ "$RUNNER_OS" = "Windows" ]; then BIN=fresh/Scripts; else BIN=fresh/bin; fi
+          "$BIN/proof" --help
+          "$BIN/proof" --version

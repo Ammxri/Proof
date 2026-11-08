@@ -1,0 +1,4 @@
+# Line endings are LF everywhere so that hashes of versioned data files match on Windows and Linux (A-06, RK-05).
+* text=auto eol=lf
+*.pdf binary
+*.png binary
