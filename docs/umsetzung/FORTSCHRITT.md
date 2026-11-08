@@ -5,7 +5,7 @@
 **09.11.2026 – Phase 3, U3 abgeschlossen.**
 - U1 (Grundgerüst), U2 (Regelmotor) und U3 (Fieber-Regelpaket und Migration) sind auf dem Zweig `dev` committet.
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- U3 ist lokal geprüft; der CI-Beleg wird wie bei U2 nachgetragen.
+- Die CI ist für U3 unter Windows und Linux grün (Lauf 42536070825).
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
@@ -81,6 +81,11 @@ folgt der Haltepunkt zu den dünnen Status-Töpfen (RK-02).
 
 **Nicht lokal ausgeführt:** `pip-audit` und die Lizenzprüfung. Die Abhängigkeiten sind gegenüber U2 unverändert
 (`uv.lock` gleich); beide laufen in der CI.
+
+**CI:** Lauf 42536070825 auf Commit 02546d3.
+- Jobs `test (windows-latest)` und `test (ubuntu-latest)` erfolgreich.
+- Erfolgreich waren alle Schritte: Lint, Tests mit Abdeckung, Lizenzprüfung, pip-audit, Wheel frisch installiert.
+- Gelesen über die öffentliche Actions-API (Jobs und Schritte).
 
 **Offen bzw. für die ärztliche Prüfung vermerkt:**
 - Alle Regeln tragen den Status „Entwurf, ärztlich ungeprüft“.
