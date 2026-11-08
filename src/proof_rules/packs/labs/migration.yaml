@@ -1,0 +1,681 @@
+source:
+  file: Diagohelp/SynthEHR-cli-win-x64/scripts/03_generate_vignettes.py
+  sha256: 6a82aa96c876f9753f161807c5272e8766a27b51bfc516d1513d9fd6bc012c4b
+  table: DDX_REGELN
+entries:
+- key: CRP_HOCH
+  condition: lab.crp_mg_l above the upper reference limit
+  items:
+  - text: bakterielle Infektion (z. B. Pneumonie, Harnwegsinfekt, Sepsis)
+    rules: [LAB-CRP-HOCH-1]
+    note: The examples in brackets (pneumonia, urinary tract infection, sepsis) are not named in the chapter; bacterial infection
+      is.
+  - text: systemische Entzündungsreaktion unklarer Genese
+    rules: [LAB-CRP-HOCH-2]
+    note: The chapter supports systemic inflammation; the addition 'of unclear cause' is not taken over.
+  - text: Exazerbation einer bekannten Entzündungserkrankung
+    rules: [LAB-CRP-HOCH-3]
+    note: The chapter supports active inflammatory or autoimmune disease; it does not use the word exacerbation.
+  - text: postoperative oder posttraumatische Reaktion
+    rules: [LAB-CRP-HOCH-4]
+    note: The chapter supports trauma and tissue injury; the post-operative state is not named and not taken over.
+  note: 'The prototype''s priority chain (combinations first, at most four texts) is not taken over: every rule that is true
+    counts (A-53).'
+- key: CRP_NIEDRIG
+  condition: lab.crp_mg_l below the lower reference limit
+  reason: Empty entry without diagnoses (A-09).
+- key: CRP_HOCH_ALT_HOCH
+  condition: lab.crp_mg_l above the upper reference limit and lab.alt_u_l above the upper reference limit
+  items:
+  - text: Lebererkrankung mit systemischer Entzündung
+    rules: [LAB-CRP-HOCH-ALT-HOCH-1]
+  - text: infektiöse Hepatitis (viral oder bakteriell)
+    rules: [LAB-CRP-HOCH-ALT-HOCH-2]
+    note: Only the viral part is supported; bacterial hepatitis is not named in the ALT chapter.
+  - text: medikamentöse Leberschädigung im Infektionskontext
+    rules: [LAB-CRP-HOCH-ALT-HOCH-3]
+- key: CRP_HOCH_UREA_HOCH
+  condition: lab.crp_mg_l above the upper reference limit and lab.urea_mmol_l above the upper reference limit
+  items:
+  - text: Sepsis mit akuter Nierenbeteiligung (Sepsis-AKI)
+    rules: [LAB-CRP-HOCH-UREA-HOCH-1]
+  - text: hypovolämische Nierenschädigung bei Infektion
+    rules: [LAB-CRP-HOCH-UREA-HOCH-2]
+  - text: vorbestehende CKD mit aufgepfropftem Infekt
+    rules: [LAB-CRP-HOCH-UREA-HOCH-3]
+- key: CRP_HOCH_CRE_HOCH
+  condition: lab.crp_mg_l above the upper reference limit and lab.creatinine_umol_l above the upper reference limit
+  items:
+  - text: Sepsis mit akuter Nierenbeteiligung (Sepsis-AKI)
+    rules: [LAB-CRP-HOCH-CRE-HOCH-1]
+  - text: vorbestehende Niereninsuffizienz mit akutem Infekt
+    rules: [LAB-CRP-HOCH-CRE-HOCH-2]
+  note: The prototype never reached this entry (it used CRP_HOCH_UREA_HOCH for creatinine as well); migrated by the meaning
+    of its key.
+- key: CRP_HOCH_ALB_NIEDRIG
+  condition: lab.crp_mg_l above the upper reference limit and lab.albumin_g_l below the lower reference limit
+  items:
+  - text: Sepsis oder schwere Infektion mit Hypoalbuminämie
+    rules: [LAB-CRP-HOCH-ALB-NIEDRIG-1]
+  - text: chronische Entzündungsreaktion mit Mangel-/Verlustprotein
+    rules: [LAB-CRP-HOCH-ALB-NIEDRIG-2]
+  - text: Lebererkrankung mit Synthesestörung und Entzündung
+    rules: [LAB-CRP-HOCH-ALB-NIEDRIG-3]
+- key: ALT_HOCH_BIL_HOCH
+  condition: lab.alt_u_l above the upper reference limit and lab.bilirubin_umol_l above the upper reference limit
+  items:
+  - text: akute Hepatitis (viral, toxisch oder alkoholisch)
+    rules: [LAB-ALT-HOCH-BIL-HOCH-1]
+  - text: Cholestase mit begleitender Hepatozellschädigung
+    rules: [LAB-ALT-HOCH-BIL-HOCH-2]
+  - text: Leberzirrhose mit akuter Dekompensation
+    rules: [LAB-ALT-HOCH-BIL-HOCH-3]
+    note: The chapter speaks of decompensated cirrhosis; 'acute' is not taken over.
+- key: ALT_HOCH_AP_HOCH
+  condition: lab.alt_u_l above the upper reference limit and lab.alp_u_l above the upper reference limit
+  items:
+  - text: gemischtes Lebermuster (hepatozellulär + cholestatisch)
+    rules: [LAB-ALT-HOCH-AP-HOCH-1]
+  - text: medikamentöse Hepatotoxizität
+    rules: [LAB-ALT-HOCH-AP-HOCH-2]
+  - text: Leberzirrhose oder hepatische Metastasen
+    rules: [LAB-ALT-HOCH-AP-HOCH-3]
+    note: 'Not supported by Serum Alkaline Phosphatase: Clinical and Laboratory Perspectives (NBK459201), Liver Function Tests
+      (NBK482489), Liver Metastasis (NBK553118): no rule for ddx.liver_metastases.'
+- key: UREA_HOCH_CRE_HOCH
+  condition: lab.urea_mmol_l above the upper reference limit and lab.creatinine_umol_l above the upper reference limit
+  items:
+  - text: akute Nierenschädigung (AKI)
+    rules: [LAB-UREA-HOCH-CRE-HOCH-1]
+  - text: chronische Nierenerkrankung (CKD) mit Exazerbation
+    rules: [LAB-UREA-HOCH-CRE-HOCH-2]
+  - text: prärenale Oligurie (Dehydratation, Schock, Herzinsuffizienz)
+    rules: [LAB-UREA-HOCH-CRE-HOCH-3]
+  note: The prototype used this entry when urea or creatinine was high without CRP; migrated by the meaning of its key (both
+    high).
+- key: CA_HOCH_ALB_HOCH
+  condition: lab.calcium_mmol_l above the upper reference limit and lab.albumin_g_l above the upper reference limit
+  items:
+  - text: Hyperkalzämie — Artefakt durch erhöhtes Albumin (korrigiertes Ca prüfen)
+    rules: [LAB-CA-HOCH-ALB-HOCH-1]
+- key: UREA_HOCH
+  condition: lab.urea_mmol_l above the upper reference limit
+  items:
+  - text: akute Nierenschädigung (AKI)
+    rules: [LAB-UREA-HOCH-1]
+  - text: chronische Nierenerkrankung (CKD)
+    rules: [LAB-UREA-HOCH-2]
+  - text: prärenale Ursache (Dehydratation, Herzinsuffizienz)
+    rules: [LAB-UREA-HOCH-3]
+  - text: gastrointestinale Blutung (erhöhter Proteinstoffwechsel)
+    rules: [LAB-UREA-HOCH-4]
+- key: UREA_NIEDRIG
+  condition: lab.urea_mmol_l below the lower reference limit
+  items:
+  - text: Mangelernährung oder reduzierter Proteinkatabolismus
+    rules: [LAB-UREA-NIEDRIG-1]
+    note: The chapter names starvation and a low-protein diet; malnutrition in general and reduced protein catabolism are
+      not named and not taken over.
+  - text: Leberinsuffizienz (eingeschränkte Harnstoffsynthese)
+    rules: [LAB-UREA-NIEDRIG-2]
+    note: The chapter speaks of severe liver disease; the mechanism (reduced urea synthesis) is not stated and not taken over.
+  - text: Überhydratation (Verdünnungseffekt)
+    reason: 'The chapter says only that hydration status affects urea; it does not say that overhydration lowers it. Not supported
+      by Renal Function Tests (NBK507821): no rule for ddx.overhydration.'
+- key: CRE_HOCH
+  condition: lab.creatinine_umol_l above the upper reference limit
+  items:
+  - text: akute Nierenschädigung (AKI — prärenal, renal oder postrenal)
+    rules: [LAB-CRE-HOCH-1]
+  - text: chronische Nierenerkrankung (CKD)
+    rules: [LAB-CRE-HOCH-2]
+  - text: nephrotoxische Medikamente (NSAR, ACE-Hemmer bei Volumenmangel)
+    rules: [LAB-CRE-HOCH-3]
+    note: The chapters name NSAIDs and ACE inhibitors or angiotensin receptor blockers; the condition 'with volume depletion'
+      is not stated and not taken over.
+- key: CR_HOCH
+  condition: lab.creatinine_umol_l above the upper reference limit
+  items:
+  - text: akute Nierenschädigung
+    rules: [LAB-CR-HOCH-1]
+  - text: chronische Nierenerkrankung
+    rules: [LAB-CR-HOCH-2]
+  - text: Rhabdomyolyse (bei gleichzeitig erhöhter CK)
+    rules: [LAB-CR-HOCH-3]
+  note: CR is a second SynthEHR code for creatinine (same fact as CRE).
+- key: CRE_NIEDRIG
+  condition: lab.creatinine_umol_l below the lower reference limit
+  items:
+  - text: reduzierte Muskelmasse (Kachexie, hohes Alter, Bettlägerigkeit)
+    rules: [LAB-CRE-NIEDRIG-1]
+    note: The chapter supports reduced muscle mass, including older age; cachexia and immobility are not named and not taken
+      over.
+  - text: Leberzirrhose (reduzierte Kreatininsynthese)
+    reason: 'Not supported by Renal Function Tests (NBK507821), Creatinine Clearance (NBK544228), Hepatorenal Syndrome (NBK430856):
+      no rule for ddx.cirrhosis.'
+- key: eGFR_NIEDRIG
+  condition: lab.egfr_ml_min below the lower reference limit
+  items:
+  - text: chronische Nierenerkrankung (CKD)
+    rules: [LAB-EGFR-NIEDRIG-1]
+  - text: akute Nierenschädigung
+    rules: [LAB-EGFR-NIEDRIG-2]
+  - text: diabetische Nephropathie
+    rules: [LAB-EGFR-NIEDRIG-3]
+  - text: hypertensive Nephropathie
+    rules: [LAB-EGFR-NIEDRIG-4]
+    note: 'Supported only by several statements together: hypertension as a main cause of chronic kidney disease and hypertensive
+      nephrosclerosis among diseases with declining GFR; flagged for physician review.'
+  note: SynthEHR gives no reference range for eGFR; a domain that activates this rule needs a sourced reference range.
+- key: HIC_EGFR_NIEDRIG
+  condition: lab.egfr_ml_min below the lower reference limit
+  items:
+  - text: eingeschränkte Nierenfunktion (Abklärung empfohlen)
+    rules: [LAB-HIC-EGFR-NIEDRIG-1]
+  - text: chronische Nierenerkrankung (CKD)
+    rules: [LAB-HIC-EGFR-NIEDRIG-2]
+  note: HIC_EGFR is a second SynthEHR code for eGFR. SynthEHR gives no reference range for eGFR; a domain that activates this
+    rule needs a sourced reference range.
+- key: MA_HOCH
+  condition: lab.urine_albumin_mg_l above the upper reference limit
+  items:
+  - text: diabetische Nephropathie (Frühzeichen)
+    rules: [LAB-MA-HOCH-1]
+  - text: hypertensive Nephropathie
+    reason: 'The chapter links raised urine albumin to arterial hypertension, not to hypertensive nephropathy. Not supported
+      by Microalbuminuria (NBK563255): no rule for ddx.hypertensive_nephropathy.'
+  - text: glomeruläre Erkrankung
+    rules: [LAB-MA-HOCH-2]
+- key: UAC_HOCH
+  condition: lab.uacr_mg_mmol above the upper reference limit
+  items:
+  - text: diabetische Nephropathie
+    rules: [LAB-UAC-HOCH-1]
+  - text: hypertensive Nephropathie
+    reason: 'The chapters link raised urine albumin to arterial hypertension, not to hypertensive nephropathy. Not supported
+      by Renal Function Tests (NBK507821), Microalbuminuria (NBK563255): no rule for ddx.hypertensive_nephropathy.'
+  - text: glomeruläre Proteinurie
+    rules: [LAB-UAC-HOCH-2]
+- key: ALT_HOCH
+  condition: lab.alt_u_l above the upper reference limit
+  items:
+  - text: hepatozelluläre Schädigung
+    rules: [LAB-ALT-HOCH-1]
+  - text: medikamentöse Hepatotoxizität (NSAR, Statine, Antibiotika)
+    rules: [LAB-ALT-HOCH-2]
+  - text: virale Hepatitis (B, C, E)
+    rules: [LAB-ALT-HOCH-3]
+  - text: Fettleberhepatitis (NASH/MASH)
+    rules: [LAB-ALT-HOCH-4]
+- key: ALT_NIEDRIG
+  condition: lab.alt_u_l below the lower reference limit
+  reason: Empty entry without diagnoses (A-09).
+- key: AP_HOCH
+  condition: lab.alp_u_l above the upper reference limit
+  items:
+  - text: cholestatische Lebererkrankung (primär biliäre Cholangitis, PSC)
+    rules: [LAB-AP-HOCH-1]
+  - text: Choledocholithiasis oder Gallenblasenpathologie
+    rules: [LAB-AP-HOCH-2]
+    note: 'Not supported by Serum Alkaline Phosphatase: Clinical and Laboratory Perspectives (NBK459201), Acute Cholecystitis
+      (NBK459171): no rule for ddx.gallbladder_disease.'
+  - text: hepatische Metastasen oder Leberzirrhose
+    rules: [LAB-AP-HOCH-3, LAB-AP-HOCH-4]
+  - text: Knochenerkrankung (Morbus Paget, Frakturen, Osteomalazie)
+    rules: [LAB-AP-HOCH-5]
+- key: AP_NIEDRIG
+  condition: lab.alp_u_l below the lower reference limit
+  items:
+  - text: Zinkmangel
+    rules: [LAB-AP-NIEDRIG-1]
+  - text: Hypothyreose
+    rules: [LAB-AP-NIEDRIG-2]
+  - text: perniziöse Anämie
+    rules: [LAB-AP-NIEDRIG-3]
+- key: BIL_HOCH
+  condition: lab.bilirubin_umol_l above the upper reference limit
+  items:
+  - text: Cholestase (intra- oder extrahepatisch)
+    rules: [LAB-BIL-HOCH-1]
+  - text: Hämolyse (hämolytische Anämie)
+    rules: [LAB-BIL-HOCH-2]
+  - text: Leberparenchymerkrankung
+    rules: [LAB-BIL-HOCH-3]
+  - text: Gilbert-Meulengracht-Syndrom (isolierte indirekte Hyperbilirubinämie)
+    rules: [LAB-BIL-HOCH-4]
+- key: BIL_NIEDRIG
+  condition: lab.bilirubin_umol_l below the lower reference limit
+  reason: Empty entry without diagnoses (A-09).
+- key: BI_HOCH
+  condition: lab.bilirubin_umol_l above the upper reference limit
+  items:
+  - text: Hämolyse oder intrahepatische Cholestase
+    rules: [LAB-BI-HOCH-1, LAB-BI-HOCH-2]
+  - text: Lebererkrankung
+    rules: [LAB-BI-HOCH-3]
+  note: BI is a second SynthEHR code for bilirubin (same fact as BIL).
+- key: GT_HOCH
+  condition: lab.ggt_u_l above the upper reference limit
+  items:
+  - text: Alkoholkonsum oder alkoholische Lebererkrankung
+    rules: [LAB-GT-HOCH-1, LAB-GT-HOCH-2]
+  - text: medikamentöse Enzyminduktion (z. B. Phenytoin, Carbamazepin)
+    rules: [LAB-GT-HOCH-3]
+    note: The chapter states that medications may induce GGT; phenytoin and carbamazepine are not named and not taken over.
+  - text: nicht-alkoholische Fettlebererkrankung (NAFLD/MAFLD)
+    rules: [LAB-GT-HOCH-4]
+    note: The chapter states the association for patients with impaired glucose tolerance or type 2 diabetes.
+  - text: cholestatische Lebererkrankung
+    rules: [LAB-GT-HOCH-5]
+- key: ALB_HOCH
+  condition: lab.albumin_g_l above the upper reference limit
+  items:
+  - text: Dehydratation (Hämokonzentration)
+    rules: [LAB-ALB-HOCH-1]
+  - text: artifizielle Erhöhung (Stauung bei Blutabnahme)
+    rules: [LAB-ALB-HOCH-2]
+    note: The chapter names a laboratory artefact in general; venous stasis at sampling is not named and not taken over.
+- key: ALB_NIEDRIG
+  condition: lab.albumin_g_l below the lower reference limit
+  items:
+  - text: Leberinsuffizienz (reduzierte Albuminsynthese)
+    rules: [LAB-ALB-NIEDRIG-1]
+  - text: Mangelernährung oder Malabsorption
+    rules: [LAB-ALB-NIEDRIG-2]
+    note: 'Not supported by Hypoalbuminemia (NBK526080), Malabsorption Syndromes (NBK553106): no rule for ddx.malabsorption.'
+  - text: nephrotisches Syndrom (renaler Eiweißverlust)
+    rules: [LAB-ALB-NIEDRIG-3]
+  - text: chronische Entzündung (Akute-Phase-Reaktion)
+    rules: [LAB-ALB-NIEDRIG-4]
+- key: AL_HOCH
+  condition: lab.albumin_g_l above the upper reference limit
+  items:
+  - text: Dehydratation
+    rules: [LAB-AL-HOCH-1]
+  - text: artifizielle Erhöhung
+    rules: [LAB-AL-HOCH-2]
+    note: The chapter names a laboratory artefact in general; venous stasis at sampling is not named and not taken over.
+  note: AL is a second SynthEHR code for albumin (same fact as ALB).
+- key: AL_NIEDRIG
+  condition: lab.albumin_g_l below the lower reference limit
+  items:
+  - text: Leberinsuffizienz
+    rules: [LAB-AL-NIEDRIG-1]
+  - text: Mangelernährung
+    rules: [LAB-AL-NIEDRIG-2]
+  - text: nephrotisches Syndrom
+    rules: [LAB-AL-NIEDRIG-3]
+  note: AL is a second SynthEHR code for albumin (same fact as ALB).
+- key: TP_HOCH
+  condition: lab.protein_g_l above the upper reference limit
+  items:
+  - text: Dehydratation
+    reason: 'Not supported by Physiology, Albumin (NBK459198), Adult Dehydration (NBK555956): no rule for ddx.dehydration.'
+  - text: monoklonale Gammopathie (Plasmozytom, MGUS)
+    rules: [LAB-TP-HOCH-1]
+    note: Supported by the pathological rise of serum protein in monoclonal disease such as myeloma; MGUS is not named and
+      not taken over.
+  - text: chronische Entzündung
+    reason: 'Not supported by Hypergammaglobulinemia (Polyclonal Gammopathy) (NBK585137), Hyperviscosity Syndrome (NBK518963):
+      no rule for ddx.chronic_inflammation.'
+- key: K_NIEDRIG
+  condition: lab.potassium_mmol_l below the lower reference limit
+  items:
+  - text: Hypokaliämie durch Diuretika (Schleifen-, Thiaziddiuretika)
+    rules: [LAB-K-NIEDRIG-1]
+  - text: GI-Verluste (Erbrechen, Diarrhö, Laxanzienabusus)
+    rules: [LAB-K-NIEDRIG-2]
+  - text: primärer Hyperaldosteronismus (Conn-Syndrom)
+    rules: [LAB-K-NIEDRIG-3]
+- key: KA_NIEDRIG
+  condition: lab.potassium_mmol_l below the lower reference limit
+  items:
+  - text: Hypokaliämie durch Diuretika
+    rules: [LAB-KA-NIEDRIG-1]
+  - text: GI-Verluste
+    rules: [LAB-KA-NIEDRIG-2]
+  - text: primärer Hyperaldosteronismus
+    rules: [LAB-KA-NIEDRIG-3]
+  note: KA is a second SynthEHR code for potassium (same fact as K).
+- key: K_HOCH
+  condition: lab.potassium_mmol_l above the upper reference limit
+  items:
+  - text: Hyperkaliämie bei Niereninsuffizienz
+    rules: [LAB-K-HOCH-1]
+  - text: medikamentös (ACE-Hemmer, Sartane, kaliumsparende Diuretika)
+    rules: [LAB-K-HOCH-2]
+  - text: Pseudohyperkaliämie (Hämolyse der Blutprobe)
+    rules: [LAB-K-HOCH-3]
+- key: KA_HOCH
+  condition: lab.potassium_mmol_l above the upper reference limit
+  items:
+  - text: Hyperkaliämie bei Niereninsuffizienz
+    rules: [LAB-KA-HOCH-1]
+  - text: medikamentös (ACE-Hemmer, kaliumsparende Diuretika)
+    rules: [LAB-KA-HOCH-2]
+  - text: Pseudohyperkaliämie
+    rules: [LAB-KA-HOCH-3]
+  note: KA is a second SynthEHR code for potassium (same fact as K).
+- key: CA_HOCH
+  condition: lab.calcium_mmol_l above the upper reference limit
+  items:
+  - text: primärer Hyperparathyreoidismus
+    rules: [LAB-CA-HOCH-1]
+  - text: maligne Hyperkalzämie (Knochenmetastasen, PTHrP-Sekretion)
+    rules: [LAB-CA-HOCH-2]
+  - text: Vitamin-D-Intoxikation oder granulomatöse Erkrankung (Sarkoidose)
+    rules: [LAB-CA-HOCH-3, LAB-CA-HOCH-4]
+- key: CA_NIEDRIG
+  condition: lab.calcium_mmol_l below the lower reference limit
+  items:
+  - text: Hypoparathyreoidismus
+    rules: [LAB-CA-NIEDRIG-1]
+  - text: Vitamin-D-Mangel oder Malabsorption
+    rules: [LAB-CA-NIEDRIG-2, LAB-CA-NIEDRIG-3]
+  - text: Hypoalbuminämie (korrigiertes Kalzium prüfen)
+    rules: [LAB-CA-NIEDRIG-4]
+- key: CCA_HOCH
+  condition: lab.calcium_corr_mmol_l above the upper reference limit
+  items:
+  - text: primärer Hyperparathyreoidismus
+    rules: [LAB-CCA-HOCH-1]
+  - text: maligne Hyperkalzämie
+    rules: [LAB-CCA-HOCH-2]
+- key: PHO_HOCH
+  condition: lab.phosphate_mmol_l above the upper reference limit
+  items:
+  - text: Niereninsuffizienz (reduzierte Phosphatausscheidung)
+    rules: [LAB-PHO-HOCH-1]
+  - text: Hypoparathyreoidismus
+    rules: [LAB-PHO-HOCH-2]
+  - text: Vitamin-D-Intoxikation
+    rules: [LAB-PHO-HOCH-3]
+- key: PHO_NIEDRIG
+  condition: lab.phosphate_mmol_l below the lower reference limit
+  items:
+  - text: primärer Hyperparathyreoidismus
+    rules: [LAB-PHO-NIEDRIG-1]
+  - text: Refeeding-Syndrom
+    rules: [LAB-PHO-NIEDRIG-2]
+  - text: Vitamin-D-Mangel mit erhöhter PTH-Aktivität
+    rules: [LAB-PHO-NIEDRIG-3]
+- key: MG_HOCH
+  condition: lab.magnesium_mmol_l above the upper reference limit
+  items:
+  - text: Niereninsuffizienz (häufigste Ursache)
+    rules: [LAB-MG-HOCH-1]
+  - text: exzessive Magnesiumzufuhr (Laxanzien, Antazida)
+    rules: [LAB-MG-HOCH-2]
+- key: CO2_HOCH
+  condition: lab.bicarbonate_mmol_l above the upper reference limit
+  items:
+  - text: metabolische Alkalose (z. B. Erbrechen, Diuretika)
+    rules: [LAB-CO2-HOCH-1]
+  - text: respiratorische Azidose mit metabolischer Kompensation
+    rules: [LAB-CO2-HOCH-2]
+- key: CO2_NIEDRIG
+  condition: lab.bicarbonate_mmol_l below the lower reference limit
+  items:
+  - text: metabolische Azidose (Niereninsuffizienz, Ketoazidose, Laktatazidose)
+    rules: [LAB-CO2-NIEDRIG-1]
+  - text: respiratorische Alkalose (Hyperventilation)
+    rules: [LAB-CO2-NIEDRIG-2]
+- key: TSH_HOCH
+  condition: lab.tsh_mu_l above the upper reference limit
+  items:
+  - text: primäre Hypothyreose
+    rules: [LAB-TSH-HOCH-1]
+  - text: subklinische Hypothyreose
+    rules: [LAB-TSH-HOCH-2]
+- key: TS_HOCH
+  condition: lab.tsh_mu_l above the upper reference limit
+  items:
+  - text: primäre Hypothyreose
+    rules: [LAB-TS-HOCH-1]
+  - text: subklinische Hypothyreose
+    rules: [LAB-TS-HOCH-2]
+  note: TS is a second SynthEHR code for TSH.
+- key: TSH_NIEDRIG
+  condition: lab.tsh_mu_l below the lower reference limit
+  items:
+  - text: Hyperthyreose (M. Basedow, autonomes Adenom)
+    rules: [LAB-TSH-NIEDRIG-1]
+  - text: subklinische Hyperthyreose
+    rules: [LAB-TSH-NIEDRIG-2]
+  - text: 'zentrale Hypothyreose (selten: TSH-Suppression ohne Hyperthyreose)'
+    rules: [LAB-TSH-NIEDRIG-3]
+- key: TS_NIEDRIG
+  condition: lab.tsh_mu_l below the lower reference limit
+  items:
+  - text: Hyperthyreose
+    rules: [LAB-TS-NIEDRIG-1]
+  - text: subklinische Hyperthyreose
+    rules: [LAB-TS-NIEDRIG-2]
+  note: TS is a second SynthEHR code for TSH.
+- key: FT4_HOCH
+  condition: lab.ft4_pmol_l above the upper reference limit
+  items:
+  - text: Hyperthyreose
+    rules: [LAB-FT4-HOCH-1]
+  - text: Thyroxin-Überdosierung
+    rules: [LAB-FT4-HOCH-2]
+- key: FT4_NIEDRIG
+  condition: lab.ft4_pmol_l below the lower reference limit
+  items:
+  - text: Hypothyreose
+    rules: [LAB-FT4-NIEDRIG-1]
+  - text: zentrale Hypothyreose (Hypophyseninsuffizienz)
+    rules: [LAB-FT4-NIEDRIG-2]
+- key: SHBG_HOCH
+  condition: lab.shbg_nmol_l above the upper reference limit
+  items:
+  - text: Hyperthyreose
+    reason: 'No StatPearls chapter checked states it: no rule for ddx.hyperthyroidism.'
+  - text: Lebererkrankung
+    reason: 'Not supported by Androgen Replacement (NBK534853): no rule for ddx.liver_disease.'
+  - text: Östrogentherapie
+    rules: [LAB-SHBG-HOCH-1]
+- key: CHOL_HOCH
+  condition: lab.cholesterol_mmol_l above the upper reference limit
+  items:
+  - text: Hypercholesterinämie (primär oder sekundär)
+    rules: [LAB-CHOL-HOCH-1]
+  - text: familiäre Hypercholesterinämie
+    rules: [LAB-CHOL-HOCH-2]
+  - text: hypothyreose-assoziierte Dyslipidämie
+    rules: [LAB-CHOL-HOCH-3]
+  - text: nephrotisches Syndrom
+    rules: [LAB-CHOL-HOCH-4]
+- key: HDL_NIEDRIG
+  condition: lab.hdl_mmol_l below the lower reference limit
+  items:
+  - text: metabolisches Syndrom
+    rules: [LAB-HDL-NIEDRIG-1]
+  - text: Diabetes mellitus Typ 2
+    rules: [LAB-HDL-NIEDRIG-2]
+  - text: körperliche Inaktivität oder Rauchen
+    rules: [LAB-HDL-NIEDRIG-3]
+    note: 'Not supported by Hypoalphalipoproteinemia (NBK589646), Dyslipidemia (NBK560891): no rule for ddx.physical_inactivity.'
+- key: HDL_HOCH
+  condition: lab.hdl_mmol_l above the upper reference limit
+  items:
+  - text: günstige kardiovaskuläre Konstellation
+    reason: Not a cause of the finding but a statement about risk; the vocabulary holds diagnoses and causes only (A-62).
+  - text: regelmäßige körperliche Aktivität
+    rules: [LAB-HDL-HOCH-1]
+  - text: Alkoholkonsum (klinisch abklären)
+    reason: 'Not supported by Hypoalphalipoproteinemia (NBK589646), Physiology, Cholesterol (NBK470561), Dyslipidemia (NBK560891):
+      no rule for ddx.alcohol_use.'
+- key: TRIG_HOCH
+  condition: lab.triglycerides_mmol_l above the upper reference limit
+  items:
+  - text: Hypertriglyzeridämie (primär oder sekundär)
+    rules: [LAB-TRIG-HOCH-1]
+  - text: Diabetes mellitus oder metabolisches Syndrom
+    rules: [LAB-TRIG-HOCH-2, LAB-TRIG-HOCH-3]
+  - text: Alkoholkonsum
+    rules: [LAB-TRIG-HOCH-4]
+  - text: Hypothyreose oder Niereninsuffizienz
+    rules: [LAB-TRIG-HOCH-5, LAB-TRIG-HOCH-6]
+- key: LDL_HOCH
+  condition: lab.ldl_mmol_l above the upper reference limit
+  items:
+  - text: LDL-Hypercholesterinämie
+    rules: [LAB-LDL-HOCH-1]
+  - text: familiäre Hypercholesterinämie
+    rules: [LAB-LDL-HOCH-2]
+- key: CLDL_HOCH
+  condition: lab.ldl_mmol_l above the upper reference limit
+  items:
+  - text: LDL-Hypercholesterinämie
+    rules: [LAB-CLDL-HOCH-1]
+  note: CLDL is the calculated LDL in SynthEHR (same fact as LDL).
+- key: CH_HOCH
+  condition: lab.cholesterol_mmol_l above the upper reference limit
+  items:
+  - text: Hypercholesterinämie
+    rules: [LAB-CH-HOCH-1]
+  note: CH is a second SynthEHR code for total cholesterol (same fact as CHOL).
+- key: TG_HOCH
+  condition: lab.triglycerides_mmol_l above the upper reference limit
+  items:
+  - text: Hypertriglyzeridämie
+    rules: [LAB-TG-HOCH-1]
+  note: TG is a second SynthEHR code for triglycerides (same fact as TRIG).
+- key: GL_HOCH
+  condition: lab.glucose_mmol_l above the upper reference limit
+  items:
+  - text: Diabetes mellitus (Typ 1 oder Typ 2)
+    rules: [LAB-GL-HOCH-1]
+  - text: stressbedingte Hyperglykämie (z. B. bei Infektion, OP)
+    rules: [LAB-GL-HOCH-2]
+    note: The chapter names critical illness as the trigger; infection and surgery are not named and not taken over.
+  - text: medikamentöse Hyperglykämie (Kortikosteroide, Thiazide)
+    rules: [LAB-GL-HOCH-3]
+- key: GLP_HOCH
+  condition: lab.glucose_mmol_l above the upper reference limit
+  items:
+  - text: postprandiale Hyperglykämie oder Diabetes mellitus
+    rules: [LAB-GLP-HOCH-1]
+  - text: Glukosetoleranzstörung
+    rules: [LAB-GLP-HOCH-2]
+  note: GLP is plasma glucose in SynthEHR (same fact as GL).
+- key: HBAC_HOCH
+  condition: lab.hba1c_mmol_mol above the upper reference limit
+  items:
+  - text: schlecht eingestellter Diabetes mellitus
+    rules: [LAB-HBAC-HOCH-1]
+  - text: neu diagnostizierter Diabetes mellitus
+    rules: [LAB-HBAC-HOCH-2]
+- key: URIC_HOCH
+  condition: lab.uric_acid_umol_l above the upper reference limit
+  items:
+  - text: Hyperurikämie (primär oder sekundär)
+    rules: [LAB-URIC-HOCH-1]
+  - text: Gicht oder asymptomatische Hyperurikämie
+    rules: [LAB-URIC-HOCH-2]
+  - text: Niereninsuffizienz (reduzierte Ausscheidung)
+    rules: [LAB-URIC-HOCH-3]
+  - text: erhöhter Zellturnovers (Lymphom, Leukämie, Hämolyse)
+    rules: [LAB-URIC-HOCH-4]
+- key: UR_HOCH
+  condition: lab.urea_mmol_l above the upper reference limit
+  items:
+  - text: Hyperurikämie (primär/sekundär)
+    reason: UR is urea in SynthEHR (reference range 3–8.5 mmol/L), not uric acid; hyperuricaemia is no cause of raised urea
+      (D-11).
+  - text: Gicht
+    reason: UR is urea in SynthEHR, not uric acid; gout is no cause of raised urea (D-11).
+  - text: Niereninsuffizienz
+    rules: [LAB-UR-HOCH-1]
+  note: In SynthEHR the code UR is urea (reference range 3–8.5 mmol/L); the prototype treated it as uric acid. Migrated as
+    urea (D-11).
+- key: CK_HOCH
+  condition: lab.ck_u_l above the upper reference limit
+  items:
+  - text: Rhabdomyolyse (Trauma, Medikamente, Immobilisation)
+    rules: [LAB-CK-HOCH-1]
+  - text: Myokardschädigung (Myokardinfarkt, Myokarditis)
+    rules: [LAB-CK-HOCH-2]
+  - text: entzündliche Myopathie (Polymyositis, Dermatomyositis)
+    rules: [LAB-CK-HOCH-3]
+    note: The chapter names polymyositis; dermatomyositis is not named and not taken over.
+  - text: Statin-induzierte Myopathie
+    rules: [LAB-CK-HOCH-4]
+- key: LACT_HOCH
+  condition: lab.lactate_mmol_l above the upper reference limit
+  items:
+  - text: 'Laktatazidose (Typ A: Gewebehypoxie bei Schock, Sepsis)'
+    rules: [LAB-LACT-HOCH-1]
+  - text: Metformin-assoziierte Laktatazidose
+    rules: [LAB-LACT-HOCH-2]
+  - text: Leberinsuffizienz (gestörter Laktatmetabolismus)
+    rules: [LAB-LACT-HOCH-3]
+- key: PSA_HOCH
+  condition: lab.psa_ug_l above the upper reference limit
+  items:
+  - text: benigne Prostatahyperplasie (BPH)
+    rules: [LAB-PSA-HOCH-1]
+  - text: Prostatakarzinom (Abklärung empfohlen)
+    rules: [LAB-PSA-HOCH-2]
+  - text: Prostatitis oder Harnwegsinfekt
+    rules: [LAB-PSA-HOCH-3]
+    note: 'Not supported by Prostate-Specific Antigen (NBK557495): no rule for ddx.uti.'
+  - text: nach rektaler Untersuchung oder Katheterismus
+    rules: [LAB-PSA-HOCH-4]
+- key: PSAT_HOCH
+  condition: lab.psa_free_pct above the upper reference limit
+  items:
+  - text: erhöhter Anteil freies PSA — eher BPH als Karzinom
+    reason: 'Not supported by Prostate-Specific Antigen (NBK557495), Prostate Cancer Screening (NBK556081): no rule for ddx.bph.'
+  reason: No item of this entry is supported by the reference work.
+- key: IRON_HOCH
+  condition: lab.iron_umol_l above the upper reference limit
+  items:
+  - text: Hämochromatose (hereditär oder erworben)
+    rules: [LAB-IRON-HOCH-1]
+  - text: Eisenüberladung durch Transfusionen
+    reason: 'Not supported by Iron Overload and Toxicity (NBK526131), Hemochromatosis (NBK430862): no rule for ddx.transfusional_iron_overload.'
+  - text: Lebererkrankung (reduzierter Eiseneinbau)
+    reason: 'Not supported by Iron Overload and Toxicity (NBK526131): no rule for ddx.liver_disease.'
+- key: IRON_NIEDRIG
+  condition: lab.iron_umol_l below the lower reference limit
+  items:
+  - text: Eisenmangelanämie
+    rules: [LAB-IRON-NIEDRIG-1]
+  - text: chronische Erkrankung (Anemia of chronic disease)
+    rules: [LAB-IRON-NIEDRIG-2]
+  - text: Malabsorption (Zöliakie, M. Crohn)
+    rules: [LAB-IRON-NIEDRIG-3]
+    note: Supported through iron deficiency caused by malabsorption (coeliac disease); Crohn disease is not named and not
+      taken over.
+- key: FER_HOCH
+  condition: lab.ferritin_ug_l above the upper reference limit
+  items:
+  - text: Entzündungsreaktion (Ferritin als Akute-Phase-Protein)
+    rules: [LAB-FER-HOCH-1]
+  - text: Hämochromatose
+    rules: [LAB-FER-HOCH-2]
+  - text: Lebererkrankung
+    rules: [LAB-FER-HOCH-3]
+  - text: malignes Geschehen
+    rules: [LAB-FER-HOCH-4]
+- key: BIC_HOCH
+  condition: lab.bicarbonate_mmol_l above the upper reference limit
+  items:
+  - text: metabolische Alkalose
+    rules: [LAB-BIC-HOCH-1]
+  - text: respiratorische Azidose mit metabolischer Kompensation
+    rules: [LAB-BIC-HOCH-2]
+  note: BIC and CO2 both report bicarbonate (total CO2) in SynthEHR; one fact.
+- key: GENERELL_HOCH
+  condition: fallback when no other entry applies (no lab condition)
+  items:
+  - text: Befundkonstellation erfordert klinische Einordnung
+    reason: Fallback that applies when no other entry does; it has no lab condition and names no diagnosis, so it cannot be
+      expressed as a rule over facts (D-11).
+  - text: Verlaufskontrolle unter laufender Therapie
+    reason: Fallback that applies when no other entry does; it has no lab condition and names no diagnosis, so it cannot be
+      expressed as a rule over facts (D-11).
+  reason: Fallback that applies when no other entry does; it has no lab condition and names no diagnosis, so it cannot be
+    expressed as a rule over facts (D-11).

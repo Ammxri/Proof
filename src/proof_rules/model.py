@@ -37,7 +37,8 @@ VALUE_CODE_PATTERN = r"^[a-z][a-z0-9_]*$"
 SOURCE_ID_PATTERN = r"^SRC-[0-9]{4}$"
 RULE_ID_PATTERN = r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
 PACK_NAME_PATTERN = r"^[a-z][a-z0-9_]*$"
-LEGACY_KEY_PATTERN = r"^[A-Z][A-Z0-9_]*$"
+LEGACY_KEY_PATTERN = r"^[A-Za-z][A-Za-z0-9_]*$"
+SYNTHEHR_CODE_PATTERN = r"^[A-Za-z][A-Za-z0-9_]*$"
 
 ORDERED_OPS = frozenset({"lt", "le", "gt", "ge"})
 RULE_KINDS = ("red_flag", "ddx")
@@ -68,6 +69,7 @@ SourceId = Annotated[StrictStr, StringConstraints(pattern=SOURCE_ID_PATTERN)]
 RuleId = Annotated[StrictStr, StringConstraints(pattern=RULE_ID_PATTERN)]
 PackName = Annotated[StrictStr, StringConstraints(pattern=PACK_NAME_PATTERN)]
 LegacyKey = Annotated[StrictStr, StringConstraints(pattern=LEGACY_KEY_PATTERN)]
+SynthehrCode = Annotated[StrictStr, StringConstraints(pattern=SYNTHEHR_CODE_PATTERN)]
 Number = Annotated[StrictInt | StrictFloat, AfterValidator(_finite)]
 Scalar = StrictBool | StrictInt | Annotated[StrictFloat, AfterValidator(_finite)] | StrictStr
 Decimals = Annotated[StrictInt, Field(ge=0, le=6)]
@@ -144,17 +146,23 @@ class SourceRegister(_Model):
 
 
 class Bounds(_Model):
-    """Physiological bounds of a numeric fact, with their source."""
+    """Physiological bounds of a numeric fact, both inclusive, with their source.
+
+    ``upper`` stays open when the source sets no upper limit (A-65).
+    """
 
     lower: Number
-    upper: Number
+    upper: Number | None = None
     source: SourceRef
 
     @model_validator(mode="after")
     def _order(self) -> Bounds:
-        if not self.lower < self.upper:
+        if self.upper is not None and not self.lower < self.upper:
             raise ValueError("lower must be below upper")
         return self
+
+    def contains(self, value: int | float) -> bool:
+        return self.lower <= value and (self.upper is None or value <= self.upper)
 
 
 class AltUnit(_Model):
@@ -189,8 +197,29 @@ class TermLabels(_Model):
     de: Text
 
 
+class SynthehrSource(_Model):
+    """Where the lab profile of a field comes from (D-03): SynthEHR test codes and the unit they are reported in.
+
+    Several codes name the same test in different laboratories (e.g. ``CRE`` and ``CR`` for creatinine). The unit is
+    the spelling in the CSV, compared without regard to case.
+    """
+
+    codes: Annotated[tuple[SynthehrCode, ...], Field(min_length=1)]
+    unit: Text
+
+    @model_validator(mode="after")
+    def _unique(self) -> SynthehrSource:
+        if _duplicates(self.codes):
+            raise ValueError("SynthEHR codes must be unique")
+        return self
+
+
 class FieldDef(_Model):
-    """One fact of the catalog. The code prefix is its section; numeric facts carry a canonical unit and bounds."""
+    """One fact of the catalog. The code prefix is its section; numeric facts carry a canonical unit.
+
+    Numeric fields of a domain also need physiological bounds with a source; the loader checks that. A library field
+    that no domain uses may lack bounds while no source gives them (A-65).
+    """
 
     code: FieldCode
     section: Section
@@ -202,15 +231,18 @@ class FieldDef(_Model):
     value_labels: dict[ValueCode, TermLabels] = Field(default_factory=dict)
     labels: FieldLabels
     alt_units: tuple[AltUnit, ...] = ()
+    synthehr: SynthehrSource | None = None
 
     @model_validator(mode="after")
     def _shape(self) -> FieldDef:
         if self.code.split(".", 1)[0] != self.section:
             raise ValueError(f"code {self.code} does not start with its section {self.section!r}")
         numeric = self.type in ("number", "int")
+        if self.synthehr is not None and not (numeric and self.section == "lab"):
+            raise ValueError("only numeric lab fields have a SynthEHR source")
         if numeric:
-            if self.unit is None or self.bounds is None:
-                raise ValueError(f"{self.type} fields need a unit and bounds")
+            if self.unit is None:
+                raise ValueError(f"{self.type} fields need a unit")
             if self.type == "number" and self.decimals is None:
                 raise ValueError("number fields need decimals")
             if self.type == "int" and self.decimals is not None:
@@ -251,8 +283,9 @@ class FieldDef(_Model):
             if round(value, self.decimals) != value:
                 return f"has more than {self.decimals} decimal places"
         bounds = self.bounds
-        if bounds is not None and not bounds.lower <= value <= bounds.upper:
-            return f"outside the physiological bounds [{bounds.lower}, {bounds.upper}]"
+        if bounds is not None and not bounds.contains(value):
+            upper = "open" if bounds.upper is None else bounds.upper
+            return f"outside the physiological bounds [{bounds.lower}, {upper}]"
         return None
 
 
@@ -498,6 +531,77 @@ class Rule(_Model):
             for field, side in bounds:
                 if getattr(test.refs[field], side) is None:
                     raise ValueError(f"tests[{index}] needs the {side} reference limit of {field}")
+        return self
+
+
+# --- Migration table -------------------------------------------------------------------------------------------------
+
+
+class MigrationSource(_Model):
+    """The prototype table the rules were migrated from: file, its SHA-256 and the table's name."""
+
+    file: Text
+    sha256: Annotated[StrictStr, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
+    table: Text
+
+
+class MigrationItem(_Model):
+    """One diagnosis text of a legacy entry: the rules it became, or why it became none.
+
+    ``note`` explains a partial migration, e.g. a text naming two conditions of which the source supports one.
+    """
+
+    text: Text
+    rules: tuple[RuleId, ...] = ()
+    reason: Text | None = None
+    note: Text | None = None
+
+    @model_validator(mode="after")
+    def _outcome(self) -> MigrationItem:
+        if bool(self.rules) == (self.reason is not None):
+            raise ValueError("an item names either the rules it became or the reason it became none")
+        if _duplicates(self.rules):
+            raise ValueError("an item lists a rule twice")
+        return self
+
+
+class MigrationEntry(_Model):
+    """One key of the prototype table, what its condition means here, and what became of its items."""
+
+    key: LegacyKey
+    condition: Text
+    items: tuple[MigrationItem, ...] = ()
+    reason: Text | None = None
+    note: Text | None = None
+
+    @property
+    def migrated(self) -> bool:
+        return any(item.rules for item in self.items)
+
+    @property
+    def rules(self) -> tuple[str, ...]:
+        return tuple(rule for item in self.items for rule in item.rules)
+
+    @model_validator(mode="after")
+    def _outcome(self) -> MigrationEntry:
+        if self.migrated == (self.reason is not None):
+            raise ValueError("an entry without any migrated item needs a reason, a migrated entry has none")
+        if _duplicates(item.text for item in self.items):
+            raise ValueError("an entry lists an item twice")
+        return self
+
+
+class MigrationTable(_Model):
+    """``migration.yaml``: every key of the prototype table and the rules it became (A-32, PR-W03)."""
+
+    source: MigrationSource
+    entries: Annotated[tuple[MigrationEntry, ...], Field(min_length=1)]
+
+    @model_validator(mode="after")
+    def _unique(self) -> MigrationTable:
+        duplicates = _duplicates(entry.key for entry in self.entries)
+        if duplicates:
+            raise ValueError(f"duplicate keys: {', '.join(duplicates)}")
         return self
 
 

@@ -1,0 +1,390 @@
+- id: LAB-UREA-HOCH-CRE-HOCH-1
+  kind: ddx
+  target: ddx.aki
+  requires: [lab.creatinine_umol_l, lab.urea_mmol_l]
+  when:
+    all:
+    - {field: lab.urea_mmol_l, op: gt, value: {ref: upper}}
+    - {field: lab.creatinine_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1047, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: UREA_HOCH_CRE_HOCH
+  tests:
+  - {facts: {lab.urea_mmol_l: 7.9, lab.creatinine_umol_l: 81}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: true}
+  - {facts: {lab.urea_mmol_l: 7.8, lab.creatinine_umol_l: 81}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: false}
+  - {facts: {lab.urea_mmol_l: 7.9, lab.creatinine_umol_l: 80}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: false}
+  - {facts: {lab.urea_mmol_l: 7.9}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}, lab.creatinine_umol_l: {lower: 44, upper: 80}},
+    expect: unknown}
+- id: LAB-UREA-HOCH-CRE-HOCH-2
+  kind: ddx
+  target: ddx.ckd
+  requires: [lab.creatinine_umol_l, lab.urea_mmol_l]
+  when:
+    all:
+    - {field: lab.urea_mmol_l, op: gt, value: {ref: upper}}
+    - {field: lab.creatinine_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1023, locator: Procedures > Blood Urea Nitrogen; Clinical Significance > BUN}
+  - {ref: SRC-1036, locator: 'Results, Reporting, and Critical Findings'}
+  - {ref: SRC-1005, locator: History and Physical}
+  status: draft_unreviewed
+  migrated_from: UREA_HOCH_CRE_HOCH
+  tests:
+  - {facts: {lab.urea_mmol_l: 7.9, lab.creatinine_umol_l: 81}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: true}
+  - {facts: {lab.urea_mmol_l: 7.8, lab.creatinine_umol_l: 81}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: false}
+  - {facts: {lab.urea_mmol_l: 7.9, lab.creatinine_umol_l: 80}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: false}
+  - {facts: {lab.urea_mmol_l: 7.9}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}, lab.creatinine_umol_l: {lower: 44, upper: 80}},
+    expect: unknown}
+- id: LAB-UREA-HOCH-CRE-HOCH-3
+  kind: ddx
+  target: ddx.prerenal_aki
+  requires: [lab.creatinine_umol_l, lab.urea_mmol_l]
+  when:
+    all:
+    - {field: lab.urea_mmol_l, op: gt, value: {ref: upper}}
+    - {field: lab.creatinine_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1047, locator: Etiology; History and Physical; Evaluation}
+  - {ref: SRC-1023, locator: Procedures > Acute Versus Chronic Renal Impairment}
+  status: draft_unreviewed
+  migrated_from: UREA_HOCH_CRE_HOCH
+  tests:
+  - {facts: {lab.urea_mmol_l: 7.9, lab.creatinine_umol_l: 81}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: true}
+  - {facts: {lab.urea_mmol_l: 7.8, lab.creatinine_umol_l: 81}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: false}
+  - {facts: {lab.urea_mmol_l: 7.9, lab.creatinine_umol_l: 80}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: false}
+  - {facts: {lab.urea_mmol_l: 7.9}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}, lab.creatinine_umol_l: {lower: 44, upper: 80}},
+    expect: unknown}
+- id: LAB-UREA-HOCH-1
+  kind: ddx
+  target: ddx.aki
+  requires: [lab.urea_mmol_l]
+  when: {field: lab.urea_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1023, locator: Procedures > Blood Urea Nitrogen; Clinical Significance > BUN}
+  status: draft_unreviewed
+  migrated_from: UREA_HOCH
+  tests:
+  - {facts: {lab.urea_mmol_l: 7.9}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: true}
+  - {facts: {lab.urea_mmol_l: 7.8}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: false}
+  - {facts: {}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: unknown}
+- id: LAB-UREA-HOCH-2
+  kind: ddx
+  target: ddx.ckd
+  requires: [lab.urea_mmol_l]
+  when: {field: lab.urea_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1023, locator: Procedures > Blood Urea Nitrogen; Clinical Significance > BUN}
+  status: draft_unreviewed
+  migrated_from: UREA_HOCH
+  tests:
+  - {facts: {lab.urea_mmol_l: 7.9}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: true}
+  - {facts: {lab.urea_mmol_l: 7.8}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: false}
+  - {facts: {}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: unknown}
+- id: LAB-UREA-HOCH-3
+  kind: ddx
+  target: ddx.prerenal_aki
+  requires: [lab.urea_mmol_l]
+  when: {field: lab.urea_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1023, locator: Procedures > Blood Urea Nitrogen}
+  - {ref: SRC-1047, locator: Etiology; Evaluation}
+  status: draft_unreviewed
+  migrated_from: UREA_HOCH
+  tests:
+  - {facts: {lab.urea_mmol_l: 7.9}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: true}
+  - {facts: {lab.urea_mmol_l: 7.8}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: false}
+  - {facts: {}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: unknown}
+- id: LAB-UREA-HOCH-4
+  kind: ddx
+  target: ddx.gi_bleeding
+  requires: [lab.urea_mmol_l]
+  when: {field: lab.urea_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1023, locator: Procedures > Blood Urea Nitrogen}
+  status: draft_unreviewed
+  migrated_from: UREA_HOCH
+  tests:
+  - {facts: {lab.urea_mmol_l: 7.9}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: true}
+  - {facts: {lab.urea_mmol_l: 7.8}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: false}
+  - {facts: {}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: unknown}
+- id: LAB-UREA-NIEDRIG-1
+  kind: ddx
+  target: ddx.low_protein_intake
+  requires: [lab.urea_mmol_l]
+  when: {field: lab.urea_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1023, locator: Procedures > Blood Urea Nitrogen}
+  status: draft_unreviewed
+  migrated_from: UREA_NIEDRIG
+  tests:
+  - {facts: {lab.urea_mmol_l: 2.4}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: true}
+  - {facts: {lab.urea_mmol_l: 2.5}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: false}
+  - {facts: {}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: unknown}
+- id: LAB-UREA-NIEDRIG-2
+  kind: ddx
+  target: ddx.liver_failure
+  requires: [lab.urea_mmol_l]
+  when: {field: lab.urea_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1023, locator: Procedures > Blood Urea Nitrogen}
+  status: draft_unreviewed
+  migrated_from: UREA_NIEDRIG
+  tests:
+  - {facts: {lab.urea_mmol_l: 2.4}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: true}
+  - {facts: {lab.urea_mmol_l: 2.5}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: false}
+  - {facts: {}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: unknown}
+- id: LAB-CRE-HOCH-1
+  kind: ddx
+  target: ddx.aki
+  requires: [lab.creatinine_umol_l]
+  when: {field: lab.creatinine_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1023, locator: Clinical Significance > Creatinine; Procedures > Acute Versus Chronic Renal Impairment}
+  status: draft_unreviewed
+  migrated_from: CRE_HOCH
+  tests:
+  - {facts: {lab.creatinine_umol_l: 81}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: true}
+  - {facts: {lab.creatinine_umol_l: 80}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: false}
+  - {facts: {}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: unknown}
+- id: LAB-CRE-HOCH-2
+  kind: ddx
+  target: ddx.ckd
+  requires: [lab.creatinine_umol_l]
+  when: {field: lab.creatinine_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1036, locator: 'Results, Reporting, and Critical Findings'}
+  status: draft_unreviewed
+  migrated_from: CRE_HOCH
+  tests:
+  - {facts: {lab.creatinine_umol_l: 81}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: true}
+  - {facts: {lab.creatinine_umol_l: 80}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: false}
+  - {facts: {}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: unknown}
+- id: LAB-CRE-HOCH-3
+  kind: ddx
+  target: ddx.nephrotoxic_drugs
+  requires: [lab.creatinine_umol_l]
+  when: {field: lab.creatinine_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1005, locator: Etiology; Evaluation; Introduction}
+  - {ref: SRC-1047, locator: Etiology; Treatment / Management}
+  status: draft_unreviewed
+  migrated_from: CRE_HOCH
+  tests:
+  - {facts: {lab.creatinine_umol_l: 81}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: true}
+  - {facts: {lab.creatinine_umol_l: 80}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: false}
+  - {facts: {}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: unknown}
+- id: LAB-CR-HOCH-1
+  kind: ddx
+  target: ddx.aki
+  requires: [lab.creatinine_umol_l]
+  when: {field: lab.creatinine_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1023, locator: Clinical Significance > Creatinine}
+  status: draft_unreviewed
+  migrated_from: CR_HOCH
+  tests:
+  - {facts: {lab.creatinine_umol_l: 81}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: true}
+  - {facts: {lab.creatinine_umol_l: 80}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: false}
+  - {facts: {}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: unknown}
+- id: LAB-CR-HOCH-2
+  kind: ddx
+  target: ddx.ckd
+  requires: [lab.creatinine_umol_l]
+  when: {field: lab.creatinine_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1036, locator: 'Results, Reporting, and Critical Findings'}
+  status: draft_unreviewed
+  migrated_from: CR_HOCH
+  tests:
+  - {facts: {lab.creatinine_umol_l: 81}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: true}
+  - {facts: {lab.creatinine_umol_l: 80}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: false}
+  - {facts: {}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: unknown}
+- id: LAB-CR-HOCH-3
+  kind: ddx
+  target: ddx.rhabdomyolysis
+  requires: [lab.ck_u_l, lab.creatinine_umol_l]
+  when:
+    all:
+    - {field: lab.creatinine_umol_l, op: gt, value: {ref: upper}}
+    - {field: lab.ck_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1007, locator: Introduction; Epidemiology; Evaluation}
+  status: draft_unreviewed
+  migrated_from: CR_HOCH
+  tests:
+  - {facts: {lab.creatinine_umol_l: 81, lab.ck_u_l: 121}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}, lab.ck_u_l: {
+        lower: 30, upper: 120}}, expect: true}
+  - {facts: {lab.creatinine_umol_l: 80, lab.ck_u_l: 121}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}, lab.ck_u_l: {
+        lower: 30, upper: 120}}, expect: false}
+  - {facts: {lab.creatinine_umol_l: 81, lab.ck_u_l: 120}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}, lab.ck_u_l: {
+        lower: 30, upper: 120}}, expect: false}
+  - {facts: {lab.creatinine_umol_l: 81}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}, lab.ck_u_l: {lower: 30, upper: 120}},
+    expect: unknown}
+- id: LAB-CRE-NIEDRIG-1
+  kind: ddx
+  target: ddx.low_muscle_mass
+  requires: [lab.creatinine_umol_l]
+  when: {field: lab.creatinine_umol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1023, locator: Procedures > Creatinine; Interfering Factors > Creatinine}
+  - {ref: SRC-1036, locator: Testing Procedures; Interfering Factors}
+  status: draft_unreviewed
+  migrated_from: CRE_NIEDRIG
+  tests:
+  - {facts: {lab.creatinine_umol_l: 43}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: true}
+  - {facts: {lab.creatinine_umol_l: 44}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: false}
+  - {facts: {}, refs: {lab.creatinine_umol_l: {lower: 44, upper: 80}}, expect: unknown}
+- id: LAB-EGFR-NIEDRIG-1
+  kind: ddx
+  target: ddx.ckd
+  requires: [lab.egfr_ml_min]
+  when: {field: lab.egfr_ml_min, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1030, locator: Introduction; Staging}
+  status: draft_unreviewed
+  migrated_from: eGFR_NIEDRIG
+  tests:
+  - {facts: {lab.egfr_ml_min: 59}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: true}
+  - {facts: {lab.egfr_ml_min: 60}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: false}
+  - {facts: {}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: unknown}
+- id: LAB-EGFR-NIEDRIG-2
+  kind: ddx
+  target: ddx.aki
+  requires: [lab.egfr_ml_min]
+  when: {field: lab.egfr_ml_min, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1030, locator: Evaluation}
+  status: draft_unreviewed
+  migrated_from: eGFR_NIEDRIG
+  tests:
+  - {facts: {lab.egfr_ml_min: 59}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: true}
+  - {facts: {lab.egfr_ml_min: 60}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: false}
+  - {facts: {}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: unknown}
+- id: LAB-EGFR-NIEDRIG-3
+  kind: ddx
+  target: ddx.diabetic_nephropathy
+  requires: [lab.egfr_ml_min]
+  when: {field: lab.egfr_ml_min, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1030, locator: Epidemiology; Etiology}
+  status: draft_unreviewed
+  migrated_from: eGFR_NIEDRIG
+  tests:
+  - {facts: {lab.egfr_ml_min: 59}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: true}
+  - {facts: {lab.egfr_ml_min: 60}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: false}
+  - {facts: {}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: unknown}
+- id: LAB-EGFR-NIEDRIG-4
+  kind: ddx
+  target: ddx.hypertensive_nephropathy
+  requires: [lab.egfr_ml_min]
+  when: {field: lab.egfr_ml_min, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1030, locator: Etiology; Epidemiology; Staging}
+  status: draft_unreviewed
+  migrated_from: eGFR_NIEDRIG
+  tests:
+  - {facts: {lab.egfr_ml_min: 59}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: true}
+  - {facts: {lab.egfr_ml_min: 60}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: false}
+  - {facts: {}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: unknown}
+- id: LAB-HIC-EGFR-NIEDRIG-1
+  kind: ddx
+  target: ddx.impaired_kidney_function
+  requires: [lab.egfr_ml_min]
+  when: {field: lab.egfr_ml_min, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1023, locator: Procedures > Glomerular Filtration Rate; Potential Diagnosis}
+  status: draft_unreviewed
+  migrated_from: HIC_EGFR_NIEDRIG
+  tests:
+  - {facts: {lab.egfr_ml_min: 59}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: true}
+  - {facts: {lab.egfr_ml_min: 60}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: false}
+  - {facts: {}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: unknown}
+- id: LAB-HIC-EGFR-NIEDRIG-2
+  kind: ddx
+  target: ddx.ckd
+  requires: [lab.egfr_ml_min]
+  when: {field: lab.egfr_ml_min, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1030, locator: Introduction; Staging}
+  status: draft_unreviewed
+  migrated_from: HIC_EGFR_NIEDRIG
+  tests:
+  - {facts: {lab.egfr_ml_min: 59}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: true}
+  - {facts: {lab.egfr_ml_min: 60}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: false}
+  - {facts: {}, refs: {lab.egfr_ml_min: {lower: 60}}, expect: unknown}
+- id: LAB-MA-HOCH-1
+  kind: ddx
+  target: ddx.diabetic_nephropathy
+  requires: [lab.urine_albumin_mg_l]
+  when: {field: lab.urine_albumin_mg_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1050, locator: Epidemiology; Complications}
+  - {ref: SRC-1023, locator: Procedures > Albuminuria and Proteinuria; Potential Diagnosis}
+  status: draft_unreviewed
+  migrated_from: MA_HOCH
+  tests:
+  - {facts: {lab.urine_albumin_mg_l: 31}, refs: {lab.urine_albumin_mg_l: {lower: 0, upper: 30}}, expect: true}
+  - {facts: {lab.urine_albumin_mg_l: 30}, refs: {lab.urine_albumin_mg_l: {lower: 0, upper: 30}}, expect: false}
+  - {facts: {}, refs: {lab.urine_albumin_mg_l: {lower: 0, upper: 30}}, expect: unknown}
+- id: LAB-MA-HOCH-2
+  kind: ddx
+  target: ddx.glomerular_disease
+  requires: [lab.urine_albumin_mg_l]
+  when: {field: lab.urine_albumin_mg_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1050, locator: Evaluation; Etiology}
+  status: draft_unreviewed
+  migrated_from: MA_HOCH
+  tests:
+  - {facts: {lab.urine_albumin_mg_l: 31}, refs: {lab.urine_albumin_mg_l: {lower: 0, upper: 30}}, expect: true}
+  - {facts: {lab.urine_albumin_mg_l: 30}, refs: {lab.urine_albumin_mg_l: {lower: 0, upper: 30}}, expect: false}
+  - {facts: {}, refs: {lab.urine_albumin_mg_l: {lower: 0, upper: 30}}, expect: unknown}
+- id: LAB-UAC-HOCH-1
+  kind: ddx
+  target: ddx.diabetic_nephropathy
+  requires: [lab.uacr_mg_mmol]
+  when: {field: lab.uacr_mg_mmol, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1023, locator: Procedures > Albuminuria and Proteinuria; Potential Diagnosis}
+  status: draft_unreviewed
+  migrated_from: UAC_HOCH
+  tests:
+  - {facts: {lab.uacr_mg_mmol: 2.6}, refs: {lab.uacr_mg_mmol: {lower: 0, upper: 2.5}}, expect: true}
+  - {facts: {lab.uacr_mg_mmol: 2.5}, refs: {lab.uacr_mg_mmol: {lower: 0, upper: 2.5}}, expect: false}
+  - {facts: {}, refs: {lab.uacr_mg_mmol: {lower: 0, upper: 2.5}}, expect: unknown}
+- id: LAB-UAC-HOCH-2
+  kind: ddx
+  target: ddx.glomerular_disease
+  requires: [lab.uacr_mg_mmol]
+  when: {field: lab.uacr_mg_mmol, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1023, locator: Procedures > Albuminuria and Proteinuria}
+  status: draft_unreviewed
+  migrated_from: UAC_HOCH
+  tests:
+  - {facts: {lab.uacr_mg_mmol: 2.6}, refs: {lab.uacr_mg_mmol: {lower: 0, upper: 2.5}}, expect: true}
+  - {facts: {lab.uacr_mg_mmol: 2.5}, refs: {lab.uacr_mg_mmol: {lower: 0, upper: 2.5}}, expect: false}
+  - {facts: {}, refs: {lab.uacr_mg_mmol: {lower: 0, upper: 2.5}}, expect: unknown}
+- id: LAB-UR-HOCH-1
+  kind: ddx
+  target: ddx.kidney_failure
+  requires: [lab.urea_mmol_l]
+  when: {field: lab.urea_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1023, locator: Procedures > Blood Urea Nitrogen; Clinical Significance > BUN}
+  status: draft_unreviewed
+  migrated_from: UR_HOCH
+  tests:
+  - {facts: {lab.urea_mmol_l: 7.9}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: true}
+  - {facts: {lab.urea_mmol_l: 7.8}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: false}
+  - {facts: {}, refs: {lab.urea_mmol_l: {lower: 2.5, upper: 7.8}}, expect: unknown}

@@ -209,8 +209,10 @@ def test_field_definitions_by_type():
     assert _field().check_value(39.2) is None
     with pytest.raises(ValidationError, match="does not start with its section"):
         _field(section="lab")
-    with pytest.raises(ValidationError, match="need a unit and bounds"):
-        _field(bounds=None)
+    with pytest.raises(ValidationError, match="need a unit"):
+        _field(unit=None)
+    # Bounds are optional on the model; the loader requires them for every numeric fact of a domain (A-65).
+    assert _field(bounds=None).check_value(99.9) is None
     with pytest.raises(ValidationError, match="need decimals"):
         _field(decimals=None)
     with pytest.raises(ValidationError, match="no decimals"):
@@ -254,6 +256,9 @@ def test_check_value():
     assert integer.check_value(120.0) == "expected an integer"
     zero = _field(bounds={**BOUNDS, "lower": -1})
     assert zero.check_value(-0.0) == "negative zero is not allowed"
+    open_upper = _field(bounds={"lower": 0.1, "source": BOUNDS["source"]})
+    assert open_upper.check_value(1e6) is None
+    assert open_upper.check_value(0.0) == "outside the physiological bounds [0.1, open]"
     flag = _field(code="hx.cough", section="hx", type="bool", unit=None, decimals=None, bounds=None)
     assert flag.check_value(True) is None
     assert flag.check_value(1) == "expected true or false"

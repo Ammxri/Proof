@@ -1,14 +1,17 @@
 """Loading and checking rule packs.
 
 A pack is a directory with ``pack.yaml``, ``catalog.yaml``, ``vocabulary.yaml``, ``sources.yaml``, a ``rules/``
-directory of YAML lists and, for domains, optional lab profiles in ``profiles/*.json``. Packs live side by side in one
-root directory; a domain may use library packs from the same root and activates rules from them (A-08).
+directory of YAML lists, for domains optional lab profiles in ``profiles/*.json`` and, for packs with migrated rules,
+``migration.yaml``. Packs live side by side in one root directory; a domain may use library packs from the same root
+and activates rules from them (A-08).
 
 Loading checks the structure of every file and the references between them:
 - every field, target and source a rule names exists, and comparisons fit the field type;
 - ``requires`` matches the fields of the condition exactly, and every rule has a source (in the model);
 - codes and ids are unique, test vectors use valid values;
-- every reference limit an active rule needs is available from the domain's lab profiles.
+- every reference limit an active rule needs is available from the domain's lab profiles;
+- every numeric fact of a domain has physiological bounds with a source;
+- the migration table and the rules' ``migrated_from`` agree in both directions.
 ``check`` additionally runs every rule's test vectors.
 """
 
@@ -31,6 +34,7 @@ from proof_rules.model import (
     Domain,
     DomainSettings,
     FieldDef,
+    MigrationTable,
     PackConfig,
     ProfileReference,
     RefBound,
@@ -50,6 +54,7 @@ VOCABULARY_FILE = "vocabulary.yaml"
 SOURCES_FILE = "sources.yaml"
 RULES_DIR = "rules"
 PROFILES_DIR = "profiles"
+MIGRATION_FILE = "migration.yaml"
 
 
 class LoadError(Exception):
@@ -71,6 +76,7 @@ class Pack:
     rules: tuple[Rule, ...]
     rule_files: Mapping[str, str]
     profiles: Mapping[str, ProfileReference]
+    migration: MigrationTable | None = None
 
     @property
     def references(self) -> Mapping[str, RefRange]:
@@ -180,6 +186,8 @@ def read_pack(path: Path) -> Pack:
     sources = _read_model(SourceRegister, path / SOURCES_FILE, problems)
     rules, files = _read_rules(path / RULES_DIR, problems)
     profiles = _read_profiles(path / PROFILES_DIR, problems)
+    migration_path = path / MIGRATION_FILE
+    migration = _read_model(MigrationTable, migration_path, problems) if migration_path.exists() else None
     if config is not None and config.pack != path.name:
         problems.append(f"{path / PACK_FILE}: pack name {config.pack!r} differs from the directory name")
     if config is not None and config.kind == "library" and profiles:
@@ -196,6 +204,7 @@ def read_pack(path: Path) -> Pack:
         rules=tuple(sorted(rules, key=lambda rule: rule.id)),
         rule_files=MappingProxyType(files),
         profiles=MappingProxyType(profiles),
+        migration=migration,
     )
 
 
@@ -319,11 +328,35 @@ def _check_rule(pack: Pack, rule: Rule, context: _Context, problems: list[str]) 
                 problems.append(f"{where}: tests[{index}] {code}: {problem}")
 
 
+def _check_migration(pack: Pack, problems: list[str]) -> None:
+    where = f"{pack.name}/{MIGRATION_FILE}"
+    rules = {rule.id: rule for rule in pack.rules}
+    listed: dict[str, str] = {}
+    for entry in pack.migration.entries if pack.migration else ():
+        for rule_id in entry.rules:
+            rule = rules.get(rule_id)
+            if rule is None:
+                problems.append(f"{where}: {entry.key} names rule {rule_id}, which is not in the pack")
+            elif rule.migrated_from != entry.key:
+                problems.append(f"{where}: {entry.key} names rule {rule_id}, migrated from {rule.migrated_from}")
+            if rule_id in listed and listed[rule_id] != entry.key:
+                problems.append(f"{where}: rule {rule_id} is listed under {listed[rule_id]} and {entry.key}")
+            listed.setdefault(rule_id, entry.key)
+    for rule in pack.rules:
+        if rule.migrated_from is None:
+            continue
+        if pack.migration is None:
+            problems.append(f"{pack.name}: rule {rule.id} is migrated from {rule.migrated_from}, no {MIGRATION_FILE}")
+        elif rule.id not in listed:
+            problems.append(f"{where}: rule {rule.id} (from {rule.migrated_from}) is missing in the table")
+
+
 def _check_pack(pack: Pack, used: Iterable[Pack], problems: list[str]) -> _Context:
     context = _context((pack, *used), problems)
     _check_definitions(pack, context, problems)
     for rule in pack.rules:
         _check_rule(pack, rule, context, problems)
+    _check_migration(pack, problems)
     return context
 
 
@@ -391,7 +424,13 @@ def _active_rules(pack: Pack, settings: DomainSettings, used: list[Pack], proble
 
 
 def _build_domain(
-    pack: Pack, settings: DomainSettings, used: list[Pack], context: _Context, problems: list[str]
+    pack: Pack,
+    settings: DomainSettings,
+    used: list[Pack],
+    context: _Context,
+    problems: list[str],
+    *,
+    require_references: bool = True,
 ) -> Domain:
     active = _active_rules(pack, settings, used, problems)
     needed = set().union(*(fields_of(rule.when) for rule in active)) if active else set()
@@ -415,6 +454,9 @@ def _build_domain(
             sources.append(source)
             source_ids.add(source.id)
     catalog = Catalog(fields=tuple(fields))
+    for definition in catalog.fields:
+        if definition.type in ("number", "int") and definition.bounds is None:
+            problems.append(f"{pack.name}: numeric field {definition.code} has no physiological bounds (A-65)")
     for code, profile in sorted(pack.profiles.items()):
         definition = catalog.get(code)
         if definition is None:
@@ -426,7 +468,7 @@ def _build_domain(
                 f"{pack.name}/{PROFILES_DIR}: profile unit {profile.unit!r} of {code} differs from the catalog unit "
                 f"{definition.unit!r}"
             )
-    for rule in active:
+    for rule in active if require_references else ():
         for code, side in sorted(reference_bounds_of(rule.when)):
             reference = pack.references.get(code)
             if reference is None or getattr(reference, side) is None:
@@ -445,8 +487,12 @@ def _build_domain(
     )
 
 
-def load_domain(name: str, root: Path = PACKS_ROOT) -> Domain:
-    """Load a domain pack with the library packs it uses and check everything it refers to."""
+def load_domain(name: str, root: Path = PACKS_ROOT, *, require_references: bool = True) -> Domain:
+    """Load a domain pack with the library packs it uses and check everything it refers to.
+
+    With ``require_references=False`` a missing reference limit is not an error. The profile builder needs this: it
+    reads the catalog of a domain whose profiles it is about to write. Inference needs every reference limit.
+    """
     directory = root / name
     if not (directory / PACK_FILE).is_file():
         available = ", ".join(path.name for path in _pack_dirs(root) if (path / PACK_FILE).is_file()) or "none"
@@ -462,7 +508,7 @@ def load_domain(name: str, root: Path = PACKS_ROOT) -> Domain:
     for other in used:
         _check_pack(other, (), problems)
     context = _check_pack(pack, used, problems)
-    domain = _build_domain(pack, settings, used, context, problems)
+    domain = _build_domain(pack, settings, used, context, problems, require_references=require_references)
     if problems:
         raise LoadError(problems)
     return domain

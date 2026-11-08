@@ -1,0 +1,551 @@
+sources:
+- id: SRC-0101
+  citation: 'Johnson AEW, Stone DJ, Celi LA, Pollard TJ. The MIMIC Code Repository: enabling reproducibility in critical care
+    research. J Am Med Inform Assoc. 2018;25(1):32-39. doi:10.1093/jamia/ocx084. Repository MIT-LCP/mimic-code, release v3.0.1,
+    commit c7e07560dc847e32cbb0b2890213e8e7cbd8bc7e.'
+  url: https://github.com/MIT-LCP/mimic-code/tree/v3.0.1
+  kind: dataset
+  terms: MIT License (LICENSE file of the repository, © 2019 MIT Laboratory for Computational Physiology). No clause on AI
+    use.
+  terms_checked_on: 2026-11-08
+  permitted_use: Plausibility limits of the concept SQL cited with file and line; converted to SI units; no code copied.
+- id: SRC-1001
+  citation: 'Sadiq NM, Anastasopoulou C, Patel G, Badireddy M. Hypercalcemia. In: StatPearls [Internet]. Treasure Island (FL):
+    StatPearls Publishing; 2024. Last update May 7, 2024. NCBI Bookshelf NBK430714.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK430714/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1002
+  citation: 'Regalla DKR, Easton-Carr R. Hyperglycemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2026. Last update July 5, 2026. NCBI Bookshelf NBK430900.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK430900/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1003
+  citation: 'Anastasopoulou C, Goyal A. Hypocalcemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2026. Last update June 8, 2026. NCBI Bookshelf NBK430912.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK430912/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1004
+  citation: 'Singh B, Goyal A, Patel BC. C-Reactive Protein: Clinical Relevance and Interpretation. In: StatPearls [Internet].
+    Treasure Island (FL): StatPearls Publishing; 2025. Last update May 3, 2025. NCBI Bookshelf NBK441843.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK441843/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1005
+  citation: 'Goyal A, Daneshpajouhnejad P, Bashir K. Acute Kidney Injury. In: StatPearls [Internet]. Treasure Island (FL):
+    StatPearls Publishing; 2026. Last update August 17, 2026. NCBI Bookshelf NBK441896.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK441896/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1006
+  citation: 'Kharsa A, Vashisht R, Rout P, Meseeha M. Anion Gap and Non-Anion Gap Metabolic Acidosis. In: StatPearls [Internet].
+    Treasure Island (FL): StatPearls Publishing; 2025. Last update August 6, 2025. NCBI Bookshelf NBK448090.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK448090/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1007
+  citation: 'Rout P, Chippa V, Adigun R. Rhabdomyolysis. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2025. Last update July 7, 2025. NCBI Bookshelf NBK448168.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK448168/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1008
+  citation: 'Ibrahim MA, Jialal I. Hypercholesterolemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2023. Last update April 23, 2023. NCBI Bookshelf NBK459188.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK459188/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1009
+  citation: 'Moman RN, Gupta N, Singh C, Varacallo MA. Physiology, Albumin. In: StatPearls [Internet]. Treasure Island (FL):
+    StatPearls Publishing; 2026. Last update January 31, 2026. NCBI Bookshelf NBK459198.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK459198/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1010
+  citation: 'Lowe D, Sanvictores T, Zubair M, John S. Serum Alkaline Phosphatase: Clinical and Laboratory Perspectives. In:
+    StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2026. Last update March 23, 2026. NCBI Bookshelf NBK459201.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK459201/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1011
+  citation: 'Leslie SW, Minter DA. Hyperuricemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2023. Last update October 14, 2023. NCBI Bookshelf NBK459218.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK459218/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1012
+  citation: 'Karanchi H, Muppidi V, Wyne K. Hypertriglyceridemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls
+    Publishing; 2023. Last update August 14, 2023. NCBI Bookshelf NBK459368.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK459368/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1013
+  citation: 'Baddam S, Tubben RE. Lactic Acidosis. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2025. Last update April 28, 2025. NCBI Bookshelf NBK470202.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK470202/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1014
+  citation: 'Simon LV, Rout P. Hyperkalemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2025.
+    Last update December 1, 2025. NCBI Bookshelf NBK470284.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK470284/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1015
+  citation: 'Sahota RJ, Leslie SW, Sharma S. Physiology, Calcium. In: StatPearls [Internet]. Treasure Island (FL): StatPearls
+    Publishing; 2026. Last update September 14, 2026. NCBI Bookshelf NBK482128.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK482128/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1016
+  citation: 'Sharma B, John S. Hepatic Cirrhosis. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2022. Last update October 31, 2022. NCBI Bookshelf NBK482419.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK482419/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1017
+  citation: 'Patel S, Sharma S. Respiratory Acidosis. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2023. Last update June 12, 2023. NCBI Bookshelf NBK482430.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK482430/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1018
+  citation: 'Castro D, Sharma S. Hypokalemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2025.
+    Last update January 19, 2025. NCBI Bookshelf NBK482465.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK482465/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1019
+  citation: 'Jogu P, Zubair M, Minter DA. Liver Function Tests. In: StatPearls [Internet]. Treasure Island (FL): StatPearls
+    Publishing; 2026. Last update June 8, 2026. NCBI Bookshelf NBK482489.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK482489/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1020
+  citation: 'Kaur J, Castro D. Hypophosphatemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2024.
+    Last update February 12, 2024. NCBI Bookshelf NBK493172.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK493172/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1021
+  citation: 'Pirahanchi Y, Toro F, Jialal I. Physiology, Thyroid Stimulating Hormone. In: StatPearls [Internet]. Treasure
+    Island (FL): StatPearls Publishing; 2023. Last update May 1, 2023. NCBI Bookshelf NBK499850.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK499850/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1022
+  citation: 'Shahid MA, Ashraf MA, Sharma S. Physiology, Thyroid Hormone. In: StatPearls [Internet]. Treasure Island (FL):
+    StatPearls Publishing; 2023. Last update June 5, 2023. NCBI Bookshelf NBK500006.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK500006/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1023
+  citation: 'Gounden V, Bhatt H, Jialal I. Renal Function Tests. In: StatPearls [Internet]. Treasure Island (FL): StatPearls
+    Publishing; 2024. Last update July 27, 2024. NCBI Bookshelf NBK507821.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK507821/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1024
+  citation: 'Rogers AP, Estes M. Hyperviscosity Syndrome. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2026. Last update May 13, 2026. NCBI Bookshelf NBK518963.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK518963/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1025
+  citation: 'Patil N, Rehman A, Anastasopoulou C, Jialal I. Hypothyroidism. In: StatPearls [Internet]. Treasure Island (FL):
+    StatPearls Publishing; 2024. Last update February 18, 2024. NCBI Bookshelf NBK519536.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK519536/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1026
+  citation: 'Gounden V, Easton-Carr R, Jialal I. Hypoalbuminemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls
+    Publishing; 2026. Last update August 17, 2026. NCBI Bookshelf NBK526080.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK526080/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1027
+  citation: 'Baddam S, Chen RJ. Iron Overload and Toxicity. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2025. Last update July 7, 2025. NCBI Bookshelf NBK526131.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK526131/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1028
+  citation: 'Zubair M, Launico MV. Glucose Tolerance Test. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2025. Last update September 15, 2025. NCBI Bookshelf NBK532915.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK532915/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1029
+  citation: 'Patel P, Preuss CV. Thiazide Diuretics. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2025. Last update July 6, 2025. NCBI Bookshelf NBK532918.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK532918/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1030
+  citation: 'Vaidya SR, Aeddula NR. Chronic Kidney Disease. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2024. Last update July 31, 2024. NCBI Bookshelf NBK535404.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK535404/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1031
+  citation: 'Patel P, Launico MV. Angiotensin II Receptor Blockers (ARB). In: StatPearls [Internet]. Treasure Island (FL):
+    StatPearls Publishing; 2025. Last update May 5, 2025. NCBI Bookshelf NBK537027.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK537027/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1032
+  citation: 'Mathew P, Kaur J, Rawla P. Hyperthyroidism. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2023. Last update March 19, 2023. NCBI Bookshelf NBK537053.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK537053/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1033
+  citation: 'Chambers K, Ashraf MA, Sharma S. Physiology, Hepcidin. In: StatPearls [Internet]. Treasure Island (FL): StatPearls
+    Publishing; 2023. Last update April 17, 2023. NCBI Bookshelf NBK538257.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK538257/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1034
+  citation: 'Eghtedari B, Correa R. Levothyroxine. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2023. Last update August 28, 2023. NCBI Bookshelf NBK539808.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK539808/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1035
+  citation: 'Valdes A, Patel P, Bajaj T. Estrogen Therapy. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2025. Last update February 18, 2025. NCBI Bookshelf NBK541051.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK541051/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1036
+  citation: 'Shahbaz H, Rout P, Gupta M. Creatinine Clearance. In: StatPearls [Internet]. Treasure Island (FL): StatPearls
+    Publishing; 2024. Last update July 27, 2024. NCBI Bookshelf NBK544228.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK544228/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1037
+  citation: 'Joseph A, Samant H. Hyperbilirubinemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2023. Last update August 8, 2023. NCBI Bookshelf NBK544252.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK544252/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1038
+  citation: 'Kharsa A, Rout P. Alkalosis. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2026. Last
+    update September 14, 2026. NCBI Bookshelf NBK545269.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK545269/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1039
+  citation: 'Aujla RS, Zubair M, Patel R. Creatine Phosphokinase. In: StatPearls [Internet]. Treasure Island (FL): StatPearls
+    Publishing; 2024. Last update February 27, 2024. NCBI Bookshelf NBK546624.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK546624/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1040
+  citation: 'Patel R, Mueller M. Alcohol-Associated Liver Disease. In: StatPearls [Internet]. Treasure Island (FL): StatPearls
+    Publishing; 2023. Last update July 13, 2023. NCBI Bookshelf NBK546632.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK546632/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1041
+  citation: 'Cascella M, Vaqar S. Hypermagnesemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2023. Last update June 4, 2023. NCBI Bookshelf NBK549811.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK549811/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1042
+  citation: 'Eyth E, Zubair M, Naik R. Hemoglobin A1C. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2025. Last update June 2, 2025. NCBI Bookshelf NBK549816.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK549816/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1043
+  citation: 'Rout P, Jialal I. Hyperphosphatemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2023. Last update June 12, 2023. NCBI Bookshelf NBK551586.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK551586/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1044
+  citation: 'Vaezi Z, Amini A. Familial Hypercholesterolemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls
+    Publishing; 2022. Last update September 26, 2022. NCBI Bookshelf NBK556009.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK556009/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1045
+  citation: 'David MK, Leslie SW. Prostate-Specific Antigen. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2024. Last update September 10, 2024. NCBI Bookshelf NBK557495.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK557495/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1046
+  citation: 'Moriles KE, Zubair M, Azer SA. Alanine Aminotransferase (ALT) Test. In: StatPearls [Internet]. Treasure Island
+    (FL): StatPearls Publishing; 2024. Last update February 27, 2024. NCBI Bookshelf NBK559278.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK559278/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1047
+  citation: 'Manzoor H, Bhatt H. Prerenal Kidney Failure. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2023. Last update July 31, 2023. NCBI Bookshelf NBK560678.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK560678/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1048
+  citation: 'Hanif N, Rout P, Anwer F. Iron Deficiency and Microcytic Hypochromic Anemia. In: StatPearls [Internet]. Treasure
+    Island (FL): StatPearls Publishing; 2026. Last update February 21, 2026. NCBI Bookshelf NBK560876.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK560876/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1049
+  citation: 'Pappan N, Awosika AO, Rehman A. Dyslipidemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2024. Last update March 4, 2024. NCBI Bookshelf NBK560891.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK560891/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1050
+  citation: 'Prasad RM, Bali A, Tikaria R. Microalbuminuria. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing;
+    2023. Last update May 30, 2023. NCBI Bookshelf NBK563255.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK563255/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1051
+  citation: 'Fabian D, Padda IS, Johal GS. Hypoalphalipoproteinemia. In: StatPearls [Internet]. Treasure Island (FL): StatPearls
+    Publishing; 2023. Last update June 3, 2023. NCBI Bookshelf NBK589646.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK589646/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1052
+  citation: 'Sonagra AD, Zubair M. Laboratory Evaluation of Hereditary Hemochromatosis. In: StatPearls [Internet]. Treasure
+    Island (FL): StatPearls Publishing; 2026. Last update May 22, 2026. NCBI Bookshelf NBK594250.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK594250/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1053
+  citation: 'Zubair M, Taghavi S. Laboratory Evaluation of Sepsis. In: StatPearls [Internet]. Treasure Island (FL): StatPearls
+    Publishing; 2026. Last update September 13, 2026. NCBI Bookshelf NBK594258.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK594258/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).
+- id: SRC-1054
+  citation: 'Premnath SM, Zubair M. Laboratory Evaluation of Tumor Biomarkers. In: StatPearls [Internet]. Treasure Island
+    (FL): StatPearls Publishing; 2026. Last update June 8, 2026. NCBI Bookshelf NBK597378.'
+  url: https://www.ncbi.nlm.nih.gov/books/NBK597378/
+  kind: reference_work
+  terms: '© StatPearls Publishing LLC; CC BY-NC-ND 4.0 as stated on the chapter page. NCBI Bookshelf: rights as stated on
+    each page.'
+  terms_checked_on: 2026-11-08
+  permitted_use: Facts and their locators only, restated in our own words; no text, table or figure is reproduced or adapted
+    (D-11).

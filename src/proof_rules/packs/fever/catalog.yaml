@@ -1,0 +1,138 @@
+# Facts of the fever domain. The lab facts used by the activated lab rules come from the library pack labs.
+# Physiological bounds (inclusive): SRC-0101 is the MIMIC Code Repository (exclusive limits there become the nearest
+# inclusive value on the field's grid), SRC-0006 the definition of fever of unknown origin (A-65).
+fields:
+  - code: vital.temp_c
+    section: vital
+    type: number
+    unit: °C
+    decimals: 1
+    bounds:
+      lower: 10.1
+      upper: 49.9
+      source: {ref: SRC-0101, locator: "mimic-iv/concepts/measurement/vitalsign.sql, lines 56-58 (10 < value < 50 °C)"}
+    labels:
+      zh: {name: 体温}
+      en: {name: Body temperature, abbr: T}
+      de: {name: Körpertemperatur, abbr: T}
+  - code: vital.heart_rate
+    section: vital
+    type: int
+    unit: /min
+    bounds:
+      lower: 1
+      upper: 299
+      source: {ref: SRC-0101, locator: "mimic-iv/concepts/measurement/vitalsign.sql, lines 8-10 (0 < value < 300 /min)"}
+    labels:
+      zh: {name: 心率, abbr: HR}
+      en: {name: Heart rate, abbr: HR}
+      de: {name: Herzfrequenz, abbr: HF}
+  - code: vital.resp_rate
+    section: vital
+    type: int
+    unit: /min
+    bounds:
+      lower: 1
+      upper: 69
+      source: {ref: SRC-0101, locator: "mimic-iv/concepts/measurement/vitalsign.sql, lines 43-45 (0 < value < 70 /min)"}
+    labels:
+      zh: {name: 呼吸频率, abbr: RR}
+      en: {name: Respiratory rate, abbr: RR}
+      de: {name: Atemfrequenz, abbr: AF}
+  - code: vital.sbp
+    section: vital
+    type: int
+    unit: mmHg
+    bounds:
+      lower: 1
+      upper: 399
+      source: {ref: SRC-0101, locator: "mimic-iv/concepts/measurement/vitalsign.sql, lines 13-15 (0 < value < 400 mmHg)"}
+    labels:
+      zh: {name: 收缩压, abbr: SBP}
+      en: {name: Systolic blood pressure, abbr: SBP}
+      de: {name: Systolischer Blutdruck, abbr: RRsys}
+  - code: vital.mental_status
+    section: vital
+    type: enum
+    values: [normal, altered]
+    value_labels:
+      normal: {zh: 正常, en: normal, de: unauffällig}
+      altered: {zh: 改变, en: altered, de: verändert}
+    labels:
+      zh: {name: 意识状态}
+      en: {name: Mental status}
+      de: {name: Bewusstseinslage}
+  - code: hx.onset_days
+    section: hx
+    type: int
+    unit: d
+    bounds:
+      lower: 0
+      upper: 20
+      source: {ref: SRC-0006, locator: "Introduction and Table 1: fever lasting 3 weeks or more is fever of unknown origin, outside this acute-fever domain"}
+    labels:
+      zh: {name: 起病天数}
+      en: {name: Days since onset}
+      de: {name: Tage seit Beginn}
+  - code: hx.cough
+    section: hx
+    type: bool
+    labels:
+      zh: {name: 咳嗽}
+      en: {name: Cough}
+      de: {name: Husten}
+  - code: hx.dyspnea
+    section: hx
+    type: bool
+    labels:
+      zh: {name: 呼吸困难}
+      en: {name: Shortness of breath}
+      de: {name: Atemnot}
+  - code: hx.flank_pain
+    section: hx
+    type: bool
+    labels:
+      zh: {name: 侧腹痛}
+      en: {name: Flank pain}
+      de: {name: Flankenschmerz}
+  - code: hx.headache
+    section: hx
+    type: bool
+    labels:
+      zh: {name: 头痛}
+      en: {name: Headache}
+      de: {name: Kopfschmerz}
+  - code: exam.focal_chest_signs
+    section: exam
+    type: bool
+    labels:
+      zh: {name: 新出现的局灶性胸部体征}
+      en: {name: New focal chest signs}
+      de: {name: Neuer fokaler Lungenbefund}
+  - code: exam.cva_tenderness
+    section: exam
+    type: bool
+    labels:
+      zh: {name: 肋脊角叩痛}
+      en: {name: Costovertebral angle tenderness}
+      de: {name: Nierenlager-Klopfschmerz}
+  - code: exam.neck_stiffness
+    section: exam
+    type: bool
+    labels:
+      zh: {name: 颈项强直}
+      en: {name: Neck stiffness}
+      de: {name: Nackensteifigkeit}
+  - code: lab.wbc_g_l
+    section: lab
+    type: number
+    unit: G/L
+    decimals: 1
+    bounds:
+      lower: 0.1
+      upper: 1000
+      source: {ref: SRC-0101, locator: "mimic-iii/concepts/pivot/pivoted_lab.sql, lines 154-155 and 189 (0 < value <= 1000 K/µL = G/L)"}
+    labels:
+      zh: {name: 白细胞计数, abbr: WBC}
+      en: {name: White blood cell count, abbr: WBC}
+      de: {name: Leukozyten, abbr: Leuko}

@@ -1,0 +1,384 @@
+- id: LAB-CRP-HOCH-1
+  kind: ddx
+  target: ddx.bacterial_infection
+  requires: [lab.crp_mg_l]
+  when: {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1004, locator: Normal and Critical Findings; Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}}, expect: true}
+  - {facts: {lab.crp_mg_l: 10}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}}, expect: false}
+  - {facts: {}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}}, expect: unknown}
+- id: LAB-CRP-HOCH-2
+  kind: ddx
+  target: ddx.systemic_inflammation
+  requires: [lab.crp_mg_l]
+  when: {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1004, locator: Complications; Normal and Critical Findings}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}}, expect: true}
+  - {facts: {lab.crp_mg_l: 10}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}}, expect: false}
+  - {facts: {}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}}, expect: unknown}
+- id: LAB-CRP-HOCH-3
+  kind: ddx
+  target: ddx.active_inflammatory_disease
+  requires: [lab.crp_mg_l]
+  when: {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1004, locator: Normal and Critical Findings; Introduction}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}}, expect: true}
+  - {facts: {lab.crp_mg_l: 10}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}}, expect: false}
+  - {facts: {}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}}, expect: unknown}
+- id: LAB-CRP-HOCH-4
+  kind: ddx
+  target: ddx.tissue_injury
+  requires: [lab.crp_mg_l]
+  when: {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1004, locator: Introduction; Indications; Normal and Critical Findings}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}}, expect: true}
+  - {facts: {lab.crp_mg_l: 10}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}}, expect: false}
+  - {facts: {}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}}, expect: unknown}
+- id: LAB-CRP-HOCH-ALT-HOCH-1
+  kind: ddx
+  target: ddx.liver_disease
+  requires: [lab.alt_u_l, lab.crp_mg_l]
+  when:
+    all:
+    - {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+    - {field: lab.alt_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1004, locator: Normal and Critical Findings}
+  - {ref: SRC-1046, locator: Introduction}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH_ALT_HOCH
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1, lab.alt_u_l: 56}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.alt_u_l: {lower: 5, upper: 55}},
+    expect: true}
+  - {facts: {lab.crp_mg_l: 10, lab.alt_u_l: 56}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.alt_u_l: {lower: 5, upper: 55}},
+    expect: false}
+  - {facts: {lab.crp_mg_l: 10.1, lab.alt_u_l: 55}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.alt_u_l: {lower: 5, upper: 55}},
+    expect: false}
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.alt_u_l: {lower: 5, upper: 55}}, expect: unknown}
+- id: LAB-CRP-HOCH-ALT-HOCH-2
+  kind: ddx
+  target: ddx.viral_hepatitis
+  requires: [lab.alt_u_l, lab.crp_mg_l]
+  when:
+    all:
+    - {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+    - {field: lab.alt_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1004, locator: Normal and Critical Findings}
+  - {ref: SRC-1046, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH_ALT_HOCH
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1, lab.alt_u_l: 56}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.alt_u_l: {lower: 5, upper: 55}},
+    expect: true}
+  - {facts: {lab.crp_mg_l: 10, lab.alt_u_l: 56}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.alt_u_l: {lower: 5, upper: 55}},
+    expect: false}
+  - {facts: {lab.crp_mg_l: 10.1, lab.alt_u_l: 55}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.alt_u_l: {lower: 5, upper: 55}},
+    expect: false}
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.alt_u_l: {lower: 5, upper: 55}}, expect: unknown}
+- id: LAB-CRP-HOCH-ALT-HOCH-3
+  kind: ddx
+  target: ddx.drug_induced_liver_injury
+  requires: [lab.alt_u_l, lab.crp_mg_l]
+  when:
+    all:
+    - {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+    - {field: lab.alt_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1004, locator: Introduction}
+  - {ref: SRC-1046, locator: Clinical Significance; Interfering Factors}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH_ALT_HOCH
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1, lab.alt_u_l: 56}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.alt_u_l: {lower: 5, upper: 55}},
+    expect: true}
+  - {facts: {lab.crp_mg_l: 10, lab.alt_u_l: 56}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.alt_u_l: {lower: 5, upper: 55}},
+    expect: false}
+  - {facts: {lab.crp_mg_l: 10.1, lab.alt_u_l: 55}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.alt_u_l: {lower: 5, upper: 55}},
+    expect: false}
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.alt_u_l: {lower: 5, upper: 55}}, expect: unknown}
+- id: LAB-CRP-HOCH-UREA-HOCH-1
+  kind: ddx
+  target: ddx.sepsis_aki
+  requires: [lab.crp_mg_l, lab.urea_mmol_l]
+  when:
+    all:
+    - {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+    - {field: lab.urea_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1053, locator: 'Results, Reporting, and Critical Findings > C-reactive Protein'}
+  - {ref: SRC-1023, locator: Procedures > Acute Versus Chronic Renal Impairment; Clinical Significance > BUN}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH_UREA_HOCH
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1, lab.urea_mmol_l: 7.9}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.urea_mmol_l: {lower: 2.5,
+        upper: 7.8}}, expect: true}
+  - {facts: {lab.crp_mg_l: 10, lab.urea_mmol_l: 7.9}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.urea_mmol_l: {lower: 2.5,
+        upper: 7.8}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1, lab.urea_mmol_l: 7.8}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.urea_mmol_l: {lower: 2.5,
+        upper: 7.8}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.urea_mmol_l: {lower: 2.5, upper: 7.8}},
+    expect: unknown}
+- id: LAB-CRP-HOCH-UREA-HOCH-2
+  kind: ddx
+  target: ddx.prerenal_aki
+  requires: [lab.crp_mg_l, lab.urea_mmol_l]
+  when:
+    all:
+    - {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+    - {field: lab.urea_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1004, locator: Introduction}
+  - {ref: SRC-1023, locator: Procedures > Blood Urea Nitrogen; Procedures > Acute Versus Chronic Renal Impairment}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH_UREA_HOCH
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1, lab.urea_mmol_l: 7.9}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.urea_mmol_l: {lower: 2.5,
+        upper: 7.8}}, expect: true}
+  - {facts: {lab.crp_mg_l: 10, lab.urea_mmol_l: 7.9}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.urea_mmol_l: {lower: 2.5,
+        upper: 7.8}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1, lab.urea_mmol_l: 7.8}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.urea_mmol_l: {lower: 2.5,
+        upper: 7.8}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.urea_mmol_l: {lower: 2.5, upper: 7.8}},
+    expect: unknown}
+- id: LAB-CRP-HOCH-UREA-HOCH-3
+  kind: ddx
+  target: ddx.ckd
+  requires: [lab.crp_mg_l, lab.urea_mmol_l]
+  when:
+    all:
+    - {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+    - {field: lab.urea_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1004, locator: Introduction}
+  - {ref: SRC-1023, locator: Clinical Significance > BUN}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH_UREA_HOCH
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1, lab.urea_mmol_l: 7.9}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.urea_mmol_l: {lower: 2.5,
+        upper: 7.8}}, expect: true}
+  - {facts: {lab.crp_mg_l: 10, lab.urea_mmol_l: 7.9}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.urea_mmol_l: {lower: 2.5,
+        upper: 7.8}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1, lab.urea_mmol_l: 7.8}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.urea_mmol_l: {lower: 2.5,
+        upper: 7.8}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.urea_mmol_l: {lower: 2.5, upper: 7.8}},
+    expect: unknown}
+- id: LAB-CRP-HOCH-CRE-HOCH-1
+  kind: ddx
+  target: ddx.sepsis_aki
+  requires: [lab.creatinine_umol_l, lab.crp_mg_l]
+  when:
+    all:
+    - {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+    - {field: lab.creatinine_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1053, locator: 'Results, Reporting, and Critical Findings > C-reactive Protein; Results, Reporting, and Critical
+      Findings > Serum Creatinine'}
+  - {ref: SRC-1005, locator: Epidemiology; Introduction; Etiology}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH_CRE_HOCH
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1, lab.creatinine_umol_l: 81}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: true}
+  - {facts: {lab.crp_mg_l: 10, lab.creatinine_umol_l: 81}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1, lab.creatinine_umol_l: 80}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.creatinine_umol_l: {lower: 44, upper: 80}},
+    expect: unknown}
+- id: LAB-CRP-HOCH-CRE-HOCH-2
+  kind: ddx
+  target: ddx.ckd
+  requires: [lab.creatinine_umol_l, lab.crp_mg_l]
+  when:
+    all:
+    - {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+    - {field: lab.creatinine_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1004, locator: Introduction}
+  - {ref: SRC-1030, locator: Evaluation > Establishing Chronicity; Treatment / Management > Treatment of Reversible Causes
+      of Renal Failure}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH_CRE_HOCH
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1, lab.creatinine_umol_l: 81}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: true}
+  - {facts: {lab.crp_mg_l: 10, lab.creatinine_umol_l: 81}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1, lab.creatinine_umol_l: 80}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.creatinine_umol_l: {
+        lower: 44, upper: 80}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.creatinine_umol_l: {lower: 44, upper: 80}},
+    expect: unknown}
+- id: LAB-CRP-HOCH-ALB-NIEDRIG-1
+  kind: ddx
+  target: ddx.severe_infection
+  requires: [lab.albumin_g_l, lab.crp_mg_l]
+  when:
+    all:
+    - {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+    - {field: lab.albumin_g_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1004, locator: Normal and Critical Findings}
+  - {ref: SRC-1026, locator: Pathophysiology > Extravascular Loss; Pathophysiology > Albumin and Critical Illness}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH_ALB_NIEDRIG
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1, lab.albumin_g_l: 34}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.albumin_g_l: {lower: 35,
+        upper: 50}}, expect: true}
+  - {facts: {lab.crp_mg_l: 10, lab.albumin_g_l: 34}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.albumin_g_l: {lower: 35,
+        upper: 50}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1, lab.albumin_g_l: 35}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.albumin_g_l: {lower: 35,
+        upper: 50}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.albumin_g_l: {lower: 35, upper: 50}}, expect: unknown}
+- id: LAB-CRP-HOCH-ALB-NIEDRIG-2
+  kind: ddx
+  target: ddx.chronic_inflammation
+  requires: [lab.albumin_g_l, lab.crp_mg_l]
+  when:
+    all:
+    - {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+    - {field: lab.albumin_g_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1004, locator: Introduction}
+  - {ref: SRC-1026, locator: Pathophysiology > Extravascular Loss; Pathophysiology > Decreased Production of Albumin; Pathophysiology
+      > Increased Loss of Albumin}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH_ALB_NIEDRIG
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1, lab.albumin_g_l: 34}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.albumin_g_l: {lower: 35,
+        upper: 50}}, expect: true}
+  - {facts: {lab.crp_mg_l: 10, lab.albumin_g_l: 34}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.albumin_g_l: {lower: 35,
+        upper: 50}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1, lab.albumin_g_l: 35}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.albumin_g_l: {lower: 35,
+        upper: 50}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.albumin_g_l: {lower: 35, upper: 50}}, expect: unknown}
+- id: LAB-CRP-HOCH-ALB-NIEDRIG-3
+  kind: ddx
+  target: ddx.liver_failure
+  requires: [lab.albumin_g_l, lab.crp_mg_l]
+  when:
+    all:
+    - {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+    - {field: lab.albumin_g_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1004, locator: Complications}
+  - {ref: SRC-1026, locator: Pathophysiology > Decreased Production of Albumin; Introduction}
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH_ALB_NIEDRIG
+  tests:
+  - {facts: {lab.crp_mg_l: 10.1, lab.albumin_g_l: 34}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.albumin_g_l: {lower: 35,
+        upper: 50}}, expect: true}
+  - {facts: {lab.crp_mg_l: 10, lab.albumin_g_l: 34}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.albumin_g_l: {lower: 35,
+        upper: 50}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1, lab.albumin_g_l: 35}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.albumin_g_l: {lower: 35,
+        upper: 50}}, expect: false}
+  - {facts: {lab.crp_mg_l: 10.1}, refs: {lab.crp_mg_l: {lower: 0, upper: 10}, lab.albumin_g_l: {lower: 35, upper: 50}}, expect: unknown}
+- id: LAB-LACT-HOCH-1
+  kind: ddx
+  target: ddx.lactic_acidosis_type_a
+  requires: [lab.lactate_mmol_l]
+  when: {field: lab.lactate_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1013, locator: Etiology > Type A Lactic Acidosis; Differential Diagnosis > Shock States (Type A Lactic Acidosis)}
+  status: draft_unreviewed
+  migrated_from: LACT_HOCH
+  tests:
+  - {facts: {lab.lactate_mmol_l: 1.9}, refs: {lab.lactate_mmol_l: {lower: 0.7, upper: 1.8}}, expect: true}
+  - {facts: {lab.lactate_mmol_l: 1.8}, refs: {lab.lactate_mmol_l: {lower: 0.7, upper: 1.8}}, expect: false}
+  - {facts: {}, refs: {lab.lactate_mmol_l: {lower: 0.7, upper: 1.8}}, expect: unknown}
+- id: LAB-LACT-HOCH-2
+  kind: ddx
+  target: ddx.metformin_lactic_acidosis
+  requires: [lab.lactate_mmol_l]
+  when: {field: lab.lactate_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1013, locator: Etiology > Type B Lactic Acidosis; Treatment / Management; Differential Diagnosis > Non-Hypoxic
+      Causes (Type B Lactic Acidosis)}
+  status: draft_unreviewed
+  migrated_from: LACT_HOCH
+  tests:
+  - {facts: {lab.lactate_mmol_l: 1.9}, refs: {lab.lactate_mmol_l: {lower: 0.7, upper: 1.8}}, expect: true}
+  - {facts: {lab.lactate_mmol_l: 1.8}, refs: {lab.lactate_mmol_l: {lower: 0.7, upper: 1.8}}, expect: false}
+  - {facts: {}, refs: {lab.lactate_mmol_l: {lower: 0.7, upper: 1.8}}, expect: unknown}
+- id: LAB-LACT-HOCH-3
+  kind: ddx
+  target: ddx.liver_failure
+  requires: [lab.lactate_mmol_l]
+  when: {field: lab.lactate_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1013, locator: Etiology > Type B Lactic Acidosis; Differential Diagnosis > Non-Hypoxic Causes (Type B Lactic
+      Acidosis)}
+  status: draft_unreviewed
+  migrated_from: LACT_HOCH
+  tests:
+  - {facts: {lab.lactate_mmol_l: 1.9}, refs: {lab.lactate_mmol_l: {lower: 0.7, upper: 1.8}}, expect: true}
+  - {facts: {lab.lactate_mmol_l: 1.8}, refs: {lab.lactate_mmol_l: {lower: 0.7, upper: 1.8}}, expect: false}
+  - {facts: {}, refs: {lab.lactate_mmol_l: {lower: 0.7, upper: 1.8}}, expect: unknown}
+- id: LAB-FER-HOCH-1
+  kind: ddx
+  target: ddx.systemic_inflammation
+  requires: [lab.ferritin_ug_l]
+  when: {field: lab.ferritin_ug_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1052, locator: Interfering Factors; Diagnostic Tests; Specimen Requirements and Procedure}
+  status: draft_unreviewed
+  migrated_from: FER_HOCH
+  tests:
+  - {facts: {lab.ferritin_ug_l: 151}, refs: {lab.ferritin_ug_l: {lower: 13, upper: 150}}, expect: true}
+  - {facts: {lab.ferritin_ug_l: 150}, refs: {lab.ferritin_ug_l: {lower: 13, upper: 150}}, expect: false}
+  - {facts: {}, refs: {lab.ferritin_ug_l: {lower: 13, upper: 150}}, expect: unknown}
+- id: LAB-FER-HOCH-2
+  kind: ddx
+  target: ddx.hemochromatosis
+  requires: [lab.ferritin_ug_l]
+  when: {field: lab.ferritin_ug_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1052, locator: Diagnostic Tests}
+  status: draft_unreviewed
+  migrated_from: FER_HOCH
+  tests:
+  - {facts: {lab.ferritin_ug_l: 151}, refs: {lab.ferritin_ug_l: {lower: 13, upper: 150}}, expect: true}
+  - {facts: {lab.ferritin_ug_l: 150}, refs: {lab.ferritin_ug_l: {lower: 13, upper: 150}}, expect: false}
+  - {facts: {}, refs: {lab.ferritin_ug_l: {lower: 13, upper: 150}}, expect: unknown}
+- id: LAB-FER-HOCH-3
+  kind: ddx
+  target: ddx.liver_disease
+  requires: [lab.ferritin_ug_l]
+  when: {field: lab.ferritin_ug_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1052, locator: Interfering Factors}
+  status: draft_unreviewed
+  migrated_from: FER_HOCH
+  tests:
+  - {facts: {lab.ferritin_ug_l: 151}, refs: {lab.ferritin_ug_l: {lower: 13, upper: 150}}, expect: true}
+  - {facts: {lab.ferritin_ug_l: 150}, refs: {lab.ferritin_ug_l: {lower: 13, upper: 150}}, expect: false}
+  - {facts: {}, refs: {lab.ferritin_ug_l: {lower: 13, upper: 150}}, expect: unknown}
+- id: LAB-FER-HOCH-4
+  kind: ddx
+  target: ddx.malignancy
+  requires: [lab.ferritin_ug_l]
+  when: {field: lab.ferritin_ug_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1052, locator: Diagnostic Tests; Interfering Factors}
+  status: draft_unreviewed
+  migrated_from: FER_HOCH
+  tests:
+  - {facts: {lab.ferritin_ug_l: 151}, refs: {lab.ferritin_ug_l: {lower: 13, upper: 150}}, expect: true}
+  - {facts: {lab.ferritin_ug_l: 150}, refs: {lab.ferritin_ug_l: {lower: 13, upper: 150}}, expect: false}
+  - {facts: {}, refs: {lab.ferritin_ug_l: {lower: 13, upper: 150}}, expect: unknown}

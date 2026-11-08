@@ -1,0 +1,496 @@
+- id: LAB-CA-HOCH-ALB-HOCH-1
+  kind: ddx
+  target: ddx.pseudohypercalcemia
+  requires: [lab.albumin_g_l, lab.calcium_mmol_l]
+  when:
+    all:
+    - {field: lab.calcium_mmol_l, op: gt, value: {ref: upper}}
+    - {field: lab.albumin_g_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1015, locator: Introduction; Related Testing; Clinical Significance}
+  - {ref: SRC-1001, locator: Introduction}
+  status: draft_unreviewed
+  migrated_from: CA_HOCH_ALB_HOCH
+  tests:
+  - {facts: {lab.calcium_mmol_l: 2.56, lab.albumin_g_l: 51}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}, lab.albumin_g_l: {
+        lower: 35, upper: 50}}, expect: true}
+  - {facts: {lab.calcium_mmol_l: 2.55, lab.albumin_g_l: 51}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}, lab.albumin_g_l: {
+        lower: 35, upper: 50}}, expect: false}
+  - {facts: {lab.calcium_mmol_l: 2.56, lab.albumin_g_l: 50}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}, lab.albumin_g_l: {
+        lower: 35, upper: 50}}, expect: false}
+  - {facts: {lab.calcium_mmol_l: 2.56}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}, lab.albumin_g_l: {lower: 35,
+        upper: 50}}, expect: unknown}
+- id: LAB-K-NIEDRIG-1
+  kind: ddx
+  target: ddx.diuretic_use
+  requires: [lab.potassium_mmol_l]
+  when: {field: lab.potassium_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1018, locator: Etiology}
+  - {ref: SRC-1029, locator: Adverse Effects}
+  status: draft_unreviewed
+  migrated_from: K_NIEDRIG
+  tests:
+  - {facts: {lab.potassium_mmol_l: 3.4}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: true}
+  - {facts: {lab.potassium_mmol_l: 3.5}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: false}
+  - {facts: {}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: unknown}
+- id: LAB-K-NIEDRIG-2
+  kind: ddx
+  target: ddx.gi_losses
+  requires: [lab.potassium_mmol_l]
+  when: {field: lab.potassium_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1018, locator: Etiology; Differential Diagnosis}
+  status: draft_unreviewed
+  migrated_from: K_NIEDRIG
+  tests:
+  - {facts: {lab.potassium_mmol_l: 3.4}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: true}
+  - {facts: {lab.potassium_mmol_l: 3.5}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: false}
+  - {facts: {}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: unknown}
+- id: LAB-K-NIEDRIG-3
+  kind: ddx
+  target: ddx.primary_hyperaldosteronism
+  requires: [lab.potassium_mmol_l]
+  when: {field: lab.potassium_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1018, locator: Etiology; Differential Diagnosis}
+  status: draft_unreviewed
+  migrated_from: K_NIEDRIG
+  tests:
+  - {facts: {lab.potassium_mmol_l: 3.4}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: true}
+  - {facts: {lab.potassium_mmol_l: 3.5}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: false}
+  - {facts: {}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: unknown}
+- id: LAB-KA-NIEDRIG-1
+  kind: ddx
+  target: ddx.diuretic_use
+  requires: [lab.potassium_mmol_l]
+  when: {field: lab.potassium_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1018, locator: Etiology}
+  - {ref: SRC-1029, locator: Adverse Effects}
+  status: draft_unreviewed
+  migrated_from: KA_NIEDRIG
+  tests:
+  - {facts: {lab.potassium_mmol_l: 3.4}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: true}
+  - {facts: {lab.potassium_mmol_l: 3.5}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: false}
+  - {facts: {}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: unknown}
+- id: LAB-KA-NIEDRIG-2
+  kind: ddx
+  target: ddx.gi_losses
+  requires: [lab.potassium_mmol_l]
+  when: {field: lab.potassium_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1018, locator: Etiology; Differential Diagnosis}
+  status: draft_unreviewed
+  migrated_from: KA_NIEDRIG
+  tests:
+  - {facts: {lab.potassium_mmol_l: 3.4}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: true}
+  - {facts: {lab.potassium_mmol_l: 3.5}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: false}
+  - {facts: {}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: unknown}
+- id: LAB-KA-NIEDRIG-3
+  kind: ddx
+  target: ddx.primary_hyperaldosteronism
+  requires: [lab.potassium_mmol_l]
+  when: {field: lab.potassium_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1018, locator: Etiology; Differential Diagnosis}
+  status: draft_unreviewed
+  migrated_from: KA_NIEDRIG
+  tests:
+  - {facts: {lab.potassium_mmol_l: 3.4}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: true}
+  - {facts: {lab.potassium_mmol_l: 3.5}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: false}
+  - {facts: {}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: unknown}
+- id: LAB-K-HOCH-1
+  kind: ddx
+  target: ddx.kidney_failure
+  requires: [lab.potassium_mmol_l]
+  when: {field: lab.potassium_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1014, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: K_HOCH
+  tests:
+  - {facts: {lab.potassium_mmol_l: 5.4}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: true}
+  - {facts: {lab.potassium_mmol_l: 5.3}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: false}
+  - {facts: {}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: unknown}
+- id: LAB-K-HOCH-2
+  kind: ddx
+  target: ddx.potassium_raising_drugs
+  requires: [lab.potassium_mmol_l]
+  when: {field: lab.potassium_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1014, locator: Continuing Education Activity; History and Physical; Epidemiology}
+  - {ref: SRC-1031, locator: Monitoring; Adverse Effects}
+  status: draft_unreviewed
+  migrated_from: K_HOCH
+  tests:
+  - {facts: {lab.potassium_mmol_l: 5.4}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: true}
+  - {facts: {lab.potassium_mmol_l: 5.3}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: false}
+  - {facts: {}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: unknown}
+- id: LAB-K-HOCH-3
+  kind: ddx
+  target: ddx.pseudohyperkalemia
+  requires: [lab.potassium_mmol_l]
+  when: {field: lab.potassium_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1014, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: K_HOCH
+  tests:
+  - {facts: {lab.potassium_mmol_l: 5.4}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: true}
+  - {facts: {lab.potassium_mmol_l: 5.3}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: false}
+  - {facts: {}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: unknown}
+- id: LAB-KA-HOCH-1
+  kind: ddx
+  target: ddx.kidney_failure
+  requires: [lab.potassium_mmol_l]
+  when: {field: lab.potassium_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1014, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: KA_HOCH
+  tests:
+  - {facts: {lab.potassium_mmol_l: 5.4}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: true}
+  - {facts: {lab.potassium_mmol_l: 5.3}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: false}
+  - {facts: {}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: unknown}
+- id: LAB-KA-HOCH-2
+  kind: ddx
+  target: ddx.potassium_raising_drugs
+  requires: [lab.potassium_mmol_l]
+  when: {field: lab.potassium_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1014, locator: Continuing Education Activity; History and Physical; Epidemiology}
+  - {ref: SRC-1031, locator: Monitoring; Adverse Effects}
+  status: draft_unreviewed
+  migrated_from: KA_HOCH
+  tests:
+  - {facts: {lab.potassium_mmol_l: 5.4}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: true}
+  - {facts: {lab.potassium_mmol_l: 5.3}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: false}
+  - {facts: {}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: unknown}
+- id: LAB-KA-HOCH-3
+  kind: ddx
+  target: ddx.pseudohyperkalemia
+  requires: [lab.potassium_mmol_l]
+  when: {field: lab.potassium_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1014, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: KA_HOCH
+  tests:
+  - {facts: {lab.potassium_mmol_l: 5.4}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: true}
+  - {facts: {lab.potassium_mmol_l: 5.3}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: false}
+  - {facts: {}, refs: {lab.potassium_mmol_l: {lower: 3.5, upper: 5.3}}, expect: unknown}
+- id: LAB-CA-HOCH-1
+  kind: ddx
+  target: ddx.primary_hyperparathyroidism
+  requires: [lab.calcium_mmol_l]
+  when: {field: lab.calcium_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1001, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: CA_HOCH
+  tests:
+  - {facts: {lab.calcium_mmol_l: 2.56}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: true}
+  - {facts: {lab.calcium_mmol_l: 2.55}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: false}
+  - {facts: {}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: unknown}
+- id: LAB-CA-HOCH-2
+  kind: ddx
+  target: ddx.malignancy_hypercalcemia
+  requires: [lab.calcium_mmol_l]
+  when: {field: lab.calcium_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1001, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: CA_HOCH
+  tests:
+  - {facts: {lab.calcium_mmol_l: 2.56}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: true}
+  - {facts: {lab.calcium_mmol_l: 2.55}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: false}
+  - {facts: {}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: unknown}
+- id: LAB-CA-HOCH-3
+  kind: ddx
+  target: ddx.vitamin_d_toxicity
+  requires: [lab.calcium_mmol_l]
+  when: {field: lab.calcium_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1001, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: CA_HOCH
+  tests:
+  - {facts: {lab.calcium_mmol_l: 2.56}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: true}
+  - {facts: {lab.calcium_mmol_l: 2.55}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: false}
+  - {facts: {}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: unknown}
+- id: LAB-CA-HOCH-4
+  kind: ddx
+  target: ddx.granulomatous_disease
+  requires: [lab.calcium_mmol_l]
+  when: {field: lab.calcium_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1001, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: CA_HOCH
+  tests:
+  - {facts: {lab.calcium_mmol_l: 2.56}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: true}
+  - {facts: {lab.calcium_mmol_l: 2.55}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: false}
+  - {facts: {}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: unknown}
+- id: LAB-CA-NIEDRIG-1
+  kind: ddx
+  target: ddx.hypoparathyroidism
+  requires: [lab.calcium_mmol_l]
+  when: {field: lab.calcium_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1003, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: CA_NIEDRIG
+  tests:
+  - {facts: {lab.calcium_mmol_l: 2.09}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: true}
+  - {facts: {lab.calcium_mmol_l: 2.1}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: false}
+  - {facts: {}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: unknown}
+- id: LAB-CA-NIEDRIG-2
+  kind: ddx
+  target: ddx.vitamin_d_deficiency
+  requires: [lab.calcium_mmol_l]
+  when: {field: lab.calcium_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1003, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: CA_NIEDRIG
+  tests:
+  - {facts: {lab.calcium_mmol_l: 2.09}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: true}
+  - {facts: {lab.calcium_mmol_l: 2.1}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: false}
+  - {facts: {}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: unknown}
+- id: LAB-CA-NIEDRIG-3
+  kind: ddx
+  target: ddx.malabsorption
+  requires: [lab.calcium_mmol_l]
+  when: {field: lab.calcium_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1003, locator: Etiology; Prognosis}
+  status: draft_unreviewed
+  migrated_from: CA_NIEDRIG
+  tests:
+  - {facts: {lab.calcium_mmol_l: 2.09}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: true}
+  - {facts: {lab.calcium_mmol_l: 2.1}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: false}
+  - {facts: {}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: unknown}
+- id: LAB-CA-NIEDRIG-4
+  kind: ddx
+  target: ddx.hypoalbuminemia
+  requires: [lab.calcium_mmol_l]
+  when: {field: lab.calcium_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1003, locator: Etiology; Evaluation; Pearls and Other Issues}
+  status: draft_unreviewed
+  migrated_from: CA_NIEDRIG
+  tests:
+  - {facts: {lab.calcium_mmol_l: 2.09}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: true}
+  - {facts: {lab.calcium_mmol_l: 2.1}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: false}
+  - {facts: {}, refs: {lab.calcium_mmol_l: {lower: 2.1, upper: 2.55}}, expect: unknown}
+- id: LAB-CCA-HOCH-1
+  kind: ddx
+  target: ddx.primary_hyperparathyroidism
+  requires: [lab.calcium_corr_mmol_l]
+  when: {field: lab.calcium_corr_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1001, locator: Etiology; Introduction}
+  status: draft_unreviewed
+  migrated_from: CCA_HOCH
+  tests:
+  - {facts: {lab.calcium_corr_mmol_l: 2.56}, refs: {lab.calcium_corr_mmol_l: {lower: 2.1, upper: 2.55}}, expect: true}
+  - {facts: {lab.calcium_corr_mmol_l: 2.55}, refs: {lab.calcium_corr_mmol_l: {lower: 2.1, upper: 2.55}}, expect: false}
+  - {facts: {}, refs: {lab.calcium_corr_mmol_l: {lower: 2.1, upper: 2.55}}, expect: unknown}
+- id: LAB-CCA-HOCH-2
+  kind: ddx
+  target: ddx.malignancy_hypercalcemia
+  requires: [lab.calcium_corr_mmol_l]
+  when: {field: lab.calcium_corr_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1001, locator: Etiology; Introduction}
+  status: draft_unreviewed
+  migrated_from: CCA_HOCH
+  tests:
+  - {facts: {lab.calcium_corr_mmol_l: 2.56}, refs: {lab.calcium_corr_mmol_l: {lower: 2.1, upper: 2.55}}, expect: true}
+  - {facts: {lab.calcium_corr_mmol_l: 2.55}, refs: {lab.calcium_corr_mmol_l: {lower: 2.1, upper: 2.55}}, expect: false}
+  - {facts: {}, refs: {lab.calcium_corr_mmol_l: {lower: 2.1, upper: 2.55}}, expect: unknown}
+- id: LAB-PHO-HOCH-1
+  kind: ddx
+  target: ddx.kidney_failure
+  requires: [lab.phosphate_mmol_l]
+  when: {field: lab.phosphate_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1043, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: PHO_HOCH
+  tests:
+  - {facts: {lab.phosphate_mmol_l: 1.51}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: true}
+  - {facts: {lab.phosphate_mmol_l: 1.5}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: false}
+  - {facts: {}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: unknown}
+- id: LAB-PHO-HOCH-2
+  kind: ddx
+  target: ddx.hypoparathyroidism
+  requires: [lab.phosphate_mmol_l]
+  when: {field: lab.phosphate_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1043, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: PHO_HOCH
+  tests:
+  - {facts: {lab.phosphate_mmol_l: 1.51}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: true}
+  - {facts: {lab.phosphate_mmol_l: 1.5}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: false}
+  - {facts: {}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: unknown}
+- id: LAB-PHO-HOCH-3
+  kind: ddx
+  target: ddx.vitamin_d_toxicity
+  requires: [lab.phosphate_mmol_l]
+  when: {field: lab.phosphate_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1043, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: PHO_HOCH
+  tests:
+  - {facts: {lab.phosphate_mmol_l: 1.51}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: true}
+  - {facts: {lab.phosphate_mmol_l: 1.5}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: false}
+  - {facts: {}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: unknown}
+- id: LAB-PHO-NIEDRIG-1
+  kind: ddx
+  target: ddx.primary_hyperparathyroidism
+  requires: [lab.phosphate_mmol_l]
+  when: {field: lab.phosphate_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1020, locator: Pathophysiology; Etiology}
+  status: draft_unreviewed
+  migrated_from: PHO_NIEDRIG
+  tests:
+  - {facts: {lab.phosphate_mmol_l: 0.79}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: true}
+  - {facts: {lab.phosphate_mmol_l: 0.8}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: false}
+  - {facts: {}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: unknown}
+- id: LAB-PHO-NIEDRIG-2
+  kind: ddx
+  target: ddx.refeeding_syndrome
+  requires: [lab.phosphate_mmol_l]
+  when: {field: lab.phosphate_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1020, locator: Pathophysiology; Etiology}
+  status: draft_unreviewed
+  migrated_from: PHO_NIEDRIG
+  tests:
+  - {facts: {lab.phosphate_mmol_l: 0.79}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: true}
+  - {facts: {lab.phosphate_mmol_l: 0.8}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: false}
+  - {facts: {}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: unknown}
+- id: LAB-PHO-NIEDRIG-3
+  kind: ddx
+  target: ddx.vitamin_d_deficiency
+  requires: [lab.phosphate_mmol_l]
+  when: {field: lab.phosphate_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1020, locator: Evaluation; Pathophysiology; Etiology}
+  status: draft_unreviewed
+  migrated_from: PHO_NIEDRIG
+  tests:
+  - {facts: {lab.phosphate_mmol_l: 0.79}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: true}
+  - {facts: {lab.phosphate_mmol_l: 0.8}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: false}
+  - {facts: {}, refs: {lab.phosphate_mmol_l: {lower: 0.8, upper: 1.5}}, expect: unknown}
+- id: LAB-MG-HOCH-1
+  kind: ddx
+  target: ddx.kidney_failure
+  requires: [lab.magnesium_mmol_l]
+  when: {field: lab.magnesium_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1041, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: MG_HOCH
+  tests:
+  - {facts: {lab.magnesium_mmol_l: 1.01}, refs: {lab.magnesium_mmol_l: {lower: 0.7, upper: 1.0}}, expect: true}
+  - {facts: {lab.magnesium_mmol_l: 1.0}, refs: {lab.magnesium_mmol_l: {lower: 0.7, upper: 1.0}}, expect: false}
+  - {facts: {}, refs: {lab.magnesium_mmol_l: {lower: 0.7, upper: 1.0}}, expect: unknown}
+- id: LAB-MG-HOCH-2
+  kind: ddx
+  target: ddx.magnesium_intake
+  requires: [lab.magnesium_mmol_l]
+  when: {field: lab.magnesium_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1041, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: MG_HOCH
+  tests:
+  - {facts: {lab.magnesium_mmol_l: 1.01}, refs: {lab.magnesium_mmol_l: {lower: 0.7, upper: 1.0}}, expect: true}
+  - {facts: {lab.magnesium_mmol_l: 1.0}, refs: {lab.magnesium_mmol_l: {lower: 0.7, upper: 1.0}}, expect: false}
+  - {facts: {}, refs: {lab.magnesium_mmol_l: {lower: 0.7, upper: 1.0}}, expect: unknown}
+- id: LAB-CO2-HOCH-1
+  kind: ddx
+  target: ddx.metabolic_alkalosis
+  requires: [lab.bicarbonate_mmol_l]
+  when: {field: lab.bicarbonate_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1038, locator: Etiology; Evaluation}
+  status: draft_unreviewed
+  migrated_from: CO2_HOCH
+  tests:
+  - {facts: {lab.bicarbonate_mmol_l: 33}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: true}
+  - {facts: {lab.bicarbonate_mmol_l: 32}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: false}
+  - {facts: {}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: unknown}
+- id: LAB-CO2-HOCH-2
+  kind: ddx
+  target: ddx.respiratory_acidosis
+  requires: [lab.bicarbonate_mmol_l]
+  when: {field: lab.bicarbonate_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1017, locator: Introduction; Evaluation}
+  - {ref: SRC-1038, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: CO2_HOCH
+  tests:
+  - {facts: {lab.bicarbonate_mmol_l: 33}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: true}
+  - {facts: {lab.bicarbonate_mmol_l: 32}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: false}
+  - {facts: {}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: unknown}
+- id: LAB-CO2-NIEDRIG-1
+  kind: ddx
+  target: ddx.metabolic_acidosis
+  requires: [lab.bicarbonate_mmol_l]
+  when: {field: lab.bicarbonate_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1006, locator: Introduction; Etiology}
+  status: draft_unreviewed
+  migrated_from: CO2_NIEDRIG
+  tests:
+  - {facts: {lab.bicarbonate_mmol_l: 21}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: true}
+  - {facts: {lab.bicarbonate_mmol_l: 22}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: false}
+  - {facts: {}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: unknown}
+- id: LAB-CO2-NIEDRIG-2
+  kind: ddx
+  target: ddx.respiratory_alkalosis
+  requires: [lab.bicarbonate_mmol_l]
+  when: {field: lab.bicarbonate_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1038, locator: Introduction; Pathophysiology; Etiology}
+  status: draft_unreviewed
+  migrated_from: CO2_NIEDRIG
+  tests:
+  - {facts: {lab.bicarbonate_mmol_l: 21}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: true}
+  - {facts: {lab.bicarbonate_mmol_l: 22}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: false}
+  - {facts: {}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: unknown}
+- id: LAB-BIC-HOCH-1
+  kind: ddx
+  target: ddx.metabolic_alkalosis
+  requires: [lab.bicarbonate_mmol_l]
+  when: {field: lab.bicarbonate_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1038, locator: Etiology; Evaluation}
+  status: draft_unreviewed
+  migrated_from: BIC_HOCH
+  tests:
+  - {facts: {lab.bicarbonate_mmol_l: 33}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: true}
+  - {facts: {lab.bicarbonate_mmol_l: 32}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: false}
+  - {facts: {}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: unknown}
+- id: LAB-BIC-HOCH-2
+  kind: ddx
+  target: ddx.respiratory_acidosis
+  requires: [lab.bicarbonate_mmol_l]
+  when: {field: lab.bicarbonate_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1017, locator: Introduction; Evaluation}
+  - {ref: SRC-1038, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: BIC_HOCH
+  tests:
+  - {facts: {lab.bicarbonate_mmol_l: 33}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: true}
+  - {facts: {lab.bicarbonate_mmol_l: 32}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: false}
+  - {facts: {}, refs: {lab.bicarbonate_mmol_l: {lower: 22, upper: 32}}, expect: unknown}

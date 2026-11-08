@@ -1,0 +1,326 @@
+- id: LAB-TSH-HOCH-1
+  kind: ddx
+  target: ddx.primary_hypothyroidism
+  requires: [lab.tsh_mu_l]
+  when: {field: lab.tsh_mu_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1021, locator: Related Testing}
+  status: draft_unreviewed
+  migrated_from: TSH_HOCH
+  tests:
+  - {facts: {lab.tsh_mu_l: 4.01}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: true}
+  - {facts: {lab.tsh_mu_l: 4}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: false}
+  - {facts: {}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: unknown}
+- id: LAB-TSH-HOCH-2
+  kind: ddx
+  target: ddx.subclinical_hypothyroidism
+  requires: [lab.tsh_mu_l]
+  when: {field: lab.tsh_mu_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1025, locator: Evaluation > Hypothyroid Diagnostic Studies}
+  status: draft_unreviewed
+  migrated_from: TSH_HOCH
+  tests:
+  - {facts: {lab.tsh_mu_l: 4.01}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: true}
+  - {facts: {lab.tsh_mu_l: 4}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: false}
+  - {facts: {}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: unknown}
+- id: LAB-TS-HOCH-1
+  kind: ddx
+  target: ddx.primary_hypothyroidism
+  requires: [lab.tsh_mu_l]
+  when: {field: lab.tsh_mu_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1021, locator: Related Testing}
+  status: draft_unreviewed
+  migrated_from: TS_HOCH
+  tests:
+  - {facts: {lab.tsh_mu_l: 4.01}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: true}
+  - {facts: {lab.tsh_mu_l: 4}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: false}
+  - {facts: {}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: unknown}
+- id: LAB-TS-HOCH-2
+  kind: ddx
+  target: ddx.subclinical_hypothyroidism
+  requires: [lab.tsh_mu_l]
+  when: {field: lab.tsh_mu_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1025, locator: Evaluation > Hypothyroid Diagnostic Studies}
+  status: draft_unreviewed
+  migrated_from: TS_HOCH
+  tests:
+  - {facts: {lab.tsh_mu_l: 4.01}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: true}
+  - {facts: {lab.tsh_mu_l: 4}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: false}
+  - {facts: {}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: unknown}
+- id: LAB-TSH-NIEDRIG-1
+  kind: ddx
+  target: ddx.hyperthyroidism
+  requires: [lab.tsh_mu_l]
+  when: {field: lab.tsh_mu_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1032, locator: Introduction; Etiology}
+  - {ref: SRC-1021, locator: Pathophysiology > Hyperthyroidism; Clinical Significance > Grave's Disease}
+  status: draft_unreviewed
+  migrated_from: TSH_NIEDRIG
+  tests:
+  - {facts: {lab.tsh_mu_l: 0.39}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: true}
+  - {facts: {lab.tsh_mu_l: 0.4}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: false}
+  - {facts: {}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: unknown}
+- id: LAB-TSH-NIEDRIG-2
+  kind: ddx
+  target: ddx.subclinical_hyperthyroidism
+  requires: [lab.tsh_mu_l]
+  when: {field: lab.tsh_mu_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1032, locator: Introduction; Evaluation}
+  status: draft_unreviewed
+  migrated_from: TSH_NIEDRIG
+  tests:
+  - {facts: {lab.tsh_mu_l: 0.39}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: true}
+  - {facts: {lab.tsh_mu_l: 0.4}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: false}
+  - {facts: {}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: unknown}
+- id: LAB-TSH-NIEDRIG-3
+  kind: ddx
+  target: ddx.central_hypothyroidism
+  requires: [lab.tsh_mu_l]
+  when: {field: lab.tsh_mu_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1021, locator: Pathophysiology > Hypothyroidism; Issues of Concern}
+  status: draft_unreviewed
+  migrated_from: TSH_NIEDRIG
+  tests:
+  - {facts: {lab.tsh_mu_l: 0.39}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: true}
+  - {facts: {lab.tsh_mu_l: 0.4}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: false}
+  - {facts: {}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: unknown}
+- id: LAB-TS-NIEDRIG-1
+  kind: ddx
+  target: ddx.hyperthyroidism
+  requires: [lab.tsh_mu_l]
+  when: {field: lab.tsh_mu_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1032, locator: Introduction; Etiology}
+  status: draft_unreviewed
+  migrated_from: TS_NIEDRIG
+  tests:
+  - {facts: {lab.tsh_mu_l: 0.39}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: true}
+  - {facts: {lab.tsh_mu_l: 0.4}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: false}
+  - {facts: {}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: unknown}
+- id: LAB-TS-NIEDRIG-2
+  kind: ddx
+  target: ddx.subclinical_hyperthyroidism
+  requires: [lab.tsh_mu_l]
+  when: {field: lab.tsh_mu_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1032, locator: Introduction; Evaluation}
+  status: draft_unreviewed
+  migrated_from: TS_NIEDRIG
+  tests:
+  - {facts: {lab.tsh_mu_l: 0.39}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: true}
+  - {facts: {lab.tsh_mu_l: 0.4}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: false}
+  - {facts: {}, refs: {lab.tsh_mu_l: {lower: 0.4, upper: 4}}, expect: unknown}
+- id: LAB-FT4-HOCH-1
+  kind: ddx
+  target: ddx.hyperthyroidism
+  requires: [lab.ft4_pmol_l]
+  when: {field: lab.ft4_pmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1022, locator: Related Testing}
+  status: draft_unreviewed
+  migrated_from: FT4_HOCH
+  tests:
+  - {facts: {lab.ft4_pmol_l: 19.1}, refs: {lab.ft4_pmol_l: {lower: 10, upper: 19}}, expect: true}
+  - {facts: {lab.ft4_pmol_l: 19}, refs: {lab.ft4_pmol_l: {lower: 10, upper: 19}}, expect: false}
+  - {facts: {}, refs: {lab.ft4_pmol_l: {lower: 10, upper: 19}}, expect: unknown}
+- id: LAB-FT4-HOCH-2
+  kind: ddx
+  target: ddx.levothyroxine_overdose
+  requires: [lab.ft4_pmol_l]
+  when: {field: lab.ft4_pmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1034, locator: Toxicity}
+  status: draft_unreviewed
+  migrated_from: FT4_HOCH
+  tests:
+  - {facts: {lab.ft4_pmol_l: 19.1}, refs: {lab.ft4_pmol_l: {lower: 10, upper: 19}}, expect: true}
+  - {facts: {lab.ft4_pmol_l: 19}, refs: {lab.ft4_pmol_l: {lower: 10, upper: 19}}, expect: false}
+  - {facts: {}, refs: {lab.ft4_pmol_l: {lower: 10, upper: 19}}, expect: unknown}
+- id: LAB-FT4-NIEDRIG-1
+  kind: ddx
+  target: ddx.hypothyroidism
+  requires: [lab.ft4_pmol_l]
+  when: {field: lab.ft4_pmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1022, locator: Related Testing}
+  status: draft_unreviewed
+  migrated_from: FT4_NIEDRIG
+  tests:
+  - {facts: {lab.ft4_pmol_l: 9.9}, refs: {lab.ft4_pmol_l: {lower: 10, upper: 19}}, expect: true}
+  - {facts: {lab.ft4_pmol_l: 10}, refs: {lab.ft4_pmol_l: {lower: 10, upper: 19}}, expect: false}
+  - {facts: {}, refs: {lab.ft4_pmol_l: {lower: 10, upper: 19}}, expect: unknown}
+- id: LAB-FT4-NIEDRIG-2
+  kind: ddx
+  target: ddx.central_hypothyroidism
+  requires: [lab.ft4_pmol_l]
+  when: {field: lab.ft4_pmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1022, locator: Pathophysiology}
+  status: draft_unreviewed
+  migrated_from: FT4_NIEDRIG
+  tests:
+  - {facts: {lab.ft4_pmol_l: 9.9}, refs: {lab.ft4_pmol_l: {lower: 10, upper: 19}}, expect: true}
+  - {facts: {lab.ft4_pmol_l: 10}, refs: {lab.ft4_pmol_l: {lower: 10, upper: 19}}, expect: false}
+  - {facts: {}, refs: {lab.ft4_pmol_l: {lower: 10, upper: 19}}, expect: unknown}
+- id: LAB-SHBG-HOCH-1
+  kind: ddx
+  target: ddx.estrogen_therapy
+  requires: [lab.shbg_nmol_l]
+  when: {field: lab.shbg_nmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1035, locator: Adverse Effects > Drug-Laboratory Test Interactions}
+  status: draft_unreviewed
+  migrated_from: SHBG_HOCH
+  tests:
+  - {facts: {lab.shbg_nmol_l: 146.1}, refs: {lab.shbg_nmol_l: {lower: 27.8, upper: 146}}, expect: true}
+  - {facts: {lab.shbg_nmol_l: 146}, refs: {lab.shbg_nmol_l: {lower: 27.8, upper: 146}}, expect: false}
+  - {facts: {}, refs: {lab.shbg_nmol_l: {lower: 27.8, upper: 146}}, expect: unknown}
+- id: LAB-GL-HOCH-1
+  kind: ddx
+  target: ddx.diabetes_mellitus
+  requires: [lab.glucose_mmol_l]
+  when: {field: lab.glucose_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1002, locator: Introduction; Etiology > Primary Causes}
+  status: draft_unreviewed
+  migrated_from: GL_HOCH
+  tests:
+  - {facts: {lab.glucose_mmol_l: 5.9}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: true}
+  - {facts: {lab.glucose_mmol_l: 5.8}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: false}
+  - {facts: {}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: unknown}
+- id: LAB-GL-HOCH-2
+  kind: ddx
+  target: ddx.stress_hyperglycemia
+  requires: [lab.glucose_mmol_l]
+  when: {field: lab.glucose_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1002, locator: Etiology > Secondary Causes}
+  status: draft_unreviewed
+  migrated_from: GL_HOCH
+  tests:
+  - {facts: {lab.glucose_mmol_l: 5.9}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: true}
+  - {facts: {lab.glucose_mmol_l: 5.8}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: false}
+  - {facts: {}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: unknown}
+- id: LAB-GL-HOCH-3
+  kind: ddx
+  target: ddx.drug_induced_hyperglycemia
+  requires: [lab.glucose_mmol_l]
+  when: {field: lab.glucose_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1002, locator: Etiology > Secondary Causes}
+  status: draft_unreviewed
+  migrated_from: GL_HOCH
+  tests:
+  - {facts: {lab.glucose_mmol_l: 5.9}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: true}
+  - {facts: {lab.glucose_mmol_l: 5.8}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: false}
+  - {facts: {}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: unknown}
+- id: LAB-GLP-HOCH-1
+  kind: ddx
+  target: ddx.diabetes_mellitus
+  requires: [lab.glucose_mmol_l]
+  when: {field: lab.glucose_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1028, locator: 'Etiology and Epidemiology; Results, Reporting, and Critical Findings'}
+  status: draft_unreviewed
+  migrated_from: GLP_HOCH
+  tests:
+  - {facts: {lab.glucose_mmol_l: 5.9}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: true}
+  - {facts: {lab.glucose_mmol_l: 5.8}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: false}
+  - {facts: {}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: unknown}
+- id: LAB-GLP-HOCH-2
+  kind: ddx
+  target: ddx.impaired_glucose_tolerance
+  requires: [lab.glucose_mmol_l]
+  when: {field: lab.glucose_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1028, locator: 'Results, Reporting, and Critical Findings'}
+  status: draft_unreviewed
+  migrated_from: GLP_HOCH
+  tests:
+  - {facts: {lab.glucose_mmol_l: 5.9}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: true}
+  - {facts: {lab.glucose_mmol_l: 5.8}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: false}
+  - {facts: {}, refs: {lab.glucose_mmol_l: {lower: 3.3, upper: 5.8}}, expect: unknown}
+- id: LAB-HBAC-HOCH-1
+  kind: ddx
+  target: ddx.poorly_controlled_diabetes
+  requires: [lab.hba1c_mmol_mol]
+  when: {field: lab.hba1c_mmol_mol, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1042, locator: Introduction; Etiology and Epidemiology; Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: HBAC_HOCH
+  tests:
+  - {facts: {lab.hba1c_mmol_mol: 44.4}, refs: {lab.hba1c_mmol_mol: {lower: 31, upper: 44.3}}, expect: true}
+  - {facts: {lab.hba1c_mmol_mol: 44.3}, refs: {lab.hba1c_mmol_mol: {lower: 31, upper: 44.3}}, expect: false}
+  - {facts: {}, refs: {lab.hba1c_mmol_mol: {lower: 31, upper: 44.3}}, expect: unknown}
+- id: LAB-HBAC-HOCH-2
+  kind: ddx
+  target: ddx.diabetes_mellitus
+  requires: [lab.hba1c_mmol_mol]
+  when: {field: lab.hba1c_mmol_mol, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1042, locator: Diagnostic Tests}
+  status: draft_unreviewed
+  migrated_from: HBAC_HOCH
+  tests:
+  - {facts: {lab.hba1c_mmol_mol: 44.4}, refs: {lab.hba1c_mmol_mol: {lower: 31, upper: 44.3}}, expect: true}
+  - {facts: {lab.hba1c_mmol_mol: 44.3}, refs: {lab.hba1c_mmol_mol: {lower: 31, upper: 44.3}}, expect: false}
+  - {facts: {}, refs: {lab.hba1c_mmol_mol: {lower: 31, upper: 44.3}}, expect: unknown}
+- id: LAB-URIC-HOCH-1
+  kind: ddx
+  target: ddx.hyperuricemia
+  requires: [lab.uric_acid_umol_l]
+  when: {field: lab.uric_acid_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1011, locator: Introduction; Etiology > Uric Acid Overproduction; Etiology > Decreased Uric Acid Excretion}
+  status: draft_unreviewed
+  migrated_from: URIC_HOCH
+  tests:
+  - {facts: {lab.uric_acid_umol_l: 431}, refs: {lab.uric_acid_umol_l: {lower: 200, upper: 430}}, expect: true}
+  - {facts: {lab.uric_acid_umol_l: 430}, refs: {lab.uric_acid_umol_l: {lower: 200, upper: 430}}, expect: false}
+  - {facts: {}, refs: {lab.uric_acid_umol_l: {lower: 200, upper: 430}}, expect: unknown}
+- id: LAB-URIC-HOCH-2
+  kind: ddx
+  target: ddx.gout
+  requires: [lab.uric_acid_umol_l]
+  when: {field: lab.uric_acid_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1011, locator: Introduction; Epidemiology}
+  status: draft_unreviewed
+  migrated_from: URIC_HOCH
+  tests:
+  - {facts: {lab.uric_acid_umol_l: 431}, refs: {lab.uric_acid_umol_l: {lower: 200, upper: 430}}, expect: true}
+  - {facts: {lab.uric_acid_umol_l: 430}, refs: {lab.uric_acid_umol_l: {lower: 200, upper: 430}}, expect: false}
+  - {facts: {}, refs: {lab.uric_acid_umol_l: {lower: 200, upper: 430}}, expect: unknown}
+- id: LAB-URIC-HOCH-3
+  kind: ddx
+  target: ddx.kidney_failure
+  requires: [lab.uric_acid_umol_l]
+  when: {field: lab.uric_acid_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1011, locator: Introduction; Etiology > Decreased Uric Acid Excretion}
+  status: draft_unreviewed
+  migrated_from: URIC_HOCH
+  tests:
+  - {facts: {lab.uric_acid_umol_l: 431}, refs: {lab.uric_acid_umol_l: {lower: 200, upper: 430}}, expect: true}
+  - {facts: {lab.uric_acid_umol_l: 430}, refs: {lab.uric_acid_umol_l: {lower: 200, upper: 430}}, expect: false}
+  - {facts: {}, refs: {lab.uric_acid_umol_l: {lower: 200, upper: 430}}, expect: unknown}
+- id: LAB-URIC-HOCH-4
+  kind: ddx
+  target: ddx.high_cell_turnover
+  requires: [lab.uric_acid_umol_l]
+  when: {field: lab.uric_acid_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1011, locator: Etiology > Uric Acid Overproduction; Treatment / Management}
+  status: draft_unreviewed
+  migrated_from: URIC_HOCH
+  tests:
+  - {facts: {lab.uric_acid_umol_l: 431}, refs: {lab.uric_acid_umol_l: {lower: 200, upper: 430}}, expect: true}
+  - {facts: {lab.uric_acid_umol_l: 430}, refs: {lab.uric_acid_umol_l: {lower: 200, upper: 430}}, expect: false}
+  - {facts: {}, refs: {lab.uric_acid_umol_l: {lower: 200, upper: 430}}, expect: unknown}

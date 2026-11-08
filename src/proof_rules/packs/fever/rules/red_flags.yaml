@@ -1,0 +1,30 @@
+# Red flags of the fever domain (PR-K07). Every rule is a draft, not reviewed by a physician (D-04).
+- id: FEV-RF-001
+  kind: red_flag
+  target: rf.qsofa_ge2
+  requires: [vital.mental_status, vital.resp_rate, vital.sbp]
+  when:
+    at_least: 2
+    of:
+      - {field: vital.resp_rate, op: ge, value: 22}
+      - {field: vital.mental_status, op: eq, value: altered}
+      - {field: vital.sbp, op: le, value: 100}
+  sources:
+    - {ref: SRC-0001, locator: "Box 4 (qSOFA criteria); Abstract and Box 3 (at least 2 criteria)"}
+    - {ref: SRC-0002, locator: "Results, 'Performance of New, Simple Criteria'; Table 4"}
+  status: draft_unreviewed
+  tests:
+    # Boundaries 21/22 per minute and 100/101 mmHg, and the mental status (KONZEPT U3).
+    - {facts: {vital.resp_rate: 22, vital.mental_status: normal, vital.sbp: 100}, expect: true}
+    - {facts: {vital.resp_rate: 21, vital.mental_status: normal, vital.sbp: 100}, expect: false}
+    - {facts: {vital.resp_rate: 22, vital.mental_status: normal, vital.sbp: 101}, expect: false}
+    - {facts: {vital.resp_rate: 21, vital.mental_status: altered, vital.sbp: 100}, expect: true}
+    - {facts: {vital.resp_rate: 21, vital.mental_status: altered, vital.sbp: 101}, expect: false}
+    - {facts: {vital.resp_rate: 22, vital.mental_status: altered, vital.sbp: 101}, expect: true}
+    - {facts: {vital.resp_rate: 21, vital.mental_status: normal, vital.sbp: 101}, expect: false}
+    - {facts: {vital.resp_rate: 24, vital.mental_status: altered, vital.sbp: 96}, expect: true}
+    # Missing facts: one criterion met and two unknown stays unknown; no criterion met and one unknown is false.
+    - {facts: {vital.resp_rate: 22}, expect: unknown}
+    - {facts: {vital.resp_rate: 21, vital.sbp: 101}, expect: false}
+    - {facts: {vital.resp_rate: 22, vital.sbp: 100}, expect: true}
+    - {facts: {}, expect: unknown}

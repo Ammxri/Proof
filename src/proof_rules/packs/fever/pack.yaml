@@ -1,0 +1,32 @@
+pack: fever
+kind: domain
+domain:
+  case_prefix: FEV
+  complaint: fever
+  uses: [labs]
+  activate:
+    # Lab rules whose fields all belong to the fever lab panel: CRP, creatinine, bilirubin, lactate (A-64).
+    # Generated from the labs pack; keep in sync (tests/unit/test_packs.py checks it).
+    labs:
+      - LAB-BI-HOCH-1
+      - LAB-BI-HOCH-2
+      - LAB-BI-HOCH-3
+      - LAB-BIL-HOCH-1
+      - LAB-BIL-HOCH-2
+      - LAB-BIL-HOCH-3
+      - LAB-BIL-HOCH-4
+      - LAB-CR-HOCH-1
+      - LAB-CR-HOCH-2
+      - LAB-CRE-HOCH-1
+      - LAB-CRE-HOCH-2
+      - LAB-CRE-HOCH-3
+      - LAB-CRE-NIEDRIG-1
+      - LAB-CRP-HOCH-1
+      - LAB-CRP-HOCH-2
+      - LAB-CRP-HOCH-3
+      - LAB-CRP-HOCH-4
+      - LAB-CRP-HOCH-CRE-HOCH-1
+      - LAB-CRP-HOCH-CRE-HOCH-2
+      - LAB-LACT-HOCH-1
+      - LAB-LACT-HOCH-2
+      - LAB-LACT-HOCH-3

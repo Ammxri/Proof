@@ -1,0 +1,213 @@
+ddx:
+- code: ddx.active_inflammatory_disease
+  labels: {zh: 活动性炎症性或自身免疫性疾病, en: Active inflammatory or autoimmune disease, de: Aktive entzündliche oder Autoimmunerkrankung}
+- code: ddx.acute_hepatitis
+  labels: {zh: 急性肝炎, en: Acute hepatitis, de: Akute Hepatitis}
+- code: ddx.aki
+  labels: {zh: 急性肾损伤, en: Acute kidney injury, de: Akute Nierenschädigung}
+- code: ddx.alcohol_use
+  labels: {zh: 饮酒, en: Alcohol consumption, de: Alkoholkonsum}
+- code: ddx.alcoholic_liver_disease
+  labels: {zh: 酒精性肝病, en: Alcohol-related liver disease, de: Alkoholische Lebererkrankung}
+- code: ddx.anemia_of_chronic_disease
+  labels: {zh: 慢性病贫血, en: Anaemia of chronic disease, de: Anämie bei chronischer Erkrankung}
+- code: ddx.bacterial_infection
+  labels: {zh: 细菌感染, en: Bacterial infection, de: Bakterielle Infektion}
+- code: ddx.bone_disease
+  labels: {zh: 骨病, en: Bone disease, de: Knochenerkrankung}
+- code: ddx.bph
+  labels: {zh: 良性前列腺增生, en: Benign prostatic hyperplasia, de: Benigne Prostatahyperplasie}
+- code: ddx.central_hypothyroidism
+  labels: {zh: 中枢性甲状腺功能减退症, en: Central hypothyroidism, de: Zentrale Hypothyreose}
+- code: ddx.choledocholithiasis
+  labels: {zh: 胆总管结石, en: Choledocholithiasis, de: Choledocholithiasis}
+- code: ddx.cholestasis
+  labels: {zh: 胆汁淤积, en: Cholestasis, de: Cholestase}
+- code: ddx.cholestatic_liver_disease
+  labels: {zh: 胆汁淤积性肝病, en: Cholestatic liver disease, de: Cholestatische Lebererkrankung}
+- code: ddx.chronic_inflammation
+  labels: {zh: 慢性炎症, en: Chronic inflammation, de: Chronische Entzündung}
+- code: ddx.cirrhosis
+  labels: {zh: 肝硬化, en: Liver cirrhosis, de: Leberzirrhose}
+- code: ddx.ckd
+  labels: {zh: 慢性肾脏病, en: Chronic kidney disease, de: Chronische Nierenerkrankung}
+- code: ddx.decompensated_cirrhosis
+  labels: {zh: 失代偿期肝硬化, en: Decompensated cirrhosis, de: Dekompensierte Leberzirrhose}
+- code: ddx.dehydration
+  labels: {zh: 脱水, en: Dehydration, de: Dehydratation}
+- code: ddx.diabetes_mellitus
+  labels: {zh: 糖尿病, en: Diabetes mellitus, de: Diabetes mellitus}
+- code: ddx.diabetic_nephropathy
+  labels: {zh: 糖尿病肾病, en: Diabetic nephropathy, de: Diabetische Nephropathie}
+- code: ddx.diuretic_use
+  labels: {zh: 利尿剂治疗, en: Diuretic therapy, de: Diuretikatherapie}
+- code: ddx.drug_induced_hyperglycemia
+  labels: {zh: 药物性高血糖, en: Drug-induced hyperglycaemia, de: Medikamentös bedingte Hyperglykämie}
+- code: ddx.drug_induced_liver_injury
+  labels: {zh: 药物性肝损伤, en: Drug-induced liver injury, de: Medikamentöse Leberschädigung}
+- code: ddx.enzyme_inducing_drugs
+  labels: {zh: 诱导酶活性的药物, en: Enzyme-inducing medication, de: Enzyminduzierende Medikamente}
+- code: ddx.estrogen_therapy
+  labels: {zh: 雌激素治疗, en: Oestrogen therapy, de: Östrogentherapie}
+- code: ddx.familial_hypercholesterolemia
+  labels: {zh: 家族性高胆固醇血症, en: Familial hypercholesterolaemia, de: Familiäre Hypercholesterinämie}
+- code: ddx.gi_bleeding
+  labels: {zh: 消化道出血, en: Gastrointestinal bleeding, de: Gastrointestinale Blutung}
+- code: ddx.gi_losses
+  labels: {zh: 胃肠道丢失, en: Gastrointestinal losses, de: Gastrointestinale Verluste}
+- code: ddx.gilbert_syndrome
+  labels: {zh: 吉尔伯特综合征, en: Gilbert syndrome, de: Gilbert-Meulengracht-Syndrom}
+- code: ddx.glomerular_disease
+  labels: {zh: 肾小球疾病, en: Glomerular disease, de: Glomeruläre Erkrankung}
+- code: ddx.gout
+  labels: {zh: 痛风, en: Gout, de: Gicht}
+- code: ddx.granulomatous_disease
+  labels: {zh: 肉芽肿性疾病, en: Granulomatous disease, de: Granulomatöse Erkrankung}
+- code: ddx.hemochromatosis
+  labels: {zh: 血色病, en: Haemochromatosis, de: Hämochromatose}
+- code: ddx.hemolysis
+  labels: {zh: 溶血, en: Haemolysis, de: Hämolyse}
+- code: ddx.hepatocellular_injury
+  labels: {zh: 肝细胞损伤, en: Hepatocellular injury, de: Hepatozelluläre Schädigung}
+- code: ddx.high_cell_turnover
+  labels: {zh: 细胞更新增加, en: Increased cell turnover, de: Erhöhter Zellumsatz}
+- code: ddx.hypercholesterolemia
+  labels: {zh: 高胆固醇血症, en: Hypercholesterolaemia, de: Hypercholesterinämie}
+- code: ddx.hypertensive_nephropathy
+  labels: {zh: 高血压肾病, en: Hypertensive nephropathy, de: Hypertensive Nephropathie}
+- code: ddx.hyperthyroidism
+  labels: {zh: 甲状腺功能亢进症, en: Hyperthyroidism, de: Hyperthyreose}
+- code: ddx.hypertriglyceridemia
+  labels: {zh: 高甘油三酯血症, en: Hypertriglyceridaemia, de: Hypertriglyzeridämie}
+- code: ddx.hyperuricemia
+  labels: {zh: 高尿酸血症, en: Hyperuricaemia, de: Hyperurikämie}
+- code: ddx.hypoalbuminemia
+  labels: {zh: 低白蛋白血症, en: Hypoalbuminaemia, de: Hypoalbuminämie}
+- code: ddx.hypoparathyroidism
+  labels: {zh: 甲状旁腺功能减退症, en: Hypoparathyroidism, de: Hypoparathyreoidismus}
+- code: ddx.hypothyroidism
+  labels: {zh: 甲状腺功能减退症, en: Hypothyroidism, de: Hypothyreose}
+- code: ddx.impaired_glucose_tolerance
+  labels: {zh: 糖耐量受损, en: Impaired glucose tolerance, de: Gestörte Glukosetoleranz}
+- code: ddx.impaired_kidney_function
+  labels: {zh: 肾功能受损, en: Impaired kidney function, de: Eingeschränkte Nierenfunktion}
+- code: ddx.inflammatory_myopathy
+  labels: {zh: 炎症性肌病, en: Inflammatory myopathy, de: Entzündliche Myopathie}
+- code: ddx.iron_deficiency_anemia
+  labels: {zh: 缺铁性贫血, en: Iron deficiency anaemia, de: Eisenmangelanämie}
+- code: ddx.kidney_failure
+  labels: {zh: 肾功能不全, en: Renal insufficiency, de: Niereninsuffizienz}
+- code: ddx.laboratory_artifact
+  labels: {zh: 实验室假象, en: Laboratory artefact, de: Laborartefakt}
+- code: ddx.lactic_acidosis_type_a
+  labels: {zh: A型乳酸酸中毒, en: Type A lactic acidosis, de: Laktatazidose Typ A}
+- code: ddx.ldl_hypercholesterolemia
+  labels: {zh: 低密度脂蛋白胆固醇升高, en: LDL hypercholesterolaemia, de: LDL-Hypercholesterinämie}
+- code: ddx.levothyroxine_overdose
+  labels: {zh: 左甲状腺素过量, en: Levothyroxine overdose, de: Levothyroxin-Überdosierung}
+- code: ddx.liver_disease
+  labels: {zh: 肝病, en: Liver disease, de: Lebererkrankung}
+- code: ddx.liver_failure
+  labels: {zh: 肝功能不全, en: Hepatic insufficiency, de: Leberinsuffizienz}
+- code: ddx.liver_metastases
+  labels: {zh: 肝转移, en: Liver metastases, de: Lebermetastasen}
+- code: ddx.liver_parenchymal_disease
+  labels: {zh: 肝实质疾病, en: Liver parenchymal disease, de: Leberparenchymerkrankung}
+- code: ddx.low_muscle_mass
+  labels: {zh: 肌肉量减少, en: Reduced muscle mass, de: Verminderte Muskelmasse}
+- code: ddx.low_protein_intake
+  labels: {zh: 饥饿或低蛋白饮食, en: Starvation or low-protein diet, de: Hungerzustand oder eiweißarme Ernährung}
+- code: ddx.magnesium_intake
+  labels: {zh: 镁摄入过多, en: Excessive magnesium intake, de: Übermäßige Magnesiumzufuhr}
+- code: ddx.malabsorption
+  labels: {zh: 吸收不良, en: Malabsorption, de: Malabsorption}
+- code: ddx.malignancy
+  labels: {zh: 恶性肿瘤, en: Malignancy, de: Maligne Erkrankung}
+- code: ddx.malignancy_hypercalcemia
+  labels: {zh: 恶性肿瘤相关高钙血症, en: Malignancy-associated hypercalcaemia, de: Tumorassoziierte Hyperkalzämie}
+- code: ddx.malnutrition
+  labels: {zh: 营养不良, en: Malnutrition, de: Mangelernährung}
+- code: ddx.mash
+  labels: {zh: 代谢功能障碍相关脂肪性肝炎, en: Metabolic dysfunction-associated steatohepatitis, de: Metabolisch assoziierte Steatohepatitis}
+- code: ddx.masld
+  labels: {zh: 代谢功能障碍相关脂肪性肝病, en: Metabolic dysfunction-associated steatotic liver disease, de: Metabolisch assoziierte Fettlebererkrankung}
+- code: ddx.metabolic_acidosis
+  labels: {zh: 代谢性酸中毒, en: Metabolic acidosis, de: Metabolische Azidose}
+- code: ddx.metabolic_alkalosis
+  labels: {zh: 代谢性碱中毒, en: Metabolic alkalosis, de: Metabolische Alkalose}
+- code: ddx.metabolic_syndrome
+  labels: {zh: 代谢综合征, en: Metabolic syndrome, de: Metabolisches Syndrom}
+- code: ddx.metformin_lactic_acidosis
+  labels: {zh: 二甲双胍相关乳酸酸中毒, en: Metformin-associated lactic acidosis, de: Metformin-assoziierte Laktatazidose}
+- code: ddx.mixed_liver_injury
+  labels: {zh: 混合型肝损伤, en: Mixed hepatocellular-cholestatic liver injury, de: Gemischte hepatozellulär-cholestatische Leberschädigung}
+- code: ddx.monoclonal_gammopathy
+  labels: {zh: 单克隆丙种球蛋白病, en: Monoclonal gammopathy, de: Monoklonale Gammopathie}
+- code: ddx.myocardial_injury
+  labels: {zh: 心肌损伤, en: Myocardial injury, de: Myokardschädigung}
+- code: ddx.nephrotic_syndrome
+  labels: {zh: 肾病综合征, en: Nephrotic syndrome, de: Nephrotisches Syndrom}
+- code: ddx.nephrotoxic_drugs
+  labels: {zh: 肾毒性药物, en: Nephrotoxic drugs, de: Nephrotoxische Medikamente}
+- code: ddx.pernicious_anemia
+  labels: {zh: 恶性贫血, en: Pernicious anaemia, de: Perniziöse Anämie}
+- code: ddx.poorly_controlled_diabetes
+  labels: {zh: 血糖控制不佳的糖尿病, en: Poorly controlled diabetes, de: Schlecht eingestellter Diabetes mellitus}
+- code: ddx.potassium_raising_drugs
+  labels: {zh: 升高血钾的药物, en: Potassium-raising drugs, de: Kaliumerhöhende Medikamente}
+- code: ddx.prerenal_aki
+  labels: {zh: 肾前性急性肾损伤, en: Prerenal acute kidney injury, de: Prärenale akute Nierenschädigung}
+- code: ddx.primary_hyperaldosteronism
+  labels: {zh: 原发性醛固酮增多症, en: Primary hyperaldosteronism, de: Primärer Hyperaldosteronismus}
+- code: ddx.primary_hyperparathyroidism
+  labels: {zh: 原发性甲状旁腺功能亢进症, en: Primary hyperparathyroidism, de: Primärer Hyperparathyreoidismus}
+- code: ddx.primary_hypothyroidism
+  labels: {zh: 原发性甲状腺功能减退症, en: Primary hypothyroidism, de: Primäre Hypothyreose}
+- code: ddx.prostate_cancer
+  labels: {zh: 前列腺癌, en: Prostate cancer, de: Prostatakarzinom}
+- code: ddx.prostate_manipulation
+  labels: {zh: 直肠指检或导尿后, en: After digital rectal examination or catheterisation, de: Nach rektaler Untersuchung oder Katheterisierung}
+- code: ddx.prostatitis
+  labels: {zh: 前列腺炎, en: Prostatitis, de: Prostatitis}
+- code: ddx.pseudohypercalcemia
+  labels: {zh: 白蛋白升高所致假性高钙血症, en: Pseudohypercalcaemia from raised albumin, de: Pseudohyperkalzämie durch erhöhtes Albumin}
+- code: ddx.pseudohyperkalemia
+  labels: {zh: 假性高钾血症, en: Pseudohyperkalaemia, de: Pseudohyperkaliämie}
+- code: ddx.refeeding_syndrome
+  labels: {zh: 再喂养综合征, en: Refeeding syndrome, de: Refeeding-Syndrom}
+- code: ddx.regular_exercise
+  labels: {zh: 规律体育锻炼, en: Regular physical activity, de: Regelmäßige körperliche Aktivität}
+- code: ddx.respiratory_acidosis
+  labels: {zh: 呼吸性酸中毒, en: Respiratory acidosis, de: Respiratorische Azidose}
+- code: ddx.respiratory_alkalosis
+  labels: {zh: 呼吸性碱中毒, en: Respiratory alkalosis, de: Respiratorische Alkalose}
+- code: ddx.rhabdomyolysis
+  labels: {zh: 横纹肌溶解, en: Rhabdomyolysis, de: Rhabdomyolyse}
+- code: ddx.sepsis_aki
+  labels: {zh: 脓毒症相关急性肾损伤, en: Sepsis-associated acute kidney injury, de: Sepsisassoziierte akute Nierenschädigung}
+- code: ddx.severe_infection
+  labels: {zh: 脓毒症或重症感染, en: Sepsis or severe infection, de: Sepsis oder schwere Infektion}
+- code: ddx.smoking
+  labels: {zh: 吸烟, en: Smoking, de: Rauchen}
+- code: ddx.statin_myopathy
+  labels: {zh: 他汀类药物相关肌病, en: Statin-associated myopathy, de: Statin-assoziierte Myopathie}
+- code: ddx.stress_hyperglycemia
+  labels: {zh: 危重症应激性高血糖, en: Stress hyperglycaemia in critical illness, de: Stresshyperglykämie bei kritischer Erkrankung}
+- code: ddx.subclinical_hyperthyroidism
+  labels: {zh: 亚临床甲状腺功能亢进症, en: Subclinical hyperthyroidism, de: Subklinische Hyperthyreose}
+- code: ddx.subclinical_hypothyroidism
+  labels: {zh: 亚临床甲状腺功能减退症, en: Subclinical hypothyroidism, de: Subklinische Hypothyreose}
+- code: ddx.systemic_inflammation
+  labels: {zh: 全身炎症反应, en: Systemic inflammatory response, de: Systemische Entzündungsreaktion}
+- code: ddx.tissue_injury
+  labels: {zh: 组织损伤或创伤, en: Tissue injury or trauma, de: Gewebeschädigung oder Trauma}
+- code: ddx.type2_diabetes
+  labels: {zh: 2型糖尿病, en: Type 2 diabetes, de: Diabetes mellitus Typ 2}
+- code: ddx.viral_hepatitis
+  labels: {zh: 病毒性肝炎, en: Viral hepatitis, de: Virushepatitis}
+- code: ddx.vitamin_d_deficiency
+  labels: {zh: 维生素D缺乏, en: Vitamin D deficiency, de: Vitamin-D-Mangel}
+- code: ddx.vitamin_d_toxicity
+  labels: {zh: 维生素D中毒, en: Vitamin D toxicity, de: Vitamin-D-Intoxikation}
+- code: ddx.zinc_deficiency
+  labels: {zh: 锌缺乏, en: Zinc deficiency, de: Zinkmangel}

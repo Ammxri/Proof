@@ -6,6 +6,7 @@ Every command's help ends with the fixed notices in zh, en and de (A-24); regist
 from __future__ import annotations
 
 import sys
+from datetime import date
 from pathlib import Path
 from typing import Annotated, NoReturn
 
@@ -13,6 +14,7 @@ import typer
 
 import proof
 import proof_rules
+from proof.cases import profiles
 from proof.core import canonical, disclaimer
 from proof_rules import loader
 from proof_rules.explain import explain
@@ -140,6 +142,65 @@ def rules_explain(
         typer.echo(f"case: {data['case_id']}")
     for line in lines:
         typer.echo(line)
+
+
+# --- proof labs ------------------------------------------------------------------------------------------------------
+
+labs_app = typer.Typer(
+    name="labs",
+    help="Build lab profiles from the SynthEHR biochemistry CSV (the CSV is only read, SynthEHR is never run).",
+    epilog=EPILOG,
+    no_args_is_help=True,
+    add_completion=False,
+    rich_markup_mode=None,
+)
+app.add_typer(labs_app, name="labs")
+
+
+def _format_reference(reference: dict[str, int | float]) -> str:
+    lower, upper = reference.get("lower"), reference.get("upper")
+    return f"{'' if lower is None else lower}-{'' if upper is None else upper}"
+
+
+@labs_app.command("build", epilog=EPILOG)
+def labs_build(
+    csv_path: Annotated[
+        Path, typer.Option("--csv", exists=True, dir_okay=False, help="SynthEHR Biochemistry.csv (only read).")
+    ],
+    generator: Annotated[str, typer.Option("--generator", help="Generator and version, e.g. 'SynthEHR 2.0.1'.")],
+    command: Annotated[str, typer.Option("--command", help="Command line the CSV was generated with.")],
+    seed: Annotated[int, typer.Option("--seed", help="Seed the CSV was generated with.")],
+    generated_on: Annotated[str, typer.Option("--generated-on", help="Date the CSV was generated (YYYY-MM-DD).")],
+    domain: DomainOption = "fever",
+    packs: PacksOption = loader.PACKS_ROOT,
+    out: Annotated[
+        Path | None,
+        typer.Option("--out", file_okay=False, help="Target directory (default: profiles/ of the domain pack)."),
+    ] = None,
+) -> None:
+    """Write one profile per lab field of the domain: reference range, counts, quantiles per status, provenance."""
+    try:
+        day = date.fromisoformat(generated_on)
+    except ValueError:
+        _fail([f"--generated-on: expected a date YYYY-MM-DD, got {generated_on!r}"])
+    try:
+        catalog = loader.load_domain(domain, packs, require_references=False).catalog
+    except loader.LoadError as exc:
+        _fail(exc.problems)
+    provenance = profiles.Provenance(generator=generator, command=command, seed=seed, generated_on=day)
+    try:
+        built = profiles.build_profiles(csv_path, catalog, provenance)
+    except profiles.ProfileError as exc:
+        _fail(exc.problems)
+    target = out if out is not None else packs / domain / loader.PROFILES_DIR
+    for code, path in zip(sorted(built), profiles.write_profiles(built, target), strict=True):
+        profile = built[code]
+        counts = profile["counts"]
+        by_status = ", ".join(f"{status} {count}" for status, count in counts["patients_by_status"].items())
+        typer.echo(
+            f"{profile['fact_code']}: reference {_format_reference(profile['reference'])} {profile['unit']}, "
+            f"{counts['rows_used']} of {counts['rows']} rows, {counts['patients']} patients ({by_status}) -> {path}"
+        )
 
 
 def _ensure_utf8_streams() -> None:

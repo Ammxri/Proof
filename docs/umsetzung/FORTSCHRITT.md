@@ -2,19 +2,109 @@
 
 ## Stand
 
-**08.11.2026 – Phase 3, U2 abgeschlossen.**
-- U1 (Grundgerüst) und U2 (Regelmotor) sind auf dem Zweig `dev` committet.
-- Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`. Die CI ist unter Windows und Linux
-  grün (Lauf 42489734249); damit ist auch der offene Punkt der U1-Abnahme erledigt.
+**09.11.2026 – Phase 3, U3 abgeschlossen.**
+- U1 (Grundgerüst), U2 (Regelmotor) und U3 (Fieber-Regelpaket und Migration) sind auf dem Zweig `dev` committet.
+- Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
+- U3 ist lokal geprüft; der CI-Beleg wird wie bei U2 nachgetragen.
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
 - **Plan:** U1–U14 aus [KONZEPT.md](KONZEPT.md); v0.1 = U1–U9, v0.5 = U10–U12, v1.0 = U13–U14; GO-1 vor U13.
 
-**Nächster Schritt:** U3 (Fieber-Regelpaket und Migration). Der SynthEHR-Lauf ist erledigt. Offen ist der Blocker
-B10 (Quellen der migrierten Laborregeln); danach folgen der Profilbau (A-56) und die Inhalte.
+**Nächster Schritt:** U4 (Sampler, Fallschema, Fever-100). Die Laborprofile sind schon in U3 gebaut (A-56). Danach
+folgt der Haltepunkt zu den dünnen Status-Töpfen (RK-02).
 
 ## Verlauf
+
+### 09.11.2026 – U3 Fieber-Regelpaket und Migration
+**Entscheidung:** B10 entschieden als D-11 („A: Nachschlagewerke“). Neue Auslegungen A-59 bis A-65.
+
+**Umgesetzt:**
+- **Profilbau** (aus U4 vorgezogen, A-56): `proof labs build --csv …` in `src/proof/cases/profiles.py`.
+  - Liest nur die CSV und startet SynthEHR nicht.
+  - Je Laborfeld einer Domäne entsteht ein Profil mit Referenzbereich, Zählwerten je Verwerfungsgrund, 21 Quantilen je
+    Status und Herkunft (A-59).
+  - Zensierte Werte (`<5`) gehen wie im Prototyp mit dem gemeldeten Grenzwert ein. Ohne sie lagen nur 19 von 536
+    CRP-Patienten im Normalbereich.
+- **Modell und Lader:**
+  - Laborfelder nennen ihre SynthEHR-Codes (`synthehr`).
+  - Grenzen dürfen nach oben offen sein. Jeder Fakt einer Domäne braucht Grenzen mit Quelle (A-65).
+  - Neu ist die Migrationstabelle (`migration.yaml`). Der Lader prüft sie in beiden Richtungen gegen `migrated_from`.
+- **Paket `fever`** (Domäne):
+  - 14 eigene Fakten mit Bezeichnungen in zh, en und de.
+  - Sechs Regeln: qSOFA ≥ 2, Sepsis, Pneumonie (zwei Regeln), akute Pyelonephritis, bakterielle Meningitis.
+  - Sechs Quellen: Sepsis-3, Seymour 2016, ERS/ESCMID 2011, WHO AWaRe 2022, deutsche Meningitis-Leitlinie 2023,
+    Wright 2024. Ihre Bedingungen sind geprüft und eingetragen (A-60, A-61).
+  - Vier Profile: CRP, Kreatinin, Bilirubin, Laktat.
+- **Paket `labs`** (Bibliothek): 184 migrierte Regeln mit 106 Diagnosecodes, 33 Laborfeldern und 54
+  StatPearls-Kapiteln. Dazu kommt das MIMIC Code Repository für die Grenzen.
+- **Migrationstabelle:**
+  - Sie enthält alle 73 Schlüssel. 68 von 70 Einträgen mit Inhalt sind migriert (PRD: 60+).
+  - Nicht migriert sind `GENERELL_HOCH` (Rückfall ohne Laborbedingung) und `PSAT_HOCH`; dessen einziger Text ist in
+    keinem geprüften Kapitel belegt. Die drei leeren Einträge bleiben nach A-09 ausgelassen.
+- **Fieberdomäne aktiviert** 22 Laborregeln über CRP, Kreatinin, Bilirubin und Laktat (A-64).
+- **Doku:**
+  - `docs/methodik.md` mit Nachrechnung des PRD-Beispiels.
+  - `docs/regeln.md`, erzeugt mit `tools/rules_doc.py`; ein Test prüft, dass die Datei aktuell ist.
+  - README mit Verweisen.
+
+**Quellenprüfung:**
+- **Gelesen** wurden die StatPearls-Kapitel und die Fieberquellen von sieben Hilfsagenten.
+  - Jeder Beleg ist ein wörtliches Zitat von höchstens 15 Wörtern mit Abschnitt.
+  - Die Zitate dienen nur der Prüfung; im Repository stehen nur Fundstellen und eigene Formulierungen.
+- **Zugang:**
+  - NCBI zeigt automatisierten Abrufen eine Browserprüfung (reCAPTCHA); sie wurde nicht gelöst und nicht umgangen.
+  - Alle Kapitel sind im eingebauten Browser auf den normalen Seiten gelesen oder nachgeprüft.
+  - Zwei Gruppen hatten zunächst einen anderen NCBI-Pfad bzw. Kopien im Internet Archive genutzt. Beide wurden auf den
+    Live-Seiten wiederholt; kein Urteil änderte sich.
+  - Fünf Belege aus drei Kapiteln habe ich zusätzlich selbst auf den Live-Seiten geprüft (Zinkmangel bei erniedrigter
+    AP, Pseudohyperkaliämie, drei Aussagen zu Harnstoff und Kreatinin).
+- **Ergebnis:**
+  - Teilbelege sind nach A-62 nur im belegten Teil migriert.
+  - Die Migrationstabelle nennt für jeden Text den Grund, wenn er keine Regel wurde.
+- **Ausgeschlossen** nach ihren Bedingungen (A-61): EAU-Leitlinien und NEJM. OHDSI DQD enthält keine Messwertgrenzen
+  mehr (A-65).
+
+**PRD-Beispiel (D-05):**
+- `refer_urgent` und `rf.qsofa_ge2` wie in der PRD.
+- Kritisch sind Husten, CRP, Bewusstsein und Temperatur, nicht die qSOFA-Vitalwerte.
+- Die Diagnosen sind Pneumonie, Sepsis, bakterielle Meningitis und vier Diagnosen aus `CRP_HOCH`.
+- Test `test_prd_example_key_is_recalculated`.
+
+**Geprüft** (lokal, Windows 11, Python 3.12.15):
+- `uv run pytest`: 431 Tests grün, Abdeckung 99,8 %.
+- `ruff check` und `ruff format --check`: sauber.
+- `proof rules check`: ok. Paket `fever` 6 Regeln mit 39 Testvektoren, Paket `labs` 184 Regeln mit 574
+  Testvektoren; Domäne `fever` mit 28 aktiven Regeln, 18 Feldern und 4 Referenzbereichen.
+- Wheel gebaut und in eine frische Umgebung installiert: Es enthält beide Regelpakete mit Profilen;
+  `proof rules check` und `proof rules list` laufen damit.
+
+**Nicht lokal ausgeführt:** `pip-audit` und die Lizenzprüfung. Die Abhängigkeiten sind gegenüber U2 unverändert
+(`uv.lock` gleich); beide laufen in der CI.
+
+**Offen bzw. für die ärztliche Prüfung vermerkt:**
+- Alle Regeln tragen den Status „Entwurf, ärztlich ungeprüft“.
+- Die Fieberdomäne aktiviert alle vier Regeln aus `CRP_HOCH` (A-64). Ob Diagnosen wie „Gewebeschädigung oder Trauma“
+  im Fieberschlüssel stehen sollen, entscheidet die ärztliche Prüfung; abschalten heißt eine Zeile in
+  `packs/fever/pack.yaml`.
+- Zu wenige Werte im Status-Topf: CRP hat keinen Topf „niedrig“ (Untergrenze 0), Laktat nur 9 Patienten „niedrig“.
+  Das prüft der Haltepunkt nach U4 (RK-02).
+- 18 Laborfelder der Bibliothek haben keine Grenzen, weil keine offen lizenzierte Quelle sie nennt (A-65). Keine Domäne
+  nutzt sie.
+- `eGFR_NIEDRIG` → hypertensive Nephropathie stützt sich auf mehrere Aussagen des CKD-Kapitels zusammen, nicht auf
+  einen Satz; die Migrationstabelle markiert sie für die ärztliche Prüfung.
+
+**Abnahme U3 (DoD aus KONZEPT.md):** erfüllt.
+- Die Migrationstabelle deckt alle 70 Einträge mit Inhalt ab; die 3 leeren sind nach A-09 begründet ausgelassen
+  (`test_migration_table_covers_every_prototype_key`).
+- Migriert sind 68 statt der in B10 geschätzten 69 Einträge: `PSAT_HOCH` bleibt nach der Regel aus D-11 ohne Regel,
+  weil kein Kapitel seinen einzigen Text belegt.
+- Jede Regel hat mindestens einen positiven und einen negativen Test, alle grün.
+- qSOFA-Grenzwerttests: 21/22 pro Minute, 100/101 mmHg, Bewusstsein (`test_qsofa_boundaries`, Testvektoren von
+  FEV-RF-001).
+- Jede Quelle hat geprüfte Bedingungen, keine stammt von NICE (Test).
+- Alle Regeln tragen den Status „Entwurf, ärztlich ungeprüft“ (Test).
+- PRD-Beispiel wie in D-05 nachgerechnet (`docs/methodik.md`, Test).
 
 ### 08.11.2026 – U3 begonnen: SynthEHR-Lauf und Blocker B10
 **SynthEHR-Lauf (D-03).** Befehl, im Ordner `proof/.local/synthehr/` und mit der Umgebungsvariable nur für diesen

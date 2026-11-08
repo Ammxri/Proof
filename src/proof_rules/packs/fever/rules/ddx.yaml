@@ -1,0 +1,109 @@
+# Differential diagnoses of the fever domain. Every rule is a draft, not reviewed by a physician (D-04).
+# Operationalisations of the source criteria are explained in docs/methodik.md (A-60).
+- id: FEV-DDX-001
+  kind: ddx
+  target: ddx.sepsis
+  requires: [vital.mental_status, vital.resp_rate, vital.sbp, vital.temp_c]
+  when:
+    all:
+      - {field: vital.temp_c, op: gt, value: 38.0}
+      - at_least: 2
+        of:
+          - {field: vital.resp_rate, op: ge, value: 22}
+          - {field: vital.mental_status, op: eq, value: altered}
+          - {field: vital.sbp, op: le, value: 100}
+  sources:
+    - {ref: SRC-0001, locator: "Box 1 (SIRS temperature criterion, as sign of a response to infection)"}
+    - {ref: SRC-0001, locator: "Box 4; Results, 'Screening for Patients Likely to Have Sepsis'"}
+  status: draft_unreviewed
+  tests:
+    - {facts: {vital.temp_c: 38.1, vital.resp_rate: 22, vital.mental_status: altered, vital.sbp: 120}, expect: true}
+    - {facts: {vital.temp_c: 38.0, vital.resp_rate: 22, vital.mental_status: altered, vital.sbp: 120}, expect: false}
+    - {facts: {vital.temp_c: 39.0, vital.resp_rate: 21, vital.mental_status: normal, vital.sbp: 100}, expect: false}
+    - {facts: {vital.temp_c: 39.2, vital.resp_rate: 24, vital.sbp: 96}, expect: true}
+    - {facts: {vital.resp_rate: 24, vital.mental_status: altered, vital.sbp: 96}, expect: unknown}
+    - {facts: {vital.temp_c: 37.0}, expect: false}
+
+- id: FEV-DDX-002
+  kind: ddx
+  target: ddx.pneumonia
+  requires: [hx.cough, lab.crp_mg_l]
+  when:
+    all:
+      - {field: hx.cough, op: eq, value: true}
+      - {field: lab.crp_mg_l, op: gt, value: 100}
+  sources:
+    - {ref: SRC-0003, locator: "Management Outside Hospital > Diagnosis > How to differentiate between pneumonia and other respiratory tract infections, recommendation [B1] (CRP above 100 mg/L)"}
+  status: draft_unreviewed
+  tests:
+    - {facts: {hx.cough: true, lab.crp_mg_l: 101}, expect: true}
+    - {facts: {hx.cough: true, lab.crp_mg_l: 100}, expect: false}
+    - {facts: {hx.cough: false, lab.crp_mg_l: 180}, expect: false}
+    - {facts: {hx.cough: true}, expect: unknown}
+
+- id: FEV-DDX-003
+  kind: ddx
+  target: ddx.pneumonia
+  requires: [exam.focal_chest_signs, hx.cough, hx.dyspnea, hx.onset_days, vital.heart_rate]
+  when:
+    all:
+      - {field: hx.cough, op: eq, value: true}
+      - any:
+          - {field: exam.focal_chest_signs, op: eq, value: true}
+          - {field: hx.dyspnea, op: eq, value: true}
+          - {field: vital.heart_rate, op: gt, value: 100}
+          - {field: hx.onset_days, op: gt, value: 4}
+  sources:
+    - {ref: SRC-0003, locator: "Management Outside Hospital > Diagnosis > How to differentiate between pneumonia and other respiratory tract infections, recommendation [B1] (signs and symptoms)"}
+    - {ref: SRC-0003, locator: "LRTI Definitions > Suspected community-acquired pneumonia"}
+  status: draft_unreviewed
+  tests:
+    - {facts: {hx.cough: true, exam.focal_chest_signs: true, hx.dyspnea: false, vital.heart_rate: 80, hx.onset_days: 1}, expect: true}
+    - {facts: {hx.cough: true, exam.focal_chest_signs: false, hx.dyspnea: false, vital.heart_rate: 101, hx.onset_days: 1}, expect: true}
+    - {facts: {hx.cough: true, exam.focal_chest_signs: false, hx.dyspnea: false, vital.heart_rate: 100, hx.onset_days: 4}, expect: false}
+    - {facts: {hx.cough: true, exam.focal_chest_signs: false, hx.dyspnea: false, vital.heart_rate: 90, hx.onset_days: 5}, expect: true}
+    - {facts: {hx.cough: true, exam.focal_chest_signs: false, hx.dyspnea: true, vital.heart_rate: 90, hx.onset_days: 2}, expect: true}
+    - {facts: {hx.cough: false, exam.focal_chest_signs: true, hx.dyspnea: true, vital.heart_rate: 120, hx.onset_days: 6}, expect: false}
+    - {facts: {hx.cough: true, exam.focal_chest_signs: false, hx.dyspnea: false, vital.heart_rate: 90}, expect: unknown}
+
+- id: FEV-DDX-004
+  kind: ddx
+  target: ddx.pyelonephritis
+  requires: [exam.cva_tenderness, hx.flank_pain, vital.temp_c]
+  when:
+    all:
+      - {field: vital.temp_c, op: ge, value: 38.0}
+      - any:
+          - {field: hx.flank_pain, op: eq, value: true}
+          - {field: exam.cva_tenderness, op: eq, value: true}
+  sources:
+    - {ref: SRC-0004, locator: "Chapter 34 'Upper urinary tract infection', section 'Clinical presentation', p. 481"}
+  status: draft_unreviewed
+  tests:
+    - {facts: {vital.temp_c: 38.0, hx.flank_pain: true, exam.cva_tenderness: false}, expect: true}
+    - {facts: {vital.temp_c: 37.9, hx.flank_pain: true, exam.cva_tenderness: true}, expect: false}
+    - {facts: {vital.temp_c: 39.0, hx.flank_pain: false, exam.cva_tenderness: false}, expect: false}
+    - {facts: {vital.temp_c: 38.5, exam.cva_tenderness: true}, expect: true}
+    - {facts: {vital.temp_c: 38.5, hx.flank_pain: false}, expect: unknown}
+
+- id: FEV-DDX-005
+  kind: ddx
+  target: ddx.bacterial_meningitis
+  requires: [exam.neck_stiffness, hx.headache, vital.mental_status, vital.temp_c]
+  when:
+    at_least: 2
+    of:
+      - {field: hx.headache, op: eq, value: true}
+      - {field: exam.neck_stiffness, op: eq, value: true}
+      - {field: vital.mental_status, op: eq, value: altered}
+      - {field: vital.temp_c, op: ge, value: 38.0}
+  sources:
+    - {ref: SRC-0005, locator: "Guidelines in detail > Definition, clinic presentation, and epidemiology, recommendation 1 (cardinal symptoms; their combination)"}
+    - {ref: SRC-0004, locator: "Chapter 34, section 'Clinical presentation', p. 481 (fever as at least 38.0 °C)"}
+  status: draft_unreviewed
+  tests:
+    - {facts: {hx.headache: true, exam.neck_stiffness: true, vital.mental_status: normal, vital.temp_c: 37.0}, expect: true}
+    - {facts: {hx.headache: true, exam.neck_stiffness: false, vital.mental_status: normal, vital.temp_c: 37.5}, expect: false}
+    - {facts: {hx.headache: false, exam.neck_stiffness: false, vital.mental_status: altered, vital.temp_c: 38.0}, expect: true}
+    - {facts: {hx.headache: false, exam.neck_stiffness: false, vital.mental_status: altered, vital.temp_c: 37.9}, expect: false}
+    - {facts: {hx.headache: true}, expect: unknown}

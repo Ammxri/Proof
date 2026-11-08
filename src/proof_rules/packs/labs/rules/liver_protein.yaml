@@ -1,0 +1,592 @@
+- id: LAB-ALT-HOCH-BIL-HOCH-1
+  kind: ddx
+  target: ddx.acute_hepatitis
+  requires: [lab.alt_u_l, lab.bilirubin_umol_l]
+  when:
+    all:
+    - {field: lab.alt_u_l, op: gt, value: {ref: upper}}
+    - {field: lab.bilirubin_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1046, locator: Clinical Significance; Etiology and Epidemiology > Pathological Causes}
+  - {ref: SRC-1037, locator: Etiology; Evaluation}
+  status: draft_unreviewed
+  migrated_from: ALT_HOCH_BIL_HOCH
+  tests:
+  - {facts: {lab.alt_u_l: 56, lab.bilirubin_umol_l: 22}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.bilirubin_umol_l: {
+        lower: 0, upper: 21}}, expect: true}
+  - {facts: {lab.alt_u_l: 55, lab.bilirubin_umol_l: 22}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.bilirubin_umol_l: {
+        lower: 0, upper: 21}}, expect: false}
+  - {facts: {lab.alt_u_l: 56, lab.bilirubin_umol_l: 21}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.bilirubin_umol_l: {
+        lower: 0, upper: 21}}, expect: false}
+  - {facts: {lab.alt_u_l: 56}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: unknown}
+- id: LAB-ALT-HOCH-BIL-HOCH-2
+  kind: ddx
+  target: ddx.mixed_liver_injury
+  requires: [lab.alt_u_l, lab.bilirubin_umol_l]
+  when:
+    all:
+    - {field: lab.alt_u_l, op: gt, value: {ref: upper}}
+    - {field: lab.bilirubin_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1019, locator: Pathophysiology > Hepatocellular Laboratory Examination; Pathophysiology > Cholestasis Laboratory
+      Examination; Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: ALT_HOCH_BIL_HOCH
+  tests:
+  - {facts: {lab.alt_u_l: 56, lab.bilirubin_umol_l: 22}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.bilirubin_umol_l: {
+        lower: 0, upper: 21}}, expect: true}
+  - {facts: {lab.alt_u_l: 55, lab.bilirubin_umol_l: 22}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.bilirubin_umol_l: {
+        lower: 0, upper: 21}}, expect: false}
+  - {facts: {lab.alt_u_l: 56, lab.bilirubin_umol_l: 21}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.bilirubin_umol_l: {
+        lower: 0, upper: 21}}, expect: false}
+  - {facts: {lab.alt_u_l: 56}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: unknown}
+- id: LAB-ALT-HOCH-BIL-HOCH-3
+  kind: ddx
+  target: ddx.decompensated_cirrhosis
+  requires: [lab.alt_u_l, lab.bilirubin_umol_l]
+  when:
+    all:
+    - {field: lab.alt_u_l, op: gt, value: {ref: upper}}
+    - {field: lab.bilirubin_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1016, locator: Evaluation; History and Physical}
+  status: draft_unreviewed
+  migrated_from: ALT_HOCH_BIL_HOCH
+  tests:
+  - {facts: {lab.alt_u_l: 56, lab.bilirubin_umol_l: 22}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.bilirubin_umol_l: {
+        lower: 0, upper: 21}}, expect: true}
+  - {facts: {lab.alt_u_l: 55, lab.bilirubin_umol_l: 22}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.bilirubin_umol_l: {
+        lower: 0, upper: 21}}, expect: false}
+  - {facts: {lab.alt_u_l: 56, lab.bilirubin_umol_l: 21}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.bilirubin_umol_l: {
+        lower: 0, upper: 21}}, expect: false}
+  - {facts: {lab.alt_u_l: 56}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: unknown}
+- id: LAB-ALT-HOCH-AP-HOCH-1
+  kind: ddx
+  target: ddx.mixed_liver_injury
+  requires: [lab.alp_u_l, lab.alt_u_l]
+  when:
+    all:
+    - {field: lab.alt_u_l, op: gt, value: {ref: upper}}
+    - {field: lab.alp_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1019, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: ALT_HOCH_AP_HOCH
+  tests:
+  - {facts: {lab.alt_u_l: 56, lab.alp_u_l: 131}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.alp_u_l: {lower: 30, upper: 130}},
+    expect: true}
+  - {facts: {lab.alt_u_l: 55, lab.alp_u_l: 131}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.alp_u_l: {lower: 30, upper: 130}},
+    expect: false}
+  - {facts: {lab.alt_u_l: 56, lab.alp_u_l: 130}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.alp_u_l: {lower: 30, upper: 130}},
+    expect: false}
+  - {facts: {lab.alt_u_l: 56}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.alp_u_l: {lower: 30, upper: 130}}, expect: unknown}
+- id: LAB-ALT-HOCH-AP-HOCH-2
+  kind: ddx
+  target: ddx.drug_induced_liver_injury
+  requires: [lab.alp_u_l, lab.alt_u_l]
+  when:
+    all:
+    - {field: lab.alt_u_l, op: gt, value: {ref: upper}}
+    - {field: lab.alp_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1046, locator: Clinical Significance; Interfering Factors}
+  - {ref: SRC-1010, locator: Interfering Factors; Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: ALT_HOCH_AP_HOCH
+  tests:
+  - {facts: {lab.alt_u_l: 56, lab.alp_u_l: 131}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.alp_u_l: {lower: 30, upper: 130}},
+    expect: true}
+  - {facts: {lab.alt_u_l: 55, lab.alp_u_l: 131}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.alp_u_l: {lower: 30, upper: 130}},
+    expect: false}
+  - {facts: {lab.alt_u_l: 56, lab.alp_u_l: 130}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.alp_u_l: {lower: 30, upper: 130}},
+    expect: false}
+  - {facts: {lab.alt_u_l: 56}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.alp_u_l: {lower: 30, upper: 130}}, expect: unknown}
+- id: LAB-ALT-HOCH-AP-HOCH-3
+  kind: ddx
+  target: ddx.cirrhosis
+  requires: [lab.alp_u_l, lab.alt_u_l]
+  when:
+    all:
+    - {field: lab.alt_u_l, op: gt, value: {ref: upper}}
+    - {field: lab.alp_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1016, locator: Evaluation}
+  - {ref: SRC-1010, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: ALT_HOCH_AP_HOCH
+  tests:
+  - {facts: {lab.alt_u_l: 56, lab.alp_u_l: 131}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.alp_u_l: {lower: 30, upper: 130}},
+    expect: true}
+  - {facts: {lab.alt_u_l: 55, lab.alp_u_l: 131}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.alp_u_l: {lower: 30, upper: 130}},
+    expect: false}
+  - {facts: {lab.alt_u_l: 56, lab.alp_u_l: 130}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.alp_u_l: {lower: 30, upper: 130}},
+    expect: false}
+  - {facts: {lab.alt_u_l: 56}, refs: {lab.alt_u_l: {lower: 5, upper: 55}, lab.alp_u_l: {lower: 30, upper: 130}}, expect: unknown}
+- id: LAB-ALT-HOCH-1
+  kind: ddx
+  target: ddx.hepatocellular_injury
+  requires: [lab.alt_u_l]
+  when: {field: lab.alt_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1046, locator: Clinical Significance; Pathophysiology; Introduction}
+  status: draft_unreviewed
+  migrated_from: ALT_HOCH
+  tests:
+  - {facts: {lab.alt_u_l: 56}, refs: {lab.alt_u_l: {lower: 5, upper: 55}}, expect: true}
+  - {facts: {lab.alt_u_l: 55}, refs: {lab.alt_u_l: {lower: 5, upper: 55}}, expect: false}
+  - {facts: {}, refs: {lab.alt_u_l: {lower: 5, upper: 55}}, expect: unknown}
+- id: LAB-ALT-HOCH-2
+  kind: ddx
+  target: ddx.drug_induced_liver_injury
+  requires: [lab.alt_u_l]
+  when: {field: lab.alt_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1046, locator: Interfering Factors; Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: ALT_HOCH
+  tests:
+  - {facts: {lab.alt_u_l: 56}, refs: {lab.alt_u_l: {lower: 5, upper: 55}}, expect: true}
+  - {facts: {lab.alt_u_l: 55}, refs: {lab.alt_u_l: {lower: 5, upper: 55}}, expect: false}
+  - {facts: {}, refs: {lab.alt_u_l: {lower: 5, upper: 55}}, expect: unknown}
+- id: LAB-ALT-HOCH-3
+  kind: ddx
+  target: ddx.viral_hepatitis
+  requires: [lab.alt_u_l]
+  when: {field: lab.alt_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1046, locator: Etiology and Epidemiology > Pathological Causes; Introduction; Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: ALT_HOCH
+  tests:
+  - {facts: {lab.alt_u_l: 56}, refs: {lab.alt_u_l: {lower: 5, upper: 55}}, expect: true}
+  - {facts: {lab.alt_u_l: 55}, refs: {lab.alt_u_l: {lower: 5, upper: 55}}, expect: false}
+  - {facts: {}, refs: {lab.alt_u_l: {lower: 5, upper: 55}}, expect: unknown}
+- id: LAB-ALT-HOCH-4
+  kind: ddx
+  target: ddx.mash
+  requires: [lab.alt_u_l]
+  when: {field: lab.alt_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1046, locator: Introduction; Etiology and Epidemiology > Pathological Causes; Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: ALT_HOCH
+  tests:
+  - {facts: {lab.alt_u_l: 56}, refs: {lab.alt_u_l: {lower: 5, upper: 55}}, expect: true}
+  - {facts: {lab.alt_u_l: 55}, refs: {lab.alt_u_l: {lower: 5, upper: 55}}, expect: false}
+  - {facts: {}, refs: {lab.alt_u_l: {lower: 5, upper: 55}}, expect: unknown}
+- id: LAB-AP-HOCH-1
+  kind: ddx
+  target: ddx.cholestatic_liver_disease
+  requires: [lab.alp_u_l]
+  when: {field: lab.alp_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1010, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: AP_HOCH
+  tests:
+  - {facts: {lab.alp_u_l: 131}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: true}
+  - {facts: {lab.alp_u_l: 130}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: false}
+  - {facts: {}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: unknown}
+- id: LAB-AP-HOCH-2
+  kind: ddx
+  target: ddx.choledocholithiasis
+  requires: [lab.alp_u_l]
+  when: {field: lab.alp_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1010, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: AP_HOCH
+  tests:
+  - {facts: {lab.alp_u_l: 131}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: true}
+  - {facts: {lab.alp_u_l: 130}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: false}
+  - {facts: {}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: unknown}
+- id: LAB-AP-HOCH-3
+  kind: ddx
+  target: ddx.liver_metastases
+  requires: [lab.alp_u_l]
+  when: {field: lab.alp_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1010, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: AP_HOCH
+  tests:
+  - {facts: {lab.alp_u_l: 131}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: true}
+  - {facts: {lab.alp_u_l: 130}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: false}
+  - {facts: {}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: unknown}
+- id: LAB-AP-HOCH-4
+  kind: ddx
+  target: ddx.cirrhosis
+  requires: [lab.alp_u_l]
+  when: {field: lab.alp_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1010, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: AP_HOCH
+  tests:
+  - {facts: {lab.alp_u_l: 131}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: true}
+  - {facts: {lab.alp_u_l: 130}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: false}
+  - {facts: {}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: unknown}
+- id: LAB-AP-HOCH-5
+  kind: ddx
+  target: ddx.bone_disease
+  requires: [lab.alp_u_l]
+  when: {field: lab.alp_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1010, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: AP_HOCH
+  tests:
+  - {facts: {lab.alp_u_l: 131}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: true}
+  - {facts: {lab.alp_u_l: 130}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: false}
+  - {facts: {}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: unknown}
+- id: LAB-AP-NIEDRIG-1
+  kind: ddx
+  target: ddx.zinc_deficiency
+  requires: [lab.alp_u_l]
+  when: {field: lab.alp_u_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1010, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: AP_NIEDRIG
+  tests:
+  - {facts: {lab.alp_u_l: 29}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: true}
+  - {facts: {lab.alp_u_l: 30}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: false}
+  - {facts: {}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: unknown}
+- id: LAB-AP-NIEDRIG-2
+  kind: ddx
+  target: ddx.hypothyroidism
+  requires: [lab.alp_u_l]
+  when: {field: lab.alp_u_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1010, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: AP_NIEDRIG
+  tests:
+  - {facts: {lab.alp_u_l: 29}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: true}
+  - {facts: {lab.alp_u_l: 30}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: false}
+  - {facts: {}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: unknown}
+- id: LAB-AP-NIEDRIG-3
+  kind: ddx
+  target: ddx.pernicious_anemia
+  requires: [lab.alp_u_l]
+  when: {field: lab.alp_u_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1010, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: AP_NIEDRIG
+  tests:
+  - {facts: {lab.alp_u_l: 29}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: true}
+  - {facts: {lab.alp_u_l: 30}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: false}
+  - {facts: {}, refs: {lab.alp_u_l: {lower: 30, upper: 130}}, expect: unknown}
+- id: LAB-BIL-HOCH-1
+  kind: ddx
+  target: ddx.cholestasis
+  requires: [lab.bilirubin_umol_l]
+  when: {field: lab.bilirubin_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1037, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: BIL_HOCH
+  tests:
+  - {facts: {lab.bilirubin_umol_l: 22}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: true}
+  - {facts: {lab.bilirubin_umol_l: 21}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: false}
+  - {facts: {}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: unknown}
+- id: LAB-BIL-HOCH-2
+  kind: ddx
+  target: ddx.hemolysis
+  requires: [lab.bilirubin_umol_l]
+  when: {field: lab.bilirubin_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1037, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: BIL_HOCH
+  tests:
+  - {facts: {lab.bilirubin_umol_l: 22}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: true}
+  - {facts: {lab.bilirubin_umol_l: 21}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: false}
+  - {facts: {}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: unknown}
+- id: LAB-BIL-HOCH-3
+  kind: ddx
+  target: ddx.liver_parenchymal_disease
+  requires: [lab.bilirubin_umol_l]
+  when: {field: lab.bilirubin_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1037, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: BIL_HOCH
+  tests:
+  - {facts: {lab.bilirubin_umol_l: 22}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: true}
+  - {facts: {lab.bilirubin_umol_l: 21}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: false}
+  - {facts: {}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: unknown}
+- id: LAB-BIL-HOCH-4
+  kind: ddx
+  target: ddx.gilbert_syndrome
+  requires: [lab.bilirubin_umol_l]
+  when: {field: lab.bilirubin_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1037, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: BIL_HOCH
+  tests:
+  - {facts: {lab.bilirubin_umol_l: 22}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: true}
+  - {facts: {lab.bilirubin_umol_l: 21}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: false}
+  - {facts: {}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: unknown}
+- id: LAB-BI-HOCH-1
+  kind: ddx
+  target: ddx.hemolysis
+  requires: [lab.bilirubin_umol_l]
+  when: {field: lab.bilirubin_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1037, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: BI_HOCH
+  tests:
+  - {facts: {lab.bilirubin_umol_l: 22}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: true}
+  - {facts: {lab.bilirubin_umol_l: 21}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: false}
+  - {facts: {}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: unknown}
+- id: LAB-BI-HOCH-2
+  kind: ddx
+  target: ddx.cholestasis
+  requires: [lab.bilirubin_umol_l]
+  when: {field: lab.bilirubin_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1037, locator: Etiology; Histopathology}
+  status: draft_unreviewed
+  migrated_from: BI_HOCH
+  tests:
+  - {facts: {lab.bilirubin_umol_l: 22}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: true}
+  - {facts: {lab.bilirubin_umol_l: 21}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: false}
+  - {facts: {}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: unknown}
+- id: LAB-BI-HOCH-3
+  kind: ddx
+  target: ddx.liver_disease
+  requires: [lab.bilirubin_umol_l]
+  when: {field: lab.bilirubin_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1037, locator: Introduction; Etiology}
+  status: draft_unreviewed
+  migrated_from: BI_HOCH
+  tests:
+  - {facts: {lab.bilirubin_umol_l: 22}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: true}
+  - {facts: {lab.bilirubin_umol_l: 21}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: false}
+  - {facts: {}, refs: {lab.bilirubin_umol_l: {lower: 0, upper: 21}}, expect: unknown}
+- id: LAB-GT-HOCH-1
+  kind: ddx
+  target: ddx.alcohol_use
+  requires: [lab.ggt_u_l]
+  when: {field: lab.ggt_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1019, locator: Pathophysiology > Cholestasis Laboratory Examination}
+  status: draft_unreviewed
+  migrated_from: GT_HOCH
+  tests:
+  - {facts: {lab.ggt_u_l: 34}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: true}
+  - {facts: {lab.ggt_u_l: 33}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: false}
+  - {facts: {}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: unknown}
+- id: LAB-GT-HOCH-2
+  kind: ddx
+  target: ddx.alcoholic_liver_disease
+  requires: [lab.ggt_u_l]
+  when: {field: lab.ggt_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1040, locator: Evaluation}
+  status: draft_unreviewed
+  migrated_from: GT_HOCH
+  tests:
+  - {facts: {lab.ggt_u_l: 34}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: true}
+  - {facts: {lab.ggt_u_l: 33}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: false}
+  - {facts: {}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: unknown}
+- id: LAB-GT-HOCH-3
+  kind: ddx
+  target: ddx.enzyme_inducing_drugs
+  requires: [lab.ggt_u_l]
+  when: {field: lab.ggt_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1019, locator: Pathophysiology > Cholestasis Laboratory Examination}
+  status: draft_unreviewed
+  migrated_from: GT_HOCH
+  tests:
+  - {facts: {lab.ggt_u_l: 34}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: true}
+  - {facts: {lab.ggt_u_l: 33}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: false}
+  - {facts: {}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: unknown}
+- id: LAB-GT-HOCH-4
+  kind: ddx
+  target: ddx.masld
+  requires: [lab.ggt_u_l]
+  when: {field: lab.ggt_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1046, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: GT_HOCH
+  tests:
+  - {facts: {lab.ggt_u_l: 34}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: true}
+  - {facts: {lab.ggt_u_l: 33}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: false}
+  - {facts: {}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: unknown}
+- id: LAB-GT-HOCH-5
+  kind: ddx
+  target: ddx.cholestatic_liver_disease
+  requires: [lab.ggt_u_l]
+  when: {field: lab.ggt_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1019, locator: Etiology and Epidemiology > Cholestatic pattern}
+  status: draft_unreviewed
+  migrated_from: GT_HOCH
+  tests:
+  - {facts: {lab.ggt_u_l: 34}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: true}
+  - {facts: {lab.ggt_u_l: 33}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: false}
+  - {facts: {}, refs: {lab.ggt_u_l: {lower: 7, upper: 33}}, expect: unknown}
+- id: LAB-ALB-HOCH-1
+  kind: ddx
+  target: ddx.dehydration
+  requires: [lab.albumin_g_l]
+  when: {field: lab.albumin_g_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1009, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: ALB_HOCH
+  tests:
+  - {facts: {lab.albumin_g_l: 51}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: true}
+  - {facts: {lab.albumin_g_l: 50}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: false}
+  - {facts: {}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: unknown}
+- id: LAB-ALB-HOCH-2
+  kind: ddx
+  target: ddx.laboratory_artifact
+  requires: [lab.albumin_g_l]
+  when: {field: lab.albumin_g_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1009, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: ALB_HOCH
+  tests:
+  - {facts: {lab.albumin_g_l: 51}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: true}
+  - {facts: {lab.albumin_g_l: 50}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: false}
+  - {facts: {}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: unknown}
+- id: LAB-ALB-NIEDRIG-1
+  kind: ddx
+  target: ddx.liver_failure
+  requires: [lab.albumin_g_l]
+  when: {field: lab.albumin_g_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1026, locator: Pathophysiology > Decreased Production of Albumin}
+  status: draft_unreviewed
+  migrated_from: ALB_NIEDRIG
+  tests:
+  - {facts: {lab.albumin_g_l: 34}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: true}
+  - {facts: {lab.albumin_g_l: 35}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: false}
+  - {facts: {}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: unknown}
+- id: LAB-ALB-NIEDRIG-2
+  kind: ddx
+  target: ddx.malnutrition
+  requires: [lab.albumin_g_l]
+  when: {field: lab.albumin_g_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1026, locator: Pathophysiology > Decreased Production of Albumin; Pathophysiology > Cardiac Failure}
+  status: draft_unreviewed
+  migrated_from: ALB_NIEDRIG
+  tests:
+  - {facts: {lab.albumin_g_l: 34}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: true}
+  - {facts: {lab.albumin_g_l: 35}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: false}
+  - {facts: {}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: unknown}
+- id: LAB-ALB-NIEDRIG-3
+  kind: ddx
+  target: ddx.nephrotic_syndrome
+  requires: [lab.albumin_g_l]
+  when: {field: lab.albumin_g_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1026, locator: Pathophysiology > Increased Loss of Albumin}
+  status: draft_unreviewed
+  migrated_from: ALB_NIEDRIG
+  tests:
+  - {facts: {lab.albumin_g_l: 34}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: true}
+  - {facts: {lab.albumin_g_l: 35}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: false}
+  - {facts: {}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: unknown}
+- id: LAB-ALB-NIEDRIG-4
+  kind: ddx
+  target: ddx.chronic_inflammation
+  requires: [lab.albumin_g_l]
+  when: {field: lab.albumin_g_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1026, locator: Pathophysiology > Extravascular Loss; Pathophysiology > Albumin and Critical Illness; Evaluation}
+  status: draft_unreviewed
+  migrated_from: ALB_NIEDRIG
+  tests:
+  - {facts: {lab.albumin_g_l: 34}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: true}
+  - {facts: {lab.albumin_g_l: 35}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: false}
+  - {facts: {}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: unknown}
+- id: LAB-AL-HOCH-1
+  kind: ddx
+  target: ddx.dehydration
+  requires: [lab.albumin_g_l]
+  when: {field: lab.albumin_g_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1009, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: AL_HOCH
+  tests:
+  - {facts: {lab.albumin_g_l: 51}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: true}
+  - {facts: {lab.albumin_g_l: 50}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: false}
+  - {facts: {}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: unknown}
+- id: LAB-AL-HOCH-2
+  kind: ddx
+  target: ddx.laboratory_artifact
+  requires: [lab.albumin_g_l]
+  when: {field: lab.albumin_g_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1009, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: AL_HOCH
+  tests:
+  - {facts: {lab.albumin_g_l: 51}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: true}
+  - {facts: {lab.albumin_g_l: 50}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: false}
+  - {facts: {}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: unknown}
+- id: LAB-AL-NIEDRIG-1
+  kind: ddx
+  target: ddx.liver_failure
+  requires: [lab.albumin_g_l]
+  when: {field: lab.albumin_g_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1026, locator: Pathophysiology > Decreased Production of Albumin}
+  status: draft_unreviewed
+  migrated_from: AL_NIEDRIG
+  tests:
+  - {facts: {lab.albumin_g_l: 34}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: true}
+  - {facts: {lab.albumin_g_l: 35}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: false}
+  - {facts: {}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: unknown}
+- id: LAB-AL-NIEDRIG-2
+  kind: ddx
+  target: ddx.malnutrition
+  requires: [lab.albumin_g_l]
+  when: {field: lab.albumin_g_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1026, locator: Pathophysiology > Decreased Production of Albumin; Pathophysiology > Cardiac Failure}
+  status: draft_unreviewed
+  migrated_from: AL_NIEDRIG
+  tests:
+  - {facts: {lab.albumin_g_l: 34}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: true}
+  - {facts: {lab.albumin_g_l: 35}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: false}
+  - {facts: {}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: unknown}
+- id: LAB-AL-NIEDRIG-3
+  kind: ddx
+  target: ddx.nephrotic_syndrome
+  requires: [lab.albumin_g_l]
+  when: {field: lab.albumin_g_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1026, locator: Pathophysiology > Increased Loss of Albumin}
+  status: draft_unreviewed
+  migrated_from: AL_NIEDRIG
+  tests:
+  - {facts: {lab.albumin_g_l: 34}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: true}
+  - {facts: {lab.albumin_g_l: 35}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: false}
+  - {facts: {}, refs: {lab.albumin_g_l: {lower: 35, upper: 50}}, expect: unknown}
+- id: LAB-TP-HOCH-1
+  kind: ddx
+  target: ddx.monoclonal_gammopathy
+  requires: [lab.protein_g_l]
+  when: {field: lab.protein_g_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1024, locator: Etiology; Evaluation}
+  status: draft_unreviewed
+  migrated_from: TP_HOCH
+  tests:
+  - {facts: {lab.protein_g_l: 81}, refs: {lab.protein_g_l: {lower: 60, upper: 80}}, expect: true}
+  - {facts: {lab.protein_g_l: 80}, refs: {lab.protein_g_l: {lower: 60, upper: 80}}, expect: false}
+  - {facts: {}, refs: {lab.protein_g_l: {lower: 60, upper: 80}}, expect: unknown}

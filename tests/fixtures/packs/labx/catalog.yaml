@@ -11,6 +11,7 @@ fields:
       de: {name: C-reaktives Protein, abbr: CRP}
     alt_units:
       - {unit: mg/dL, factor: 0.1, decimals: 1}
+    synthehr: {codes: [CRP], unit: mg/L}
   - code: lab.wbc_g_l
     section: lab
     type: number
@@ -31,3 +32,4 @@ fields:
       zh: {name: 低密度脂蛋白胆固醇, abbr: LDL-C}
       en: {name: LDL cholesterol, abbr: LDL-C}
       de: {name: LDL-Cholesterin, abbr: LDL}
+    synthehr: {codes: [LDL, CLDL], unit: mmol/L}

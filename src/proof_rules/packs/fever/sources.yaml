@@ -1,0 +1,87 @@
+# Source register of the fever domain (D-04): original publications and guidelines whose terms permit citing their
+# criteria. Only criterion, threshold and locator are used, restated in our own words. Terms checked on 2026-11-08.
+sources:
+  - id: SRC-0001
+    citation: >-
+      Singer M, Deutschman CS, Seymour CW, Shankar-Hari M, Annane D, Bauer M, Bellomo R, Bernard GR, Chiche JD,
+      Coopersmith CM, Hotchkiss RS, Levy MM, Marshall JC, Martin GS, Opal SM, Rubenfeld GD, van der Poll T, Vincent JL,
+      Angus DC. The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA.
+      2016;315(8):801-810. doi:10.1001/jama.2016.0287. Read as NIH author manuscript PMC4968574.
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC4968574/
+    kind: guideline
+    terms: >-
+      NIH author manuscript on PubMed Central: free to read, available for text mining and for uses consistent with
+      fair use (PMC copyright notice). The publisher (AMA, JAMA Network) reserves text and data mining and AI training
+      on its own sites; neither is done here, the publisher site is not used.
+    terms_checked_on: 2026-11-08
+    permitted_use: >-
+      Criteria and thresholds cited with locator and restated in our own words; no text, table or figure reproduced;
+      no text and data mining, no AI training.
+  - id: SRC-0002
+    citation: >-
+      Seymour CW, Liu VX, Iwashyna TJ, Brunkhorst FM, Rea TD, Scherag A, Rubenfeld G, Kahn JM, Shankar-Hari M, Singer M,
+      Deutschman CS, Escobar GJ, Angus DC. Assessment of Clinical Criteria for Sepsis: For the Third International
+      Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA. 2016;315(8):762-774.
+      doi:10.1001/jama.2016.0288. Read as NIH author manuscript PMC5433435.
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC5433435/
+    kind: original_publication
+    terms: >-
+      NIH author manuscript on PubMed Central: free to read, available for text mining and for uses consistent with
+      fair use (PMC copyright notice). The publisher (AMA, JAMA Network) reserves text and data mining and AI training
+      on its own sites; neither is done here, the publisher site is not used.
+    terms_checked_on: 2026-11-08
+    permitted_use: >-
+      Criteria and thresholds cited with locator and restated in our own words; no text, table or figure reproduced;
+      no text and data mining, no AI training.
+  - id: SRC-0003
+    citation: >-
+      Woodhead M, Blasi F, Ewig S, Garau J, Huchon G, Ieven M, Ortqvist A, Schaberg T, Torres A, van der Heijden G,
+      Read R, Verheij TJ; Joint Taskforce of the European Respiratory Society and European Society for Clinical
+      Microbiology and Infectious Diseases. Guidelines for the management of adult lower respiratory tract infections -
+      full version. Clin Microbiol Infect. 2011;17 Suppl 6:E1-E59. doi:10.1111/j.1469-0691.2011.03672.x. Read on PubMed
+      Central PMC7128977.
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC7128977/
+    kind: guideline
+    terms: >-
+      © 2011 The Authors; © 2011 ESCMID. Free on PubMed Central; the publisher's open-archive licence allows
+      non-commercial access, download and text mining but no redistribution or adaptation of the article. The
+      publisher's website terms exclude use with AI tools only for copies taken from the publisher's services, which
+      are not used here.
+    terms_checked_on: 2026-11-08
+    permitted_use: >-
+      Criteria and thresholds cited with locator and restated in our own words; the article is not redistributed,
+      displayed or adapted.
+  - id: SRC-0004
+    citation: >-
+      World Health Organization. The WHO AWaRe (Access, Watch, Reserve) antibiotic book. Geneva: World Health
+      Organization; 2022. ISBN 9789240062382.
+    url: https://iris.who.int/handle/10665/365237
+    kind: guideline
+    terms: >-
+      © World Health Organization 2022, some rights reserved; licence CC BY-NC-SA 3.0 IGO (non-commercial copying and
+      adaptation with citation, no suggestion of WHO endorsement, no WHO logo). No clause on AI use found.
+    terms_checked_on: 2026-11-08
+    permitted_use: >-
+      Clinical features and thresholds cited with locator and restated in our own words; no text, table or figure
+      reproduced; no WHO endorsement implied.
+  - id: SRC-0005
+    citation: >-
+      Klein M, Abdel-Hadi C, Bühler R, Grabein B, Linn J, Nau R, Salzberger B, Schlüter D, Schwager K, Tumani H,
+      Weber J, Pfister HW. German guidelines on community-acquired acute bacterial meningitis in adults. Neurol Res
+      Pract. 2023;5:44. doi:10.1186/s42466-023-00264-6.
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC10470134/
+    kind: guideline
+    terms: "© The Author(s) 2023; open access under CC BY 4.0. No clause on AI use found."
+    terms_checked_on: 2026-11-08
+    permitted_use: Clinical features cited with locator and restated in our own words, with attribution.
+  - id: SRC-0006
+    citation: >-
+      Wright WF, Stelmash L, Betrains A, Mulders-Manders CM, Rovers CP, Vanderschueren S, Auwaerter PG; International
+      Fever and Inflammation of Unknown Origin Research Working Group. Recommendations for Updating Fever and
+      Inflammation of Unknown Origin From a Modified Delphi Consensus Panel. Open Forum Infect Dis. 2024;11(7):ofae298.
+      doi:10.1093/ofid/ofae298.
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC11222709/
+    kind: original_publication
+    terms: "© The Author(s) 2024, published by Oxford University Press for IDSA; open access under CC BY 4.0. No clause on AI use found."
+    terms_checked_on: 2026-11-08
+    permitted_use: Definitions cited with locator and restated in our own words, with attribution.

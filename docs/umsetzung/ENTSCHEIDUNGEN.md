@@ -18,7 +18,7 @@ Die Eingabefelder des Auftrags waren leer. Belegt bzw. angenommen:
 | Nicht anfassen | alle anderen Projekte, vor allem NeuroGrid (D-01); Diagohelp-Ordner (A-02) |
 | Freigabemodus | angenommen: A, autonom nach Konzeptfreigabe (A-01) |
 
-## Blocker aus STOPP 1 (alle entschieden, siehe D-01 bis D-08)
+## Blocker (alle entschieden, siehe D-01 bis D-08 und D-11)
 
 ### B1 Startzeitpunkt – entschieden durch D-01
 **Entscheidung:** Die Startbedingung „erst nach NeuroGrid-G1“ entfällt, denn die Projekte hängen nicht voneinander ab.
@@ -111,7 +111,7 @@ keinen bezahlten Zugang.
   ausdrücklich deterministisch und teilt den Faktenkatalog mit der Fieber-Domäne.
 - B: Brustschmerz (ESC-Leitlinien). Braucht neue Faktentypen (EKG, Troponin-Verlauf).
 
-### B10 Quellen der 70 migrierten Laborregeln – offen (U3, 08.11.2026)
+### B10 Quellen der 70 migrierten Laborregeln – entschieden (D-11)
 Befund aus der maschinellen Erfassung von `DDX_REGELN` (nur gelesen, SHA-256 der Datei `6a82aa96…12c4b`):
 - 73 Einträge, davon 70 mit Inhalt. Zusammen sind es 194 Diagnosetexte über 47 Testcodes. Nach A-32 (eine Regel je
   Ziel) werden daraus rund 190 Regeln.
@@ -397,6 +397,78 @@ Folge für den Plan:
 - Pflichtangaben: Nutzungsbedingungen, Datum ihrer Prüfung und erlaubte Nutzung; die URL muss mit `https://` beginnen.
 - NICE wird abgewiesen, am Host `nice.org.uk` und am Namen im Zitat (D-04).
 
+### Annahmen aus U3
+
+**A-59 Laborprofile.** Präzisiert KONZEPT 4.5 und D-03.
+- Mehrere SynthEHR-Codes für denselben Test bilden einen Fakt, z. B. `CRE` und `CR` für Kreatinin. Der Katalog nennt
+  die Codes und die Einheit in der CSV (`synthehr` am Laborfeld).
+- Gezählt und verworfen werden Zeilen mit anderer Einheit, ohne Zahlenwert und außerhalb der physiologischen Grenzen.
+- Zensierte Werte mit Vergleichszeichen (`<5`, `>…`) gehen wie im Prototyp mit dem gemeldeten Grenzwert ein
+  (`apply_comparator` in `01_prepare_labs.py`); das Profil zählt sie. Ohne sie fehlten die meisten normalen CRP-Werte.
+- Die Labore in SynthEHR melden unterschiedliche Referenzbereiche. Das Profil nimmt den Bereich, den die meisten
+  gültigen Zeilen tragen. Zeilen mit anderem Bereich werden gezählt und nicht genutzt, damit Werte und Bereich
+  zusammenpassen.
+- Der Mittelwert je Patient wird auf die Nachkommastellen des Fakts gerundet; der Status folgt diesem gerundeten Wert,
+  so wie der Wert später im Fall steht.
+- Je Status stehen 21 Quantile (0 %, 5 %, …, 100 %, linear interpoliert) im Profil. Wie der Sampler sie nutzt, legt
+  U4 fest.
+- Profile entstehen nur für die Laborfelder einer Domäne, nicht für Bibliotheken (A-55).
+
+**A-60 Fieberregeln.** Wo eine Quelle ein Kriterium ohne Zahl oder ohne Verknüpfung nennt, gilt diese Auslegung;
+`docs/methodik.md` erklärt sie.
+- Sepsis: Verdacht auf Infektion heißt Temperatur über 38,0 °C (Temperaturkriterium in Sepsis-3, Box 1), dazu
+  qSOFA ≥ 2.
+- qSOFA: „veränderte Bewusstseinslage“ ist der Faktwert `altered`; Sepsis-3 versteht darunter jeden GCS unter 15.
+- Pneumonie: zwei Regeln mit demselben Ziel. Erstens Husten und CRP über 100 mg/L. Zweitens Husten und eines dieser
+  Zeichen: neuer fokaler Thoraxbefund, Atemnot, Puls über 100/min, Beschwerden länger als 4 Tage. Die Quelle sagt
+  „Fieber länger als 4 Tage“; in der Fieberdomäne gilt der Beginn der Beschwerden als Fieberbeginn. Die Tachypnoe
+  nennt die Quelle ohne Schwelle; sie wird deshalb nicht verwendet.
+- Akute Pyelonephritis: Fieber ≥ 38,0 °C und Flankenschmerz oder Nierenlager-Klopfschmerz (WHO AWaRe).
+- Bakterielle Meningitis: Die Leitlinie nennt vier Kardinalsymptome und rät, bei ihrer Kombination an eine Meningitis
+  zu denken. Kombination heißt hier mindestens zwei der vier. Fieber heißt ≥ 38,0 °C (WHO AWaRe).
+- Ein Warnzeichen für Meningitis gibt es nicht: Keine geprüfte Quelle macht die Kombination selbst zum
+  Notfall-Kriterium. Einziges Warnzeichen bleibt qSOFA ≥ 2 (PR-K07).
+
+**A-61 Quellen mit KI-Klauseln.** Nach der Logik von D-04 sind Quellen ausgeschlossen, deren Bedingungen die Nutzung in
+KI-Systemen untersagen.
+- Ausgeschlossen: die EAU-Leitlinien (Nutzung in KI- und LLM-Systemen untersagt) und NEJM-Inhalte (dürfen nicht zum
+  Testen von KI-Werkzeugen genutzt werden). Ersatz sind WHO AWaRe und die deutsche Meningitis-Leitlinie (CC BY 4.0).
+- Elsevier untersagt KI-Nutzung für Inhalte von seinen Websites. Gelesen wird deshalb nur die Fassung auf PubMed
+  Central, für die deren Bedingungen gelten.
+- JAMA behält sich auf seinen Websites Text- und Data-Mining sowie KI-Training vor. Sepsis-3 wird als
+  NIH-Autorenmanuskript auf PubMed Central gelesen; zitiert werden nur Kriterien, ohne Mining und ohne Training.
+
+**A-62 Teilbelege und Codes.** Präzisiert D-11.
+- Belegt das Kapitel einen Prototyp-Text nur teilweise, wird nur der belegte Teil migriert. Der Code benennt dann genau
+  diesen Teil; die Migrationstabelle nennt, was entfällt.
+- Ein Text, der zwei Krankheiten mit „oder“ verbindet, wird zu zwei Codes, jeder mit eigenem Beleg.
+- Gleiche Krankheiten aus verschiedenen Texten bekommen denselben Code, z. B. `ddx.aki`.
+- Texte, die keine Ursache des Befunds nennen, sondern eine Bewertung („günstige kardiovaskuläre Konstellation“),
+  werden nicht migriert.
+
+**A-63 Bedeutung der migrierten Schlüssel.**
+- `_HOCH` heißt über der oberen, `_NIEDRIG` unter der unteren Grenze des Referenzbereichs, wie im Prototyp
+  (`01_prepare_labs.py`).
+- Migriert wird die Bedeutung des Schlüssels. Die Vorrangkette von `get_ddx` (Kombinationen zuerst, höchstens vier
+  Texte) entfällt, denn jede wahre Regel zählt (A-53).
+
+**A-64 Laborregeln der Fieberdomäne (A-08).** Aktiv sind die migrierten Regeln, deren Felder alle zu dieser Auswahl
+gehören: CRP (PRD-Beispiel), Kreatinin und Bilirubin (Organkriterien von SOFA in Sepsis-3, Tabelle 1) und Laktat
+(Kriterium des septischen Schocks, Sepsis-3, Box 3). Die Regel zur Rhabdomyolyse braucht CK und bleibt deshalb
+inaktiv. Leukozyten stehen als Kontextfakt im Katalog (PRD-Beispiel); keine Regel nutzt sie.
+
+**A-65 Physiologische Grenzen.** Präzisiert KONZEPT 4.1 und D-03.
+- Quelle ist das MIMIC Code Repository (MIT-Lizenz, Release v3.0.1): seine Plausibilitätsfilter mit Datei und Zeile.
+  OHDSI DQD enthält in der aktuellen Version keine Messwertgrenzen mehr. Für die Tage seit Beginn gilt die Definition
+  des Fiebers unklarer Ursache (ab 3 Wochen), die Fieberdomäne endet bei 20 Tagen.
+- Die Grenzen sind einschließlich. Ausschließliche Grenzen der Quelle („> 0“) werden zum nächsten Wert auf dem Raster
+  der Nachkommastellen (z. B. 0,1). US-Einheiten werden mit der Molmasse umgerechnet. Platzhalter-Obergrenzen der
+  Quelle (10 000) werden nicht übernommen.
+- Nennt die Quelle keine Obergrenze, bleibt sie offen.
+- Jeder Fakt einer Domäne braucht Grenzen mit Quelle; der Lader prüft das. Für 18 Laborfelder, die nur
+  Bibliotheksregeln nutzen (z. B. TSH, Lipide, Eisen, PSA), fand sich keine offen lizenzierte Quelle. Sie bleiben ohne
+  Grenzen, bis eine Domäne sie braucht.
+
 ## Entscheidungen des Projektverantwortlichen
 
 **D-01 Projekte sind voneinander unabhängig (08.11.2026).** Deine Vorgabe: „nichts abändern. Das heißt, nichts von
@@ -536,3 +608,12 @@ die Auslegungen A-31 bis A-48. Die Umsetzung läuft im Freigabemodus A (A-01) bi
 - Nach U2 fand ich es als `github.com/Ammxri/Proof`: öffentlich, leer, angelegt am 08.11.2026 um 13:52 UTC. GitHub
   unterscheidet bei Namen nicht zwischen Groß- und Kleinschreibung.
 - Gepusht wird nur `dev`. Da das Repository leer war, macht GitHub `dev` zum Standardzweig, bis es `main` gibt.
+
+**D-11 Quellen der migrierten Laborregeln (B10): Empfehlung A bestätigt (08.11.2026).** Deine Antwort:
+„A: Nachschlagewerke“.
+- Für die migrierten Laborregeln sind zusätzlich Nachschlagewerke zugelassen (Art `reference_work`, A-58), je
+  Laborabweichung ein Kapitel. Die Bedingungen jedes Kapitels werden geprüft und im Register vermerkt.
+- Übernommen werden nur Tatsache und Fundstelle, in eigener Formulierung; kein Text und keine Tabelle.
+- Eine Zuordnung des Prototyps, die das Kapitel nicht belegt, wird keine Regel. Die Migrationstabelle nennt den Grund.
+- `GENERELL_HOCH` wird begründet ausgelassen. `UR` wird als Harnstoff migriert; die Zuordnungen zu Harnsäure entfallen.
+- Für die Fieberregeln und Warnzeichen gilt D-04 unverändert: Originalpublikationen und Leitlinien.

@@ -1,0 +1,15 @@
+source:
+  file: fixture/prototype.py
+  sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  table: FIXTURE_TABLE
+entries:
+  - key: CRP_HOCH
+    condition: lab.crp_mg_l above the upper reference limit
+    items:
+      - text: fixture diagnosis gamma
+        rules: [LABX-DDX-001]
+      - text: fixture text without support
+        reason: fixture reason
+  - key: CRP_NIEDRIG
+    condition: lab.crp_mg_l below the lower reference limit
+    reason: empty entry in the fixture table

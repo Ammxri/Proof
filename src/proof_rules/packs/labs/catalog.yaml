@@ -1,0 +1,390 @@
+fields:
+- code: lab.crp_mg_l
+  section: lab
+  type: number
+  unit: mg/L
+  decimals: 1
+  bounds:
+    lower: 0.1
+    source: {ref: SRC-0101, locator: 'mimic-iv/concepts/measurement/inflammation.sql, lines 7 and 16 (value > 0 mg/L; no upper
+        limit)'}
+  labels:
+    zh: {name: C反应蛋白, abbr: CRP}
+    en: {name: C-reactive protein, abbr: CRP}
+    de: {name: C-reaktives Protein, abbr: CRP}
+  synthehr: {codes: [CRP], unit: mg/L}
+- code: lab.alt_u_l
+  section: lab
+  type: number
+  unit: U/L
+  decimals: 0
+  bounds:
+    lower: 1
+    source: {ref: SRC-0101, locator: 'mimic-iv/concepts/measurement/enzyme.sql, lines 8 and 42 (value > 0; no upper limit)'}
+  labels:
+    zh: {name: 丙氨酸氨基转移酶, abbr: ALT}
+    en: {name: Alanine aminotransferase, abbr: ALT}
+    de: {name: Alanin-Aminotransferase, abbr: ALT}
+  synthehr: {codes: [ALT], unit: U/L}
+- code: lab.urea_mmol_l
+  section: lab
+  type: number
+  unit: mmol/L
+  decimals: 1
+  bounds:
+    lower: 0.1
+    upper: 107.1
+    source: {ref: SRC-0101, locator: 'mimic-iv/concepts/measurement/chemistry.sql, lines 31 and 83 (0 < urea nitrogen <= 300
+        mg/dL; 1 mg/dL urea nitrogen = 0.357 mmol/L urea)'}
+  labels:
+    zh: {name: 尿素}
+    en: {name: Urea}
+    de: {name: Harnstoff}
+  synthehr: {codes: [UREA, UR], unit: mmol/L}
+- code: lab.creatinine_umol_l
+  section: lab
+  type: number
+  unit: µmol/L
+  decimals: 0
+  bounds:
+    lower: 1
+    upper: 13260
+    source: {ref: SRC-0101, locator: 'mimic-iv/concepts/measurement/chemistry.sql, lines 44 and 83 (0 < value <= 150 mg/dL;
+        1 mg/dL = 88.4 µmol/L)'}
+  labels:
+    zh: {name: 肌酐, abbr: Cr}
+    en: {name: Creatinine, abbr: Cr}
+    de: {name: Kreatinin, abbr: Krea}
+  synthehr: {codes: [CRE, CR], unit: umol/L}
+- code: lab.albumin_g_l
+  section: lab
+  type: number
+  unit: g/L
+  decimals: 0
+  bounds:
+    lower: 1
+    upper: 100
+    source: {ref: SRC-0101, locator: 'mimic-iv/concepts/measurement/chemistry.sql, lines 12 and 83 (0 < value <= 10 g/dL)'}
+  labels:
+    zh: {name: 白蛋白, abbr: ALB}
+    en: {name: Albumin, abbr: Alb}
+    de: {name: Albumin, abbr: Alb}
+  synthehr: {codes: [ALB, AL], unit: g/L}
+- code: lab.bilirubin_umol_l
+  section: lab
+  type: number
+  unit: µmol/L
+  decimals: 0
+  bounds:
+    lower: 1
+    upper: 2565
+    source: {ref: SRC-0101, locator: 'mimic-iii/concepts/pivot/pivoted_lab.sql, lines 134 and 189 (0 < value <= 150 mg/dL;
+        1 mg/dL = 17.1 µmol/L)'}
+  labels:
+    zh: {name: 总胆红素, abbr: TBil}
+    en: {name: Total bilirubin, abbr: Bili}
+    de: {name: Gesamtbilirubin, abbr: Bili}
+  synthehr: {codes: [BIL, BI], unit: umol/L}
+- code: lab.alp_u_l
+  section: lab
+  type: number
+  unit: U/L
+  decimals: 0
+  bounds:
+    lower: 1
+    source: {ref: SRC-0101, locator: 'mimic-iv/concepts/measurement/enzyme.sql, lines 9 and 42 (value > 0; no upper limit)'}
+  labels:
+    zh: {name: 碱性磷酸酶, abbr: ALP}
+    en: {name: Alkaline phosphatase, abbr: ALP}
+    de: {name: Alkalische Phosphatase, abbr: AP}
+  synthehr: {codes: [AP], unit: U/L}
+- code: lab.ggt_u_l
+  section: lab
+  type: number
+  unit: U/L
+  decimals: 0
+  bounds:
+    lower: 1
+    source: {ref: SRC-0101, locator: 'mimic-iv/concepts/measurement/enzyme.sql, lines 23 and 42 (value > 0; no upper limit)'}
+  labels:
+    zh: {name: γ-谷氨酰转移酶, abbr: GGT}
+    en: {name: Gamma-glutamyl transferase, abbr: GGT}
+    de: {name: Gamma-Glutamyltransferase, abbr: GGT}
+  synthehr: {codes: [GT], unit: U/L}
+- code: lab.protein_g_l
+  section: lab
+  type: number
+  unit: g/L
+  decimals: 0
+  bounds:
+    lower: 1
+    upper: 200
+    source: {ref: SRC-0101, locator: 'mimic-iv/concepts/measurement/chemistry.sql, lines 18 and 83 (0 < value <= 20 g/dL)'}
+  labels:
+    zh: {name: 总蛋白, abbr: TP}
+    en: {name: Total protein, abbr: TP}
+    de: {name: Gesamteiweiß}
+  synthehr: {codes: [TP], unit: g/L}
+- code: lab.calcium_mmol_l
+  section: lab
+  type: number
+  unit: mmol/L
+  decimals: 2
+  bounds:
+    lower: 0.01
+    source: {ref: SRC-0101, locator: 'mimic-iv/concepts/measurement/chemistry.sql, lines 35 and 83 (value > 0; the ceiling
+        10000 is a placeholder and not taken over)'}
+  labels:
+    zh: {name: 钙, abbr: Ca}
+    en: {name: Calcium, abbr: Ca}
+    de: {name: Calcium, abbr: Ca}
+  synthehr: {codes: [CA], unit: mmol/L}
+- code: lab.calcium_corr_mmol_l
+  section: lab
+  type: number
+  unit: mmol/L
+  decimals: 2
+  labels:
+    zh: {name: 校正钙}
+    en: {name: Corrected calcium}
+    de: {name: Korrigiertes Calcium}
+  synthehr: {codes: [CCA], unit: mmol/L}
+- code: lab.phosphate_mmol_l
+  section: lab
+  type: number
+  unit: mmol/L
+  decimals: 2
+  labels:
+    zh: {name: 磷, abbr: P}
+    en: {name: Phosphate, abbr: PO4}
+    de: {name: Phosphat}
+  synthehr: {codes: [PHO], unit: mmol/L}
+- code: lab.magnesium_mmol_l
+  section: lab
+  type: number
+  unit: mmol/L
+  decimals: 2
+  labels:
+    zh: {name: 镁, abbr: Mg}
+    en: {name: Magnesium, abbr: Mg}
+    de: {name: Magnesium, abbr: Mg}
+  synthehr: {codes: [MG], unit: mmol/L}
+- code: lab.potassium_mmol_l
+  section: lab
+  type: number
+  unit: mmol/L
+  decimals: 1
+  bounds:
+    lower: 0.1
+    upper: 30
+    source: {ref: SRC-0101, locator: 'mimic-iv/concepts/measurement/chemistry.sql, lines 55 and 83 (0 < value <= 30 mEq/L)'}
+  labels:
+    zh: {name: 钾, abbr: K}
+    en: {name: Potassium, abbr: K}
+    de: {name: Kalium, abbr: K}
+  synthehr: {codes: [K, KA], unit: mmol/L}
+- code: lab.bicarbonate_mmol_l
+  section: lab
+  type: number
+  unit: mmol/L
+  decimals: 0
+  bounds:
+    lower: 1
+    source: {ref: SRC-0101, locator: 'mimic-iv/concepts/measurement/chemistry.sql, lines 27 and 83 (value > 0; the ceiling
+        10000 is a placeholder and not taken over)'}
+  labels:
+    zh: {name: 碳酸氢盐, abbr: HCO3}
+    en: {name: Bicarbonate, abbr: HCO3}
+    de: {name: Bikarbonat, abbr: HCO3}
+  synthehr: {codes: [CO2, BIC], unit: mmol/L}
+- code: lab.egfr_ml_min
+  section: lab
+  type: number
+  unit: mL/min/1.73 m²
+  decimals: 0
+  labels:
+    zh: {name: 估算肾小球滤过率, abbr: eGFR}
+    en: {name: Estimated glomerular filtration rate, abbr: eGFR}
+    de: {name: Geschätzte glomeruläre Filtrationsrate, abbr: eGFR}
+  synthehr: {codes: [eGFR, HIC_EGFR], unit: mL/min}
+- code: lab.urine_albumin_mg_l
+  section: lab
+  type: number
+  unit: mg/L
+  decimals: 0
+  labels:
+    zh: {name: 尿微量白蛋白}
+    en: {name: Urine albumin (microalbumin)}
+    de: {name: Albumin im Urin (Mikroalbumin)}
+  synthehr: {codes: [MA], unit: mg/L}
+- code: lab.uacr_mg_mmol
+  section: lab
+  type: number
+  unit: mg/mmol
+  decimals: 1
+  labels:
+    zh: {name: 尿白蛋白/肌酐比值, abbr: UACR}
+    en: {name: Urine albumin-to-creatinine ratio, abbr: ACR}
+    de: {name: Albumin-Kreatinin-Quotient im Urin, abbr: UACR}
+  synthehr: {codes: [UAC], unit: mg/mmol Creat}
+- code: lab.tsh_mu_l
+  section: lab
+  type: number
+  unit: mU/L
+  decimals: 2
+  labels:
+    zh: {name: 促甲状腺激素, abbr: TSH}
+    en: {name: Thyroid-stimulating hormone, abbr: TSH}
+    de: {name: Thyreoidea-stimulierendes Hormon, abbr: TSH}
+  synthehr: {codes: [TSH, TS], unit: mU/L}
+- code: lab.ft4_pmol_l
+  section: lab
+  type: number
+  unit: pmol/L
+  decimals: 1
+  labels:
+    zh: {name: 游离甲状腺素, abbr: FT4}
+    en: {name: Free thyroxine, abbr: fT4}
+    de: {name: Freies Thyroxin, abbr: fT4}
+  synthehr: {codes: [FT4], unit: pmol/L}
+- code: lab.shbg_nmol_l
+  section: lab
+  type: number
+  unit: nmol/L
+  decimals: 1
+  labels:
+    zh: {name: 性激素结合球蛋白, abbr: SHBG}
+    en: {name: Sex hormone-binding globulin, abbr: SHBG}
+    de: {name: Sexualhormon-bindendes Globulin, abbr: SHBG}
+  synthehr: {codes: [SHBG], unit: nmol/L}
+- code: lab.cholesterol_mmol_l
+  section: lab
+  type: number
+  unit: mmol/L
+  decimals: 1
+  labels:
+    zh: {name: 总胆固醇, abbr: TC}
+    en: {name: Total cholesterol, abbr: TC}
+    de: {name: Gesamtcholesterin}
+  synthehr: {codes: [CHOL, CH], unit: mmol/L}
+- code: lab.hdl_mmol_l
+  section: lab
+  type: number
+  unit: mmol/L
+  decimals: 2
+  labels:
+    zh: {name: 高密度脂蛋白胆固醇, abbr: HDL-C}
+    en: {name: HDL cholesterol, abbr: HDL-C}
+    de: {name: HDL-Cholesterin, abbr: HDL}
+  synthehr: {codes: [HDL], unit: mmol/L}
+- code: lab.ldl_mmol_l
+  section: lab
+  type: number
+  unit: mmol/L
+  decimals: 1
+  labels:
+    zh: {name: 低密度脂蛋白胆固醇, abbr: LDL-C}
+    en: {name: LDL cholesterol, abbr: LDL-C}
+    de: {name: LDL-Cholesterin, abbr: LDL}
+  synthehr: {codes: [LDL, CLDL], unit: mmol/L}
+- code: lab.triglycerides_mmol_l
+  section: lab
+  type: number
+  unit: mmol/L
+  decimals: 1
+  labels:
+    zh: {name: 甘油三酯, abbr: TG}
+    en: {name: Triglycerides, abbr: TG}
+    de: {name: Triglyceride, abbr: TG}
+  synthehr: {codes: [TRIG, TG], unit: mmol/L}
+- code: lab.glucose_mmol_l
+  section: lab
+  type: number
+  unit: mmol/L
+  decimals: 1
+  bounds:
+    lower: 0.1
+    source: {ref: SRC-0101, locator: 'mimic-iv/concepts/measurement/chemistry.sql, lines 48 and 83 (value > 0; the ceiling
+        10000 is a placeholder and not taken over)'}
+  labels:
+    zh: {name: 血糖, abbr: Glu}
+    en: {name: Glucose, abbr: Glu}
+    de: {name: Glukose, abbr: Glu}
+  synthehr: {codes: [GL, GLP], unit: mmol/L}
+- code: lab.hba1c_mmol_mol
+  section: lab
+  type: number
+  unit: mmol/mol
+  decimals: 1
+  labels:
+    zh: {name: 糖化血红蛋白, abbr: HbA1c}
+    en: {name: Glycated haemoglobin, abbr: HbA1c}
+    de: {name: Glykiertes Hämoglobin, abbr: HbA1c}
+  synthehr: {codes: [HBAC], unit: mmol/mol}
+- code: lab.uric_acid_umol_l
+  section: lab
+  type: number
+  unit: µmol/L
+  decimals: 0
+  labels:
+    zh: {name: 尿酸, abbr: UA}
+    en: {name: Uric acid}
+    de: {name: Harnsäure}
+  synthehr: {codes: [URIC], unit: umol/L}
+- code: lab.ck_u_l
+  section: lab
+  type: number
+  unit: U/L
+  decimals: 0
+  bounds:
+    lower: 1
+    source: {ref: SRC-0101, locator: 'mimic-iv/concepts/measurement/enzyme.sql, lines 21 and 42 (value > 0; no upper limit)'}
+  labels:
+    zh: {name: 肌酸激酶, abbr: CK}
+    en: {name: Creatine kinase, abbr: CK}
+    de: {name: Kreatinkinase, abbr: CK}
+  synthehr: {codes: [CK], unit: U/L}
+- code: lab.lactate_mmol_l
+  section: lab
+  type: number
+  unit: mmol/L
+  decimals: 1
+  bounds:
+    lower: 0.1
+    upper: 50
+    source: {ref: SRC-0101, locator: 'mimic-iii/concepts/pivot/pivoted_lab.sql, lines 144 and 189 (0 < value <= 50 mmol/L)'}
+  labels:
+    zh: {name: 乳酸, abbr: Lac}
+    en: {name: Lactate}
+    de: {name: Laktat}
+  synthehr: {codes: [LACT], unit: mmol/L}
+- code: lab.psa_ug_l
+  section: lab
+  type: number
+  unit: µg/L
+  decimals: 1
+  labels:
+    zh: {name: 前列腺特异性抗原, abbr: PSA}
+    en: {name: Prostate-specific antigen, abbr: PSA}
+    de: {name: Prostataspezifisches Antigen, abbr: PSA}
+  synthehr: {codes: [PSA], unit: ug/L}
+- code: lab.iron_umol_l
+  section: lab
+  type: number
+  unit: µmol/L
+  decimals: 0
+  labels:
+    zh: {name: 血清铁, abbr: Fe}
+    en: {name: Serum iron, abbr: Fe}
+    de: {name: Serumeisen, abbr: Fe}
+  synthehr: {codes: [IRON], unit: umol/L}
+- code: lab.ferritin_ug_l
+  section: lab
+  type: number
+  unit: µg/L
+  decimals: 0
+  labels:
+    zh: {name: 铁蛋白}
+    en: {name: Ferritin}
+    de: {name: Ferritin}
+  synthehr: {codes: [FER], unit: ug/L}

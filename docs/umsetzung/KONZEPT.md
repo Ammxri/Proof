@@ -66,8 +66,8 @@ proof/
   .github/workflows/ci.yml         Windows + Linux; pages.yml nur manuell auslösbar
   src/proof/        cli.py, core/, cases/, render/, variants/, harness/, scoring/, report/
   src/proof_rules/  model.py, logic.py, engine.py, ablation.py, keys.py, explain.py, loader.py,
-                    packs/fever/ (pack, catalog, vocabulary, rules/, sources, migration, profiles/; A-55),
-                    packs/labs/  (die 70 migrierten Laborregeln, A-08),
+                    packs/fever/ (pack, catalog, vocabulary, rules/, sources, profiles/; A-55),
+                    packs/labs/  (migrierte Laborregeln mit migration.yaml, A-08, D-11),
                     packs/chest_pain/ (U14)
   data/collections/  fever-100/, fever-500/ (Fälle und Varianten als JSONL, collection.json)
   schema/            case, variant, response (JSON Schema, aus Pydantic erzeugt)
@@ -75,7 +75,7 @@ proof/
   review/            Prüfvermerke je Sprache (Platzhalter bis zur Lieferung)
   docs/              methodik.md, regeln.md (erzeugt), daten/synthehr.md, umsetzung/
   tests/             unit/, integration/ (mit Stub-Server), e2e/, golden/
-  tools/             Entwicklerwerkzeuge außerhalb des Pakets, z. B. Lizenzprüfung (A-50)
+  tools/             Entwicklerwerkzeuge außerhalb des Pakets, z. B. Lizenzprüfung (A-50), Erzeugung von docs/regeln.md
   .proof/ .local/    nicht versioniert: Zwischenspeicher, Läufe, private Mengen, SynthEHR-Ausgabe, PRD
 ```
 

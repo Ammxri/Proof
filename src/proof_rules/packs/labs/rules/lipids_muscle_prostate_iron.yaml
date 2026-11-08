@@ -1,0 +1,406 @@
+- id: LAB-CHOL-HOCH-1
+  kind: ddx
+  target: ddx.hypercholesterolemia
+  requires: [lab.cholesterol_mmol_l]
+  when: {field: lab.cholesterol_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1008, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: CHOL_HOCH
+  tests:
+  - {facts: {lab.cholesterol_mmol_l: 5.1}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: true}
+  - {facts: {lab.cholesterol_mmol_l: 5}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: false}
+  - {facts: {}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: unknown}
+- id: LAB-CHOL-HOCH-2
+  kind: ddx
+  target: ddx.familial_hypercholesterolemia
+  requires: [lab.cholesterol_mmol_l]
+  when: {field: lab.cholesterol_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1008, locator: Etiology}
+  - {ref: SRC-1044, locator: Introduction}
+  status: draft_unreviewed
+  migrated_from: CHOL_HOCH
+  tests:
+  - {facts: {lab.cholesterol_mmol_l: 5.1}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: true}
+  - {facts: {lab.cholesterol_mmol_l: 5}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: false}
+  - {facts: {}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: unknown}
+- id: LAB-CHOL-HOCH-3
+  kind: ddx
+  target: ddx.hypothyroidism
+  requires: [lab.cholesterol_mmol_l]
+  when: {field: lab.cholesterol_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1008, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: CHOL_HOCH
+  tests:
+  - {facts: {lab.cholesterol_mmol_l: 5.1}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: true}
+  - {facts: {lab.cholesterol_mmol_l: 5}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: false}
+  - {facts: {}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: unknown}
+- id: LAB-CHOL-HOCH-4
+  kind: ddx
+  target: ddx.nephrotic_syndrome
+  requires: [lab.cholesterol_mmol_l]
+  when: {field: lab.cholesterol_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1008, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: CHOL_HOCH
+  tests:
+  - {facts: {lab.cholesterol_mmol_l: 5.1}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: true}
+  - {facts: {lab.cholesterol_mmol_l: 5}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: false}
+  - {facts: {}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: unknown}
+- id: LAB-HDL-NIEDRIG-1
+  kind: ddx
+  target: ddx.metabolic_syndrome
+  requires: [lab.hdl_mmol_l]
+  when: {field: lab.hdl_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1051, locator: Introduction}
+  status: draft_unreviewed
+  migrated_from: HDL_NIEDRIG
+  tests:
+  - {facts: {lab.hdl_mmol_l: 0.59}, refs: {lab.hdl_mmol_l: {lower: 0.6, upper: 2.5}}, expect: true}
+  - {facts: {lab.hdl_mmol_l: 0.6}, refs: {lab.hdl_mmol_l: {lower: 0.6, upper: 2.5}}, expect: false}
+  - {facts: {}, refs: {lab.hdl_mmol_l: {lower: 0.6, upper: 2.5}}, expect: unknown}
+- id: LAB-HDL-NIEDRIG-2
+  kind: ddx
+  target: ddx.type2_diabetes
+  requires: [lab.hdl_mmol_l]
+  when: {field: lab.hdl_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1049, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: HDL_NIEDRIG
+  tests:
+  - {facts: {lab.hdl_mmol_l: 0.59}, refs: {lab.hdl_mmol_l: {lower: 0.6, upper: 2.5}}, expect: true}
+  - {facts: {lab.hdl_mmol_l: 0.6}, refs: {lab.hdl_mmol_l: {lower: 0.6, upper: 2.5}}, expect: false}
+  - {facts: {}, refs: {lab.hdl_mmol_l: {lower: 0.6, upper: 2.5}}, expect: unknown}
+- id: LAB-HDL-NIEDRIG-3
+  kind: ddx
+  target: ddx.smoking
+  requires: [lab.hdl_mmol_l]
+  when: {field: lab.hdl_mmol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1049, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: HDL_NIEDRIG
+  tests:
+  - {facts: {lab.hdl_mmol_l: 0.59}, refs: {lab.hdl_mmol_l: {lower: 0.6, upper: 2.5}}, expect: true}
+  - {facts: {lab.hdl_mmol_l: 0.6}, refs: {lab.hdl_mmol_l: {lower: 0.6, upper: 2.5}}, expect: false}
+  - {facts: {}, refs: {lab.hdl_mmol_l: {lower: 0.6, upper: 2.5}}, expect: unknown}
+- id: LAB-HDL-HOCH-1
+  kind: ddx
+  target: ddx.regular_exercise
+  requires: [lab.hdl_mmol_l]
+  when: {field: lab.hdl_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1051, locator: Deterrence and Patient Education}
+  status: draft_unreviewed
+  migrated_from: HDL_HOCH
+  tests:
+  - {facts: {lab.hdl_mmol_l: 2.51}, refs: {lab.hdl_mmol_l: {lower: 0.6, upper: 2.5}}, expect: true}
+  - {facts: {lab.hdl_mmol_l: 2.5}, refs: {lab.hdl_mmol_l: {lower: 0.6, upper: 2.5}}, expect: false}
+  - {facts: {}, refs: {lab.hdl_mmol_l: {lower: 0.6, upper: 2.5}}, expect: unknown}
+- id: LAB-TRIG-HOCH-1
+  kind: ddx
+  target: ddx.hypertriglyceridemia
+  requires: [lab.triglycerides_mmol_l]
+  when: {field: lab.triglycerides_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1012, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: TRIG_HOCH
+  tests:
+  - {facts: {lab.triglycerides_mmol_l: 2.4}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: true}
+  - {facts: {lab.triglycerides_mmol_l: 2.3}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: false}
+  - {facts: {}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: unknown}
+- id: LAB-TRIG-HOCH-2
+  kind: ddx
+  target: ddx.diabetes_mellitus
+  requires: [lab.triglycerides_mmol_l]
+  when: {field: lab.triglycerides_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1012, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: TRIG_HOCH
+  tests:
+  - {facts: {lab.triglycerides_mmol_l: 2.4}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: true}
+  - {facts: {lab.triglycerides_mmol_l: 2.3}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: false}
+  - {facts: {}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: unknown}
+- id: LAB-TRIG-HOCH-3
+  kind: ddx
+  target: ddx.metabolic_syndrome
+  requires: [lab.triglycerides_mmol_l]
+  when: {field: lab.triglycerides_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1012, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: TRIG_HOCH
+  tests:
+  - {facts: {lab.triglycerides_mmol_l: 2.4}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: true}
+  - {facts: {lab.triglycerides_mmol_l: 2.3}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: false}
+  - {facts: {}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: unknown}
+- id: LAB-TRIG-HOCH-4
+  kind: ddx
+  target: ddx.alcohol_use
+  requires: [lab.triglycerides_mmol_l]
+  when: {field: lab.triglycerides_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1012, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: TRIG_HOCH
+  tests:
+  - {facts: {lab.triglycerides_mmol_l: 2.4}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: true}
+  - {facts: {lab.triglycerides_mmol_l: 2.3}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: false}
+  - {facts: {}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: unknown}
+- id: LAB-TRIG-HOCH-5
+  kind: ddx
+  target: ddx.hypothyroidism
+  requires: [lab.triglycerides_mmol_l]
+  when: {field: lab.triglycerides_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1012, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: TRIG_HOCH
+  tests:
+  - {facts: {lab.triglycerides_mmol_l: 2.4}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: true}
+  - {facts: {lab.triglycerides_mmol_l: 2.3}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: false}
+  - {facts: {}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: unknown}
+- id: LAB-TRIG-HOCH-6
+  kind: ddx
+  target: ddx.kidney_failure
+  requires: [lab.triglycerides_mmol_l]
+  when: {field: lab.triglycerides_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1012, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: TRIG_HOCH
+  tests:
+  - {facts: {lab.triglycerides_mmol_l: 2.4}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: true}
+  - {facts: {lab.triglycerides_mmol_l: 2.3}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: false}
+  - {facts: {}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: unknown}
+- id: LAB-LDL-HOCH-1
+  kind: ddx
+  target: ddx.ldl_hypercholesterolemia
+  requires: [lab.ldl_mmol_l]
+  when: {field: lab.ldl_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1008, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: LDL_HOCH
+  tests:
+  - {facts: {lab.ldl_mmol_l: 4.3}, refs: {lab.ldl_mmol_l: {lower: 1, upper: 4.2}}, expect: true}
+  - {facts: {lab.ldl_mmol_l: 4.2}, refs: {lab.ldl_mmol_l: {lower: 1, upper: 4.2}}, expect: false}
+  - {facts: {}, refs: {lab.ldl_mmol_l: {lower: 1, upper: 4.2}}, expect: unknown}
+- id: LAB-LDL-HOCH-2
+  kind: ddx
+  target: ddx.familial_hypercholesterolemia
+  requires: [lab.ldl_mmol_l]
+  when: {field: lab.ldl_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1008, locator: Etiology}
+  - {ref: SRC-1044, locator: Introduction}
+  status: draft_unreviewed
+  migrated_from: LDL_HOCH
+  tests:
+  - {facts: {lab.ldl_mmol_l: 4.3}, refs: {lab.ldl_mmol_l: {lower: 1, upper: 4.2}}, expect: true}
+  - {facts: {lab.ldl_mmol_l: 4.2}, refs: {lab.ldl_mmol_l: {lower: 1, upper: 4.2}}, expect: false}
+  - {facts: {}, refs: {lab.ldl_mmol_l: {lower: 1, upper: 4.2}}, expect: unknown}
+- id: LAB-CLDL-HOCH-1
+  kind: ddx
+  target: ddx.ldl_hypercholesterolemia
+  requires: [lab.ldl_mmol_l]
+  when: {field: lab.ldl_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1008, locator: Etiology; Evaluation}
+  status: draft_unreviewed
+  migrated_from: CLDL_HOCH
+  tests:
+  - {facts: {lab.ldl_mmol_l: 4.3}, refs: {lab.ldl_mmol_l: {lower: 1, upper: 4.2}}, expect: true}
+  - {facts: {lab.ldl_mmol_l: 4.2}, refs: {lab.ldl_mmol_l: {lower: 1, upper: 4.2}}, expect: false}
+  - {facts: {}, refs: {lab.ldl_mmol_l: {lower: 1, upper: 4.2}}, expect: unknown}
+- id: LAB-CH-HOCH-1
+  kind: ddx
+  target: ddx.hypercholesterolemia
+  requires: [lab.cholesterol_mmol_l]
+  when: {field: lab.cholesterol_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1008, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: CH_HOCH
+  tests:
+  - {facts: {lab.cholesterol_mmol_l: 5.1}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: true}
+  - {facts: {lab.cholesterol_mmol_l: 5}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: false}
+  - {facts: {}, refs: {lab.cholesterol_mmol_l: {lower: 0, upper: 5}}, expect: unknown}
+- id: LAB-TG-HOCH-1
+  kind: ddx
+  target: ddx.hypertriglyceridemia
+  requires: [lab.triglycerides_mmol_l]
+  when: {field: lab.triglycerides_mmol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1012, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: TG_HOCH
+  tests:
+  - {facts: {lab.triglycerides_mmol_l: 2.4}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: true}
+  - {facts: {lab.triglycerides_mmol_l: 2.3}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: false}
+  - {facts: {}, refs: {lab.triglycerides_mmol_l: {lower: 0, upper: 2.3}}, expect: unknown}
+- id: LAB-CK-HOCH-1
+  kind: ddx
+  target: ddx.rhabdomyolysis
+  requires: [lab.ck_u_l]
+  when: {field: lab.ck_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1039, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: CK_HOCH
+  tests:
+  - {facts: {lab.ck_u_l: 121}, refs: {lab.ck_u_l: {lower: 30, upper: 120}}, expect: true}
+  - {facts: {lab.ck_u_l: 120}, refs: {lab.ck_u_l: {lower: 30, upper: 120}}, expect: false}
+  - {facts: {}, refs: {lab.ck_u_l: {lower: 30, upper: 120}}, expect: unknown}
+- id: LAB-CK-HOCH-2
+  kind: ddx
+  target: ddx.myocardial_injury
+  requires: [lab.ck_u_l]
+  when: {field: lab.ck_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1039, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: CK_HOCH
+  tests:
+  - {facts: {lab.ck_u_l: 121}, refs: {lab.ck_u_l: {lower: 30, upper: 120}}, expect: true}
+  - {facts: {lab.ck_u_l: 120}, refs: {lab.ck_u_l: {lower: 30, upper: 120}}, expect: false}
+  - {facts: {}, refs: {lab.ck_u_l: {lower: 30, upper: 120}}, expect: unknown}
+- id: LAB-CK-HOCH-3
+  kind: ddx
+  target: ddx.inflammatory_myopathy
+  requires: [lab.ck_u_l]
+  when: {field: lab.ck_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1039, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: CK_HOCH
+  tests:
+  - {facts: {lab.ck_u_l: 121}, refs: {lab.ck_u_l: {lower: 30, upper: 120}}, expect: true}
+  - {facts: {lab.ck_u_l: 120}, refs: {lab.ck_u_l: {lower: 30, upper: 120}}, expect: false}
+  - {facts: {}, refs: {lab.ck_u_l: {lower: 30, upper: 120}}, expect: unknown}
+- id: LAB-CK-HOCH-4
+  kind: ddx
+  target: ddx.statin_myopathy
+  requires: [lab.ck_u_l]
+  when: {field: lab.ck_u_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1039, locator: Clinical Significance}
+  status: draft_unreviewed
+  migrated_from: CK_HOCH
+  tests:
+  - {facts: {lab.ck_u_l: 121}, refs: {lab.ck_u_l: {lower: 30, upper: 120}}, expect: true}
+  - {facts: {lab.ck_u_l: 120}, refs: {lab.ck_u_l: {lower: 30, upper: 120}}, expect: false}
+  - {facts: {}, refs: {lab.ck_u_l: {lower: 30, upper: 120}}, expect: unknown}
+- id: LAB-PSA-HOCH-1
+  kind: ddx
+  target: ddx.bph
+  requires: [lab.psa_ug_l]
+  when: {field: lab.psa_ug_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1045, locator: Specimen Requirements and Procedure}
+  status: draft_unreviewed
+  migrated_from: PSA_HOCH
+  tests:
+  - {facts: {lab.psa_ug_l: 6.6}, refs: {lab.psa_ug_l: {lower: 0, upper: 6.5}}, expect: true}
+  - {facts: {lab.psa_ug_l: 6.5}, refs: {lab.psa_ug_l: {lower: 0, upper: 6.5}}, expect: false}
+  - {facts: {}, refs: {lab.psa_ug_l: {lower: 0, upper: 6.5}}, expect: unknown}
+- id: LAB-PSA-HOCH-2
+  kind: ddx
+  target: ddx.prostate_cancer
+  requires: [lab.psa_ug_l]
+  when: {field: lab.psa_ug_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1045, locator: Introduction}
+  status: draft_unreviewed
+  migrated_from: PSA_HOCH
+  tests:
+  - {facts: {lab.psa_ug_l: 6.6}, refs: {lab.psa_ug_l: {lower: 0, upper: 6.5}}, expect: true}
+  - {facts: {lab.psa_ug_l: 6.5}, refs: {lab.psa_ug_l: {lower: 0, upper: 6.5}}, expect: false}
+  - {facts: {}, refs: {lab.psa_ug_l: {lower: 0, upper: 6.5}}, expect: unknown}
+- id: LAB-PSA-HOCH-3
+  kind: ddx
+  target: ddx.prostatitis
+  requires: [lab.psa_ug_l]
+  when: {field: lab.psa_ug_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1045, locator: Specimen Requirements and Procedure; Interfering Factors}
+  status: draft_unreviewed
+  migrated_from: PSA_HOCH
+  tests:
+  - {facts: {lab.psa_ug_l: 6.6}, refs: {lab.psa_ug_l: {lower: 0, upper: 6.5}}, expect: true}
+  - {facts: {lab.psa_ug_l: 6.5}, refs: {lab.psa_ug_l: {lower: 0, upper: 6.5}}, expect: false}
+  - {facts: {}, refs: {lab.psa_ug_l: {lower: 0, upper: 6.5}}, expect: unknown}
+- id: LAB-PSA-HOCH-4
+  kind: ddx
+  target: ddx.prostate_manipulation
+  requires: [lab.psa_ug_l]
+  when: {field: lab.psa_ug_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1045, locator: Interfering Factors}
+  - {ref: SRC-1054, locator: Specimen Requirements and Procedure}
+  status: draft_unreviewed
+  migrated_from: PSA_HOCH
+  tests:
+  - {facts: {lab.psa_ug_l: 6.6}, refs: {lab.psa_ug_l: {lower: 0, upper: 6.5}}, expect: true}
+  - {facts: {lab.psa_ug_l: 6.5}, refs: {lab.psa_ug_l: {lower: 0, upper: 6.5}}, expect: false}
+  - {facts: {}, refs: {lab.psa_ug_l: {lower: 0, upper: 6.5}}, expect: unknown}
+- id: LAB-IRON-HOCH-1
+  kind: ddx
+  target: ddx.hemochromatosis
+  requires: [lab.iron_umol_l]
+  when: {field: lab.iron_umol_l, op: gt, value: {ref: upper}}
+  sources:
+  - {ref: SRC-1027, locator: Pathophysiology}
+  status: draft_unreviewed
+  migrated_from: IRON_HOCH
+  tests:
+  - {facts: {lab.iron_umol_l: 29}, refs: {lab.iron_umol_l: {lower: 5, upper: 28}}, expect: true}
+  - {facts: {lab.iron_umol_l: 28}, refs: {lab.iron_umol_l: {lower: 5, upper: 28}}, expect: false}
+  - {facts: {}, refs: {lab.iron_umol_l: {lower: 5, upper: 28}}, expect: unknown}
+- id: LAB-IRON-NIEDRIG-1
+  kind: ddx
+  target: ddx.iron_deficiency_anemia
+  requires: [lab.iron_umol_l]
+  when: {field: lab.iron_umol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1048, locator: Pathophysiology}
+  status: draft_unreviewed
+  migrated_from: IRON_NIEDRIG
+  tests:
+  - {facts: {lab.iron_umol_l: 4}, refs: {lab.iron_umol_l: {lower: 5, upper: 28}}, expect: true}
+  - {facts: {lab.iron_umol_l: 5}, refs: {lab.iron_umol_l: {lower: 5, upper: 28}}, expect: false}
+  - {facts: {}, refs: {lab.iron_umol_l: {lower: 5, upper: 28}}, expect: unknown}
+- id: LAB-IRON-NIEDRIG-2
+  kind: ddx
+  target: ddx.anemia_of_chronic_disease
+  requires: [lab.iron_umol_l]
+  when: {field: lab.iron_umol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1033, locator: Pathophysiology}
+  status: draft_unreviewed
+  migrated_from: IRON_NIEDRIG
+  tests:
+  - {facts: {lab.iron_umol_l: 4}, refs: {lab.iron_umol_l: {lower: 5, upper: 28}}, expect: true}
+  - {facts: {lab.iron_umol_l: 5}, refs: {lab.iron_umol_l: {lower: 5, upper: 28}}, expect: false}
+  - {facts: {}, refs: {lab.iron_umol_l: {lower: 5, upper: 28}}, expect: unknown}
+- id: LAB-IRON-NIEDRIG-3
+  kind: ddx
+  target: ddx.malabsorption
+  requires: [lab.iron_umol_l]
+  when: {field: lab.iron_umol_l, op: lt, value: {ref: lower}}
+  sources:
+  - {ref: SRC-1048, locator: Etiology}
+  status: draft_unreviewed
+  migrated_from: IRON_NIEDRIG
+  tests:
+  - {facts: {lab.iron_umol_l: 4}, refs: {lab.iron_umol_l: {lower: 5, upper: 28}}, expect: true}
+  - {facts: {lab.iron_umol_l: 5}, refs: {lab.iron_umol_l: {lower: 5, upper: 28}}, expect: false}
+  - {facts: {}, refs: {lab.iron_umol_l: {lower: 5, upper: 28}}, expect: unknown}

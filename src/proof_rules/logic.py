@@ -176,6 +176,29 @@ def describe(condition: Condition) -> str:
     raise TypeError(f"not a condition: {type(condition).__name__}")
 
 
+_SYMBOLS = {"eq": "=", "ne": "≠", "lt": "<", "le": "≤", "gt": ">", "ge": "≥", "in": "in"}
+
+
+def condition_text(condition: Condition, nested: bool = False) -> str:
+    """The whole condition on one line, e.g. ``at least 2 of (vital.resp_rate ≥ 22, vital.sbp ≤ 100)``."""
+    if isinstance(condition, Compare):
+        value = condition.value
+        if isinstance(value, RefBound):
+            shown = f"{value.ref} reference limit"
+        elif condition.op == "in":
+            shown = "{" + ", ".join(_literal(item) for item in value) + "}"  # type: ignore[union-attr]
+        else:
+            shown = _literal(value)
+        return f"{condition.field} {_SYMBOLS[condition.op]} {shown}"
+    if isinstance(condition, Not):
+        return f"not ({condition_text(condition.negated)})"
+    if isinstance(condition, AtLeast):
+        return f"at least {condition.at_least} of (" + ", ".join(condition_text(c) for c in condition.of) + ")"
+    joiner = " and " if isinstance(condition, AllOf) else " or "
+    text = joiner.join(condition_text(child, nested=True) for child in children(condition))
+    return f"({text})" if nested else text
+
+
 def trace_lines(node: Trace, indent: int = 0) -> list[str]:
     """Indented text lines of a trace, one per node."""
     text = describe(node.condition)

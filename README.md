@@ -31,6 +31,18 @@ uv run proof --help
 Proof reads secrets only from environment variables. [`.env.example`](.env.example) lists them; Proof never writes them
 to caches, manifests, logs or reports.
 
+## Rules and method
+
+- [`docs/methodik.md`](docs/methodik.md): how keys are computed, where the rules come from, the PRD example recalculated.
+- [`docs/regeln.md`](docs/regeln.md): every rule with its source and locator, generated from the rule packs.
+
+Every rule is a draft, not yet reviewed by a physician.
+
+```bash
+uv run proof rules check
+uv run proof rules explain tests/fixtures/cases/prd_example.json
+```
+
 ## Licences
 
 - Code: Apache License 2.0 ([`LICENSE`](LICENSE))

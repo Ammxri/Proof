@@ -1,0 +1,12 @@
+ddx:
+  - code: ddx.sepsis
+    labels: {zh: 脓毒症, en: Sepsis, de: Sepsis}
+  - code: ddx.pneumonia
+    labels: {zh: 肺炎, en: Pneumonia, de: Pneumonie}
+  - code: ddx.pyelonephritis
+    labels: {zh: 急性肾盂肾炎, en: Acute pyelonephritis, de: Akute Pyelonephritis}
+  - code: ddx.bacterial_meningitis
+    labels: {zh: 细菌性脑膜炎, en: Bacterial meningitis, de: Bakterielle Meningitis}
+red_flags:
+  - code: rf.qsofa_ge2
+    labels: {zh: qSOFA评分 ≥ 2, en: qSOFA score ≥ 2, de: qSOFA-Score ≥ 2}

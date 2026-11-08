@@ -193,7 +193,7 @@ def test_activate_all_pulls_every_library_rule_and_its_needs(packs, edit_yaml):
 
 
 def test_missing_reference_profile(packs):
-    (packs / "demo/profiles/lab_crp_mg_l.json").unlink()
+    (packs / "demo/profiles/crp_mg_l.json").unlink()
     assert "rule LABX-DDX-001 needs the upper reference limit of lab.crp_mg_l, no profile has it" in _problems(packs)
 
 
@@ -207,16 +207,16 @@ def test_missing_reference_profile(packs):
     ],
 )
 def test_profile_problems(packs, profile, message):
-    (packs / "demo/profiles/lab_crp_mg_l.json").write_text(json.dumps(profile), encoding="utf-8")
+    (packs / "demo/profiles/crp_mg_l.json").write_text(json.dumps(profile), encoding="utf-8")
     assert message in _problems(packs)
 
 
 def test_profile_files_are_parsed_strictly(packs):
-    (packs / "demo/profiles/lab_crp_mg_l.json").write_text(
+    (packs / "demo/profiles/crp_mg_l.json").write_text(
         '{"fact_code": "lab.crp_mg_l", "fact_code": "lab.crp_mg_l"}', encoding="utf-8"
     )
     assert "duplicate key 'fact_code'" in _problems(packs)
-    (packs / "demo/profiles/lab_crp_mg_l.json").write_text(
+    (packs / "demo/profiles/crp_mg_l.json").write_text(
         json.dumps({"fact_code": "lab.crp_mg_l", "unit": "mg/L", "reference": {"upper": 5}}), encoding="utf-8"
     )
     (packs / "demo/profiles/lab_crp_copy.json").write_text(
@@ -227,7 +227,7 @@ def test_profile_files_are_parsed_strictly(packs):
 
 def test_library_packs_have_no_profiles(packs):
     (packs / "labx/profiles").mkdir()
-    shutil.copy(packs / "demo/profiles/lab_crp_mg_l.json", packs / "labx/profiles/lab_crp_mg_l.json")
+    shutil.copy(packs / "demo/profiles/crp_mg_l.json", packs / "labx/profiles/crp_mg_l.json")
     assert "only domain packs have lab profiles" in _problems(packs)
 
 
@@ -253,6 +253,22 @@ def test_code_and_source_defined_in_two_packs(packs, edit_yaml):
     assert "code ddx.alpha is also defined in pack" in problems
     assert "source SRC-9001 is also defined in pack" in problems
     assert "source id SRC-9001 is used in packs demo and labx" in loader.check(packs).problems
+
+
+def test_every_numeric_fact_of_a_domain_needs_bounds(packs, edit_yaml):
+    def drop(data):
+        del data["fields"][0]["bounds"]
+
+    edit_yaml(packs / "demo/catalog.yaml", drop)
+    assert "demo: numeric field vital.temp_c has no physiological bounds (A-65)" in _problems(packs)
+
+
+def test_unused_library_field_may_lack_bounds(packs, edit_yaml):
+    def drop(data):
+        del next(field for field in data["fields"] if field["code"] == "lab.ldl_mmol_l")["bounds"]
+
+    edit_yaml(packs / "labx/catalog.yaml", drop)
+    assert loader.check(packs).ok
 
 
 def test_bounds_must_cite_a_registered_source(packs, edit_yaml):
@@ -332,3 +348,57 @@ def test_broken_domain_is_reported_by_check(packs):
     assert not result.ok
     assert any("catalog.yaml" in problem for problem in result.problems)
     assert result.domains == ()
+
+
+def _check_problems(root):
+    return "\n".join(loader.check(root).problems)
+
+
+def test_migration_table_and_rules_agree(packs, edit_yaml):
+    def wrong_rule(data):
+        data["entries"][0]["items"][0]["rules"] = ["LABX-DDX-404"]
+
+    edit_yaml(packs / "labx/migration.yaml", wrong_rule)
+    problems = _check_problems(packs)
+    assert "CRP_HOCH names rule LABX-DDX-404, which is not in the pack" in problems
+    assert "rule LABX-DDX-001 (from CRP_HOCH) is missing in the table" in problems
+
+
+def test_migration_table_key_must_match_migrated_from(packs, edit_yaml):
+    def other_key(data):
+        data["entries"][1]["items"] = [{"text": "x", "rules": ["LABX-DDX-001"]}]
+        del data["entries"][1]["reason"]
+
+    edit_yaml(packs / "labx/migration.yaml", other_key)
+    problems = _check_problems(packs)
+    assert "CRP_NIEDRIG names rule LABX-DDX-001, migrated from CRP_HOCH" in problems
+    assert "rule LABX-DDX-001 is listed under CRP_HOCH and CRP_NIEDRIG" in problems
+
+
+def test_migrated_rule_needs_a_migration_table(packs):
+    (packs / "labx/migration.yaml").unlink()
+    assert "labx: rule LABX-DDX-001 is migrated from CRP_HOCH, no migration.yaml" in _check_problems(packs)
+
+
+@pytest.mark.parametrize(
+    ("change", "message"),
+    [
+        (lambda data: data["entries"].append(data["entries"][0]), "duplicate keys: CRP_HOCH"),
+        (lambda data: data["entries"][0]["items"][1].pop("reason") and None, "either the rules it became"),
+        (lambda data: data["entries"][0].update(reason="x"), "a migrated entry has none"),
+        (lambda data: data["entries"][1].pop("reason") and None, "an entry without any migrated item needs a reason"),
+        (lambda data: data["entries"][0]["items"].append(data["entries"][0]["items"][0]), "lists an item twice"),
+        (lambda data: data["entries"][0]["items"][0].update(rules=["LABX-DDX-001"] * 2), "lists a rule twice"),
+        (lambda data: data["source"].update(sha256="abc"), "String should match pattern"),
+        (lambda data: data["entries"][0].update(key="CRP-HOCH"), "String should match pattern"),
+    ],
+)
+def test_migration_table_model(packs, edit_yaml, change, message):
+    edit_yaml(packs / "labx/migration.yaml", change)
+    assert message in _check_problems(packs)
+
+
+def test_lowercase_legacy_keys_are_accepted(packs, edit_yaml):
+    """Prototype keys such as eGFR_NIEDRIG start with a lowercase letter."""
+    edit_yaml(packs / "labx/migration.yaml", lambda data: data["entries"][1].update(key="eGFR_NIEDRIG"))
+    assert loader.check(packs).ok
