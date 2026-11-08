@@ -78,3 +78,16 @@ def test_recorded_decision_overrides_classification(gate, tmp_path):
     verdicts = gate.evaluate(packages, decisions)
     assert [v.verdict for v in verdicts] == ["ok", "fail"]
     assert gate.load_decisions(tmp_path / "missing.toml") == {}
+
+
+def test_recorded_decisions_are_complete(gate):
+    decisions = gate.load_decisions()
+    assert decisions, "tools/license_decisions.toml holds the owner's decisions"
+    for (name, version), entry in decisions.items():
+        assert set(entry) == {"name", "version", "verdict", "reason"}, name
+        assert entry["verdict"] in {"ok", "fail"}, name
+        assert version and entry["reason"].strip(), name
+    # MPL-2.0 certifi is allowed by decision D-10, only for the version that was checked.
+    assert decisions[("certifi", "2026.10.23")]["verdict"] == "ok"
+    classified = gate.classify("Mozilla Public License 2.0 (MPL 2.0)")
+    assert classified[0] == "report", "without a decision MPL is still reported"

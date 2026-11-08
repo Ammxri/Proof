@@ -1,0 +1,8 @@
+pack: demo
+kind: domain
+domain:
+  case_prefix: DEM
+  complaint: fever
+  uses: [labx]
+  activate:
+    labx: [LABX-DDX-001]

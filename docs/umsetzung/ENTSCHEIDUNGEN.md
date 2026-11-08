@@ -311,6 +311,67 @@ Lizenz bricht die Prüfung ab, wie bei GPL/AGPL.
 
 **A-52 Typer ohne click.** Typer 0.28 bringt click als `typer._click` mit. Proof importiert click deshalb nicht selbst.
 
+### Annahmen aus U2
+
+**A-53 Entscheidbarkeit auf Ebene der Ziele.** Präzisiert A-33. Regeln mit demselben Ziel werden mit dem
+dreiwertigen „oder“ verknüpft. Die Ausgabe des Motors ist das Tripel (Entscheidbarkeit, wahre Warnzeichen, wahre
+Diagnosen):
+- `refer_urgent`, wenn ein Warnzeichen wahr ist;
+- sonst `ask`, wenn ein Warnzeichen oder eine Diagnose unbekannt ist;
+- sonst `answer`.
+
+Grund: Ist ein Ziel durch eine wahre Regel schon entschieden, ändert eine zweite, unbekannte Regel mit demselben Ziel
+nichts an der Ausgabe. Das fehlende Feld wäre nach §5 nicht kritisch, eine Rückfrage also unbegründet.
+
+**A-54 Pflichtfragen (PR-K09).** Eine Pflichtfrage ist ein Feld des Basisfalls, das der Variante fehlt und dessen
+Rückgabe allein die Ausgabe der Variante ändert. Fehlt genau ein kritisches Feld (MR1), ist das genau dieses Feld.
+Fehlen mehrere Felder (MR8), können auch Felder dazugehören, die im Basisfall allein nicht kritisch sind. Beispiel:
+qSOFA 3 ohne Atemfrequenz und Blutdruck; beide Felder würden das Warnzeichen entscheiden.
+
+**A-55 Aufbau der Regelpakete.** Ein Paket ist ein Ordner mit folgenden Dateien:
+- `pack.yaml`, Art `domain` oder `library`;
+- `catalog.yaml`, `vocabulary.yaml`, `sources.yaml`;
+- `rules/*.yaml`;
+- bei Domänen `profiles/*.json`.
+
+Für Domänen gilt außerdem:
+- Eine Domäne nennt ihre Bibliotheken unter `uses` und aktiviert daraus Regeln einzeln oder mit `all` (A-08).
+- Ihr Katalog besteht aus den eigenen Feldern und den Bibliotheksfeldern, die aktive Regeln nutzen. Für den Wortschatz
+  gilt dasselbe.
+
+Eindeutigkeit:
+- Feld- und Antwortcodes sind innerhalb einer Domäne eindeutig.
+- Regel- und Quellen-IDs sind über alle Pakete eindeutig.
+
+Die Bezeichnungen je Sprache stehen direkt in Katalog und Wortschatz (KONZEPT 4.1). Der Ordner `labels/` aus
+KONZEPT §3 entfällt.
+
+**A-56 Referenzgrenzen.** Eine Schwelle `{ref: lower|upper}` liest den Referenzbereich aus den Laborprofilen der
+Domäne (`profiles/*.json`). `proof_rules` braucht daraus nur drei Schlüssel:
+- `fact_code`;
+- `unit`, die gleich der Katalogeinheit sein muss;
+- `reference`.
+
+Das vollständige Profilformat legt U4 fest und behält diese Schlüssel.
+
+Fehlt einer aktiven Regel ihr Referenzwert, lädt die Domäne nicht. Testvektoren tragen ihren eigenen Referenzbereich
+(`refs`), damit jede Regel unabhängig von den Profilen prüfbar bleibt.
+
+Folge für den Plan:
+- Die Fieberdomäne mit den migrierten Laborregeln lädt erst, wenn ihre Profile existieren.
+- Der SynthEHR-Lauf und der Profilbau aus U4 kommen deshalb an den Anfang von U3.
+- Das ist nur eine Umstellung innerhalb von v0.1; Umfang und PRD bleiben gleich.
+
+**A-57 Testvektoren und Status.**
+- Ein Testvektor darf außer `true` und `false` auch `unknown` erwarten (fehlende Fakten).
+- Mindestens ein `true`- und ein `false`-Vektor bleiben Pflicht (A-32).
+- Der Status einer Regel ist vorerst nur `draft_unreviewed`.
+
+**A-58 Quellenregister.**
+- Art der Quelle: `original_publication`, `guideline`, `dataset` oder `reference_work`.
+- Pflichtangaben: Nutzungsbedingungen, Datum ihrer Prüfung und erlaubte Nutzung; die URL muss mit `https://` beginnen.
+- NICE wird abgewiesen, am Host `nice.org.uk` und am Namen im Zitat (D-04).
+
 ## Entscheidungen des Projektverantwortlichen
 
 **D-01 Projekte sind voneinander unabhängig (08.11.2026).** Deine Vorgabe: „nichts abändern. Das heißt, nichts von
@@ -436,3 +497,17 @@ wie sie hier stehen, auch die geänderten D-03 und D-08.
 
 **D-09 Freigabe von STOPP 2 (08.11.2026).** Deine Antwort: „Ja, U1 starten“. Damit gelten [KONZEPT.md](KONZEPT.md) und
 die Auslegungen A-31 bis A-48. Die Umsetzung läuft im Freigabemodus A (A-01) bis GO-1.
+
+**D-10 certifi zugelassen (08.11.2026).**
+- Die Lizenzprüfung meldete `certifi` 2026.10.23 mit MPL-2.0. Proof nutzt es unverändert als CA-Bündel: für pip-audit
+  und ab U7 über httpx.
+- Meine Ankündigung nach U1: „Ich empfehle, es zuzulassen. Wenn du nichts anderes sagst, trage ich das so ein.“
+- Deine Antwort: „Angelegt, weiter mit U2“, ohne Widerspruch.
+- Eingetragen in `tools/license_decisions.toml`, nur für diese Version. Eine neue Version wird wieder gemeldet.
+
+**Stand D-07 (08.11.2026).**
+- Deine Antwort: „Angelegt, weiter mit U2“.
+- Zu Beginn von U2 war das Repository noch nicht erreichbar.
+- Nach U2 fand ich es als `github.com/Ammxri/Proof`: öffentlich, leer, angelegt am 08.11.2026 um 13:52 UTC. GitHub
+  unterscheidet bei Namen nicht zwischen Groß- und Kleinschreibung.
+- Gepusht wird nur `dev`. Da das Repository leer war, macht GitHub `dev` zum Standardzweig, bis es `main` gibt.

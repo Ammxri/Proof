@@ -1,0 +1,65 @@
+fields:
+  - code: vital.temp_c
+    section: vital
+    type: number
+    unit: °C
+    decimals: 1
+    bounds: {lower: 30.0, upper: 44.0, source: {ref: SRC-9001, locator: fixture}}
+    labels:
+      zh: {name: 体温}
+      en: {name: Temperature, abbr: T}
+      de: {name: Temperatur, abbr: T}
+    alt_units:
+      - {unit: °F, factor: 1.8, offset: 32, decimals: 1}
+  - code: vital.resp_rate
+    section: vital
+    type: int
+    unit: /min
+    bounds: {lower: 4, upper: 60, source: {ref: SRC-9001, locator: fixture}}
+    labels:
+      zh: {name: 呼吸频率}
+      en: {name: Respiratory rate, abbr: RR}
+      de: {name: Atemfrequenz, abbr: AF}
+  - code: vital.sbp
+    section: vital
+    type: int
+    unit: mmHg
+    bounds: {lower: 40, upper: 260, source: {ref: SRC-9001, locator: fixture}}
+    labels:
+      zh: {name: 收缩压}
+      en: {name: Systolic blood pressure, abbr: SBP}
+      de: {name: Systolischer Blutdruck, abbr: sRR}
+  - code: vital.mental_status
+    section: vital
+    type: enum
+    values: [normal, altered]
+    value_labels:
+      normal: {zh: 正常, en: normal, de: unauffällig}
+      altered: {zh: 改变, en: altered, de: verändert}
+    labels:
+      zh: {name: 意识状态}
+      en: {name: Mental status}
+      de: {name: Bewusstseinszustand}
+  - code: hx.cough
+    section: hx
+    type: bool
+    labels:
+      zh: {name: 咳嗽}
+      en: {name: Cough}
+      de: {name: Husten}
+  - code: hx.onset_days
+    section: hx
+    type: int
+    unit: d
+    bounds: {lower: 0, upper: 60, source: {ref: SRC-9001, locator: fixture}}
+    labels:
+      zh: {name: 起病天数}
+      en: {name: Days since onset}
+      de: {name: Tage seit Beginn}
+  - code: exam.rash
+    section: exam
+    type: bool
+    labels:
+      zh: {name: 皮疹}
+      en: {name: Rash}
+      de: {name: Ausschlag}

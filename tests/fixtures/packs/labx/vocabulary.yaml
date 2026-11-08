@@ -1,0 +1,5 @@
+ddx:
+  - code: ddx.gamma
+    labels: {zh: 测试诊断丙, en: Test diagnosis gamma, de: Testdiagnose Gamma}
+  - code: ddx.delta
+    labels: {zh: 测试诊断丁, en: Test diagnosis delta, de: Testdiagnose Delta}

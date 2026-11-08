@@ -1,0 +1,21 @@
+- id: LABX-DDX-001
+  kind: ddx
+  target: ddx.gamma
+  requires: [lab.crp_mg_l]
+  when: {field: lab.crp_mg_l, op: gt, value: {ref: upper}}
+  sources: [{ref: SRC-9002, locator: fixture rule 4}]
+  status: draft_unreviewed
+  migrated_from: CRP_HOCH
+  tests:
+    - {facts: {lab.crp_mg_l: 6}, refs: {lab.crp_mg_l: {upper: 5}}, expect: true}
+    - {facts: {lab.crp_mg_l: 5}, refs: {lab.crp_mg_l: {upper: 5}}, expect: false}
+- id: LABX-DDX-002
+  kind: ddx
+  target: ddx.delta
+  requires: [lab.ldl_mmol_l]
+  when: {field: lab.ldl_mmol_l, op: gt, value: {ref: upper}}
+  sources: [{ref: SRC-9002, locator: fixture rule 5}]
+  status: draft_unreviewed
+  tests:
+    - {facts: {lab.ldl_mmol_l: 4.2}, refs: {lab.ldl_mmol_l: {upper: 3.0}}, expect: true}
+    - {facts: {lab.ldl_mmol_l: 2.0}, refs: {lab.ldl_mmol_l: {upper: 3.0}}, expect: false}

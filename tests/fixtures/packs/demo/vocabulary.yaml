@@ -1,0 +1,8 @@
+ddx:
+  - code: ddx.alpha
+    labels: {zh: 测试诊断甲, en: Test diagnosis alpha, de: Testdiagnose Alpha}
+  - code: ddx.beta
+    labels: {zh: 测试诊断乙, en: Test diagnosis beta, de: Testdiagnose Beta}
+red_flags:
+  - code: rf.qsofa_ge2
+    labels: {zh: qSOFA ≥ 2, en: qSOFA ≥ 2, de: qSOFA ≥ 2}

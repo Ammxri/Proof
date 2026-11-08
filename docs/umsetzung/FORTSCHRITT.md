@@ -2,19 +2,69 @@
 
 ## Stand
 
-**08.11.2026 – Phase 3, U1 abgeschlossen.**
-- Konzept freigegeben (D-09).
-- Grundgerüst lokal auf dem Zweig `dev` committet.
-- Das Repository `github.com/Ammxri/proof` fehlt noch (D-07). Darum ist die CI unter Windows und Linux noch nicht
-  gelaufen.
+**08.11.2026 – Phase 3, U2 abgeschlossen.**
+- U1 (Grundgerüst) und U2 (Regelmotor) sind auf dem Zweig `dev` committet.
+- Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`; die CI-Belege stehen im Verlauf.
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
 - **Plan:** U1–U14 aus [KONZEPT.md](KONZEPT.md); v0.1 = U1–U9, v0.5 = U10–U12, v1.0 = U13–U14; GO-1 vor U13.
 
-**Nächster Schritt:** U2 (Regelmotor). Sobald das Repository existiert: Push von `dev` und CI-Belege nachtragen.
+**Nächster Schritt:** U3 (Fieber-Regelpaket und Migration). Zuerst kommen der SynthEHR-Lauf und der Profilbau (A-56).
 
 ## Verlauf
+
+### 08.11.2026 – U2 Regelmotor
+**Umgesetzt** (`src/proof_rules/`):
+- `model.py`:
+  - Katalog: Felder mit Abschnitt, Typ, Einheit, Nachkommastellen, Grenzen mit Quelle, Bezeichnungen zh/en/de und
+    Ausweicheinheiten;
+  - Wortschatz, Quellenregister mit NICE-Sperre;
+  - Bedingungen: `eq`, `ne`, `lt`, `le`, `gt`, `ge`, `in` und `all`, `any`, `not`, `at_least`, Schwellen
+    `{ref: lower|upper}`;
+  - Regel mit Pflichtquelle, exakt passendem `requires` und Testvektoren;
+  - Paketkonfiguration und Domäne.
+- `logic.py`: dreiwertige Logik nach Kleene, Auswertung, Auswertungsbaum für Erklärungen.
+- `engine.py`: Motor; Regeln mit gleichem Ziel werden mit „oder“ verknüpft; Entscheidbarkeit (A-53); Modelle `Key` und
+  `VariantKey`.
+- `ablation.py`: kritische Felder und Pflichtfragen (A-54).
+- `keys.py`: Schlüssel mit Faktenprüfung gegen den Katalog.
+- `loader.py`: Pakete lesen und prüfen, Domäne zusammensetzen, alle Testvektoren ausführen (A-55, A-56).
+- `explain.py`: Klartext-Erklärung eines Schlüssels.
+- Befehle:
+  - `proof rules check` prüft alle Pakete;
+  - `proof rules list` listet die aktiven Regeln einer Domäne;
+  - `proof rules explain <fall>` zeigt Regelauswertung, Schlüssel und Ablation.
+- Testpakete `tests/fixtures/packs/` (Domäne `demo`, Bibliothek `labx`): synthetisch und ohne klinische Aussage. Nur die
+  qSOFA-Kriterien stammen aus der PRD.
+- `tools/license_decisions.toml` mit certifi (D-10).
+
+**Geprüft** (lokal, Windows 11, Python 3.12.15):
+- `uv run pytest --cov`: 380 Tests grün, Abdeckung 99,8 %; `proof_rules` vollständig abgedeckt.
+- `ruff check` und `ruff format --check`: sauber.
+- Lizenzprüfung: 48 Pakete, 0 abgebrochen, 0 gemeldet (certifi per D-10 zugelassen).
+- Wheel neu gebaut und in eine frische Umgebung installiert. Es enthält alle Module von `proof_rules`;
+  `proof rules check` und `explain` laufen damit auf den Testpaketen.
+- Laufzeit: Schlüssel mit Ablation für das PRD-Beispiel im Testpaket weit unter 1 s.
+- D-05 nachgestellt:
+  - PRD-Beispiel (qSOFA 3): kein Vitalwert kritisch.
+  - Mit sRR 120 (qSOFA 2): Atemfrequenz und Bewusstsein kritisch, der Blutdruck nicht.
+
+**Nicht ausgeführt:** `pip-audit`. Die Abhängigkeiten sind gegenüber U1 unverändert (`uv.lock` gleich); die CI führt
+die Prüfung aus.
+
+**Abnahme U2 (DoD aus KONZEPT.md):** erfüllt.
+- Wahrheitstafeln aller Operatoren und Verknüpfungen, geprüft gegen alle zweiwertigen Belegungen.
+- Handbeispiele für `answer`, `ask` und `refer_urgent`.
+- Ablationstest je Regeltyp (Warnzeichen, Diagnose).
+- Der Lader weist ab:
+  - eine Regel ohne Quelle oder mit nicht registrierter Quelle;
+  - ein unbekanntes Feld;
+  - ein falsches `requires`.
+- Ablation unabhängig von der Reihenfolge der Fakten (25 Permutationen).
+- Importtest ohne Netz- oder Modellcode, statisch und zur Laufzeit; Schlüssel auch mit gesperrten Sockets.
+
+**Folge für den Plan:** Der Profilbau aus U4 kommt an den Anfang von U3 (A-56).
 
 ### 08.11.2026 – U1 Grundgerüst
 **Umgesetzt:**

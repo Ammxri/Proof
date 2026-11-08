@@ -1,0 +1,16 @@
+- id: DEM-RF-001
+  kind: red_flag
+  target: rf.qsofa_ge2
+  requires: [vital.mental_status, vital.resp_rate, vital.sbp]
+  when:
+    at_least: 2
+    of:
+      - {field: vital.resp_rate, op: ge, value: 22}
+      - {field: vital.mental_status, op: eq, value: altered}
+      - {field: vital.sbp, op: le, value: 100}
+  sources: [{ref: SRC-9001, locator: qSOFA criteria as named in the PRD}]
+  status: draft_unreviewed
+  tests:
+    - {facts: {vital.resp_rate: 22, vital.mental_status: altered, vital.sbp: 120}, expect: true}
+    - {facts: {vital.resp_rate: 21, vital.mental_status: normal, vital.sbp: 101}, expect: false}
+    - {facts: {vital.mental_status: altered, vital.sbp: 120}, expect: unknown}

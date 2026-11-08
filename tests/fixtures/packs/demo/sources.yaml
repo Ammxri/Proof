@@ -1,0 +1,8 @@
+sources:
+  - id: SRC-9001
+    citation: Proof test fixture source A (synthetic, no clinical content)
+    url: https://example.org/proof-test-fixture-a
+    kind: dataset
+    terms: Written for the Proof test suite; no third-party material.
+    terms_checked_on: 2026-11-08
+    permitted_use: Unit tests only.

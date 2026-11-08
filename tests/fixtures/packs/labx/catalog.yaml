@@ -1,0 +1,33 @@
+fields:
+  - code: lab.crp_mg_l
+    section: lab
+    type: number
+    unit: mg/L
+    decimals: 0
+    bounds: {lower: 0, upper: 500, source: {ref: SRC-9002, locator: fixture}}
+    labels:
+      zh: {name: C反应蛋白, abbr: CRP}
+      en: {name: C-reactive protein, abbr: CRP}
+      de: {name: C-reaktives Protein, abbr: CRP}
+    alt_units:
+      - {unit: mg/dL, factor: 0.1, decimals: 1}
+  - code: lab.wbc_g_l
+    section: lab
+    type: number
+    unit: G/L
+    decimals: 1
+    bounds: {lower: 0.1, upper: 100.0, source: {ref: SRC-9002, locator: fixture}}
+    labels:
+      zh: {name: 白细胞计数, abbr: WBC}
+      en: {name: White blood cell count, abbr: WBC}
+      de: {name: Leukozyten, abbr: Leukos}
+  - code: lab.ldl_mmol_l
+    section: lab
+    type: number
+    unit: mmol/L
+    decimals: 1
+    bounds: {lower: 0.1, upper: 20.0, source: {ref: SRC-9002, locator: fixture}}
+    labels:
+      zh: {name: 低密度脂蛋白胆固醇, abbr: LDL-C}
+      en: {name: LDL cholesterol, abbr: LDL-C}
+      de: {name: LDL-Cholesterin, abbr: LDL}

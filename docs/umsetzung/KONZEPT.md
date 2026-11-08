@@ -65,8 +65,8 @@ proof/
   LICENSE (Apache-2.0), LICENSE-DATA (CC BY 4.0), NOTICE, README.md, .gitignore, .env.example
   .github/workflows/ci.yml         Windows + Linux; pages.yml nur manuell auslösbar
   src/proof/        cli.py, core/, cases/, render/, variants/, harness/, scoring/, report/
-  src/proof_rules/  model.py, logic.py, engine.py, ablation.py, loader.py,
-                    packs/fever/ (domain, catalog, vocabulary, rules/, sources, migration, profiles/, labels/),
+  src/proof_rules/  model.py, logic.py, engine.py, ablation.py, keys.py, explain.py, loader.py,
+                    packs/fever/ (pack, catalog, vocabulary, rules/, sources, migration, profiles/; A-55),
                     packs/labs/  (die 70 migrierten Laborregeln, A-08),
                     packs/chest_pain/ (U14)
   data/collections/  fever-100/, fever-500/ (Fälle und Varianten als JSONL, collection.json)
@@ -142,7 +142,8 @@ Es gibt kein `eval` und keinen Ausdruckstext. Beim Laden wird geprüft:
     MR8 Schritt 1).
 - **Ablation (PR-K05):** Jedes Feld wird einzeln entfernt und der Motor erneut ausgeführt. Ändert sich die Ausgabe, ist
   das Feld kritisch.
-- **Pflichtfragen (PR-K09):** die fehlenden kritischen Felder einer Variante.
+- **Pflichtfragen (PR-K09):** die fehlenden kritischen Felder einer Variante (genau gefasst in A-54).
+- **Regeln mit gleichem Ziel** werden mit dem dreiwertigen „oder“ verknüpft; `ask` richtet sich nach den Zielen (A-53).
 - **Neubeschriftung (PR-K04):** Weicht der Schlüssel vom Ziel des Samplers ab, bleibt er so. Die Abweichung wird in der
   Sammlung gezählt; Fakten werden nie korrigiert.
 - **Nachrechnung des PRD-Beispiels (D-05):** steht mit Test in `docs/methodik.md`.
@@ -369,6 +370,10 @@ Zuordnung zu den PRD-Versionen:
 - v1.0 = U13–U14.
 
 Die Reihenfolge folgt dem Plan in PRD §11: Fallschicht, Renderer, Testlauf, Bewertung, dann v0.5.
+
+Umstellung nach U2 (A-56): Der SynthEHR-Lauf und der Profilbau aus U4 laufen zu Beginn von U3. Grund: Die migrierten
+Laborregeln brauchen die Referenzgrenzen der Profile, sonst lädt die Fieberdomäne nicht. Inhalt und
+Anforderungs-IDs der Phasen bleiben gleich.
 
 ## 11 Go/No-Go-Punkte und Haltepunkte
 

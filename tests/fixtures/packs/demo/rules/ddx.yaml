@@ -1,0 +1,38 @@
+- id: DEM-DDX-001
+  kind: ddx
+  target: ddx.alpha
+  requires: [hx.cough, vital.temp_c]
+  when:
+    all:
+      - {field: hx.cough, op: eq, value: true}
+      - {field: vital.temp_c, op: ge, value: 38.0}
+  sources: [{ref: SRC-9001, locator: fixture rule 1}]
+  status: draft_unreviewed
+  tests:
+    - {facts: {hx.cough: true, vital.temp_c: 38.0}, expect: true}
+    - {facts: {hx.cough: true, vital.temp_c: 37.9}, expect: false}
+    - {facts: {hx.cough: false}, expect: false}
+- id: DEM-DDX-002
+  kind: ddx
+  target: ddx.beta
+  requires: [hx.onset_days, vital.temp_c]
+  when:
+    any:
+      - {field: vital.temp_c, op: ge, value: 39.5}
+      - not: {field: hx.onset_days, op: le, value: 3}
+  sources: [{ref: SRC-9001, locator: fixture rule 2}]
+  status: draft_unreviewed
+  tests:
+    - {facts: {vital.temp_c: 39.5, hx.onset_days: 1}, expect: true}
+    - {facts: {vital.temp_c: 38.0, hx.onset_days: 4}, expect: true}
+    - {facts: {vital.temp_c: 38.0, hx.onset_days: 3}, expect: false}
+- id: DEM-DDX-003
+  kind: ddx
+  target: ddx.beta
+  requires: [lab.wbc_g_l]
+  when: {field: lab.wbc_g_l, op: ge, value: 12}
+  sources: [{ref: SRC-9002, locator: fixture rule 3}]
+  status: draft_unreviewed
+  tests:
+    - {facts: {lab.wbc_g_l: 12.0}, expect: true}
+    - {facts: {lab.wbc_g_l: 11.9}, expect: false}

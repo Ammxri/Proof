@@ -1,0 +1,8 @@
+# Licence decisions of the project owner (A-26, A-51), read by tools/check_licenses.py.
+# One entry per package and exact version: a new version needs a new decision.
+
+[[decision]]
+name = "certifi"
+version = "2026.10.23"
+verdict = "ok"
+reason = "MPL-2.0, used unmodified as CA bundle (pip-audit, later httpx); decision D-10"
