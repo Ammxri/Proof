@@ -4,7 +4,8 @@
 
 **08.11.2026 – Phase 3, U2 abgeschlossen.**
 - U1 (Grundgerüst) und U2 (Regelmotor) sind auf dem Zweig `dev` committet.
-- Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`; die CI-Belege stehen im Verlauf.
+- Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`. Die CI ist unter Windows und Linux
+  grün (Lauf 42489734249); damit ist auch der offene Punkt der U1-Abnahme erledigt.
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
@@ -50,8 +51,16 @@
   - PRD-Beispiel (qSOFA 3): kein Vitalwert kritisch.
   - Mit sRR 120 (qSOFA 2): Atemfrequenz und Bewusstsein kritisch, der Blutdruck nicht.
 
-**Nicht ausgeführt:** `pip-audit`. Die Abhängigkeiten sind gegenüber U1 unverändert (`uv.lock` gleich); die CI führt
-die Prüfung aus.
+**Nicht lokal ausgeführt:** `pip-audit`. Die Abhängigkeiten sind gegenüber U1 unverändert (`uv.lock` gleich); die
+Prüfung lief in der CI.
+
+**CI** (gilt auch für die offenen Punkte aus U1):
+- Repository `github.com/Ammxri/Proof`, Push von `dev`.
+- Lauf 42489734249 auf Commit e472ad6: Jobs `test (windows-latest)` und `test (ubuntu-latest)` erfolgreich.
+- Erfolgreich waren alle Schritte: Lint, Tests mit Abdeckung, Lizenzprüfung, pip-audit, Wheel frisch installiert.
+- Damit gelten die Golden-Werte des Zufallsstroms auch unter Linux.
+- Gelesen über die öffentliche Actions-API (Jobs und Schritte). Die Protokolltexte gibt die API nur mit Anmeldung
+  heraus (403); sie sind nicht gelesen.
 
 **Abnahme U2 (DoD aus KONZEPT.md):** erfüllt.
 - Wahrheitstafeln aller Operatoren und Verknüpfungen, geprüft gegen alle zweiwertigen Belegungen.
