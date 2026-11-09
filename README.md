@@ -88,6 +88,17 @@ uv run proof run --from-manifest .proof/runs/<run>/manifest.json
 The run directory holds `manifest.json` (seeds, model version, parameters, time stamps, tokens, costs) and
 `units.jsonl` with every answer.
 
+## Scoring
+
+Scoring is deterministic: each answer is compared with the key of its case or variant. The result is a profile of
+the metrics S1–S7, each with numerator and denominator, and never a single number
+([`docs/methodik.md`](docs/methodik.md), section 6.5).
+
+```bash
+uv run proof score .proof/runs/<run>
+uv run proof compare .proof/runs/<run a> .proof/runs/<run b>
+```
+
 ## Physician review
 
 Each language needs a physician review of its templates and a sample of the cases (PRD §10). The records are in

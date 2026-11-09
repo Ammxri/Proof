@@ -2,19 +2,69 @@
 
 ## Stand
 
-**09.11.2026 – Phase 3, U7 abgeschlossen.**
-- U1 bis U7 sind auf dem Zweig `dev` committet, zuletzt der Testlauf mit Qwen-Probelauf. B11 ist als D-12
-  entschieden (Ollamas eigene API für lokale Modelle).
+**09.11.2026 – Phase 3, U8 abgeschlossen.**
+- U1 bis U8 sind auf dem Zweig `dev` committet, zuletzt die Bewertung S1–S7 mit Profil und Vergleich zweier Läufe.
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U7 mit Nachtrag D-12 unter Windows und Linux grün (Lauf 42587297027 auf `644b151`).
+- Die CI ist für U7 mit Nachtrag D-12 unter Windows und Linux grün (Lauf 42587297027 auf `644b151`); der Beleg für U8
+  folgt nach dem Push.
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
 - **Plan:** U1–U14 aus [KONZEPT.md](KONZEPT.md); v0.1 = U1–U9, v0.5 = U10–U12, v1.0 = U13–U14; GO-1 vor U13.
 
-**Nächster Schritt:** U8 (Bewertung S1–S7, Profil, `proof score`, `proof compare`).
+**Nächster Schritt:** U9 (Datensatzkarte, Release-Prüfungen, Entwurfspaket Fever-100, Volllauf Qwen auf Fever-100).
 
 ## Verlauf
+
+### 09.11.2026 – U8 Bewertung
+**Neue Auslegung:** A-81 (Einzelheiten der Kennzahlen, Profil, Vergleich).
+
+**Umgesetzt** (`src/proof/scoring/`):
+- `metrics.py`: S1–S7 als reine Funktionen über bewertete Einheiten.
+  - Mikro-Mittel mit Zähler und Nenner; ein leerer Nenner ergibt „n/a“, nie 0.
+  - Ungültige Antworten zählen als leere Antwort (A-13); Einheiten ohne Antwort werden gezählt, aber nicht bewertet
+    (A-36).
+  - S3 bleibt nach vollständig und unvollständig getrennt; S5 je Relation mit gezählten ausgelassenen Paaren; S6 als
+    Spannweite über die Sprachen.
+  - Jede Kennzahl gibt es gesamt und je Sprache.
+- `runs.py`: liest Laufverzeichnisse ohne den Client des Testlaufs und holt die Schlüssel aus Sammlung und
+  Variantensatz.
+  - `profile.json` enthält kein Feld, das Kennzahlen verrechnet (PR-P02).
+  - Der Vergleich zweier Läufe zeigt Änderungen je Kennzahl und je Einheit (PR-D02).
+- **Befehle:** `proof score <lauf>` und `proof compare <lauf a> <lauf b> [--out …]`.
+- **Doku:** `docs/methodik.md` Abschnitt 6.5, README, Matrix.
+
+**Profil des Qwen-Probelaufs** (Qwen3 8B, 10 Fälle in zh, en und de mit MR1 und MR3, 90 Einheiten; nur ein Beleg, keine
+Aussage über das Modell):
+
+| Kennzahl | gesamt | zh | en | de |
+|---|---|---|---|---|
+| S1 Entscheidung | 0,511 (46/90) | 0,433 | 0,600 | 0,500 |
+| S2 Pflichtfragen, Recall | 0,167 (5/30) | 0,300 | 0,200 | 0,000 |
+| S2 Pflichtfragen, Präzision | 0,019 (5/261) | 0,022 | 0,033 | 0,000 |
+| S3 Warnzeichen, vollständig | 0,972 (35/36) | 0,917 | 1,000 | 1,000 |
+| S3 Warnzeichen, unvollständig | 0,933 (14/15) | 0,800 | 1,000 | 1,000 |
+| S4 Diagnosen | 0,943 (82/87) | 0,931 | 0,897 | 1,000 |
+| S7 Formattreue | 1,000 (90/90) | 1,000 | 1,000 | 1,000 |
+
+- S5, Verletzungsrate: MR1 0,900 (27/30), MR3 0,833 (25/30), MR5 0,933 (28/30); kein Paar ausgelassen.
+- S6, Spannweite über die Sprachen: S1 0,167; S3 vollständig 0,083; S3 unvollständig 0,200.
+- **Auffällig:** Qwen fragt auch bei vollständigen Fällen nach vielen Feldern (261 Fragen, Präzision 2 %). Weil die
+  Fragemengen schwanken, verletzt es MR3 und MR5 häufig. Das ist ein Messergebnis; die Stichprobe ist klein.
+
+**Geprüft** (lokal, Windows 11, Python 3.12.15):
+- `uv run pytest --cov`: 781 Tests grün, Abdeckung 98,69 % (4:53 min).
+- `ruff check` und `ruff format --check`: sauber.
+
+**Nicht lokal ausgeführt:** `pip-audit`; die Prüfung läuft in der CI. Keine neue Abhängigkeit.
+
+**Abnahme U8 (DoD aus KONZEPT.md):** erfüllt, der CI-Beleg folgt.
+- Handbeispiele je Kennzahl, auch ungültiges JSON, Markdown-Codeblock, unbekannte Codes und leere Nenner als „n/a“
+  (`tests/unit/test_scoring.py`).
+- Profil ohne Gesamtfeld (`test_the_profile_has_no_value_that_combines_metrics`).
+- Vergleich zweier Stub-Läufe zeigt Änderungen je Kennzahl und Einheit (`test_score_and_compare_two_stub_runs`).
+- Importtest ohne Netz- oder Modellcode (`test_scoring_loads_no_network_or_model_client`, dazu der statische Test in
+  `test_repository.py`).
 
 ### 09.11.2026 – U7 abgeschlossen: Ollamas eigene API (D-12) und Qwen-Probelauf
 **Entscheidung:** B11 entschieden als D-12 („A: Ollama-API“).

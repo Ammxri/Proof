@@ -664,6 +664,29 @@ inaktiv. Leukozyten stehen als Kontextfakt im Katalog (PRD-Beispiel); keine Rege
 - **Geheimnisse:** Der API-Schlüssel steht nur im `Authorization`-Kopf. In gespeicherten Fehlertexten wird er
   entfernt.
 
+### Annahmen aus U8
+
+**A-81 Bewertung.** Präzisiert A-13, A-14 und A-37.
+- **Grundlage:** Die Schlüssel kommen aus Sammlung und Variantensatz, die der Lauf nennt; deren Hashes müssen zum
+  Manifest passen. Die Bewertung liest Laufdateien direkt und lädt keinen Client des Testlaufs.
+- **Mengen:** Listen einer Antwort zählen als Mengen; ein doppelt genannter Code zählt einmal.
+- **S1** zählt über alle beantworteten Einheiten (Basisfälle und Varianten mit Anfrage).
+- **S2:** Pflichtfragen sind die `required_questions` des Schlüssels; Basisfälle und MR3 haben keine. Jede Frage zu
+  einer solchen Einheit senkt die Präzision.
+- **S3:** „vollständig“ sind Basisfälle und MR3-Varianten, „unvollständig“ MR1-Varianten.
+- **S5:**
+  - MR1 ist verletzt, wenn die Entscheidung von der Erwartung abweicht oder das entfernte Feld unter den Fragen
+    fehlt.
+  - MR3 und MR5 sind verletzt, wenn Entscheidung oder eine der Mengen `ddx`, `red_flags`, `questions` abweicht.
+  - MR5 bildet die Paare aus den Sprachen des Laufs. Ein Paar, dessen Partner keine Antwort hat, wird ausgelassen und
+    gezählt, ebenso ein Paar mit ungültiger Antwort.
+- **S6** braucht mindestens zwei Sprachen mit Wert, sonst „n/a“.
+- **Werte:** auf vier Nachkommastellen gerundet; Zähler und Nenner stehen immer daneben.
+- **Profil:** `profile.json` im Laufverzeichnis, mit jeder Kennzahl gesamt und je Sprache. Es gibt kein Feld, das
+  Kennzahlen verrechnet.
+- **Vergleich:** Je Einheit verglichen werden Gültigkeit, Entscheidung, gefundene Warnzeichen, Diagnosetreffer und
+  gefundene Pflichtfragen.
+
 ## Entscheidungen des Projektverantwortlichen
 
 **D-01 Projekte sind voneinander unabhängig (08.11.2026).** Deine Vorgabe: „nichts abändern. Das heißt, nichts von

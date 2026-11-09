@@ -24,6 +24,7 @@ from proof.harness.client import Reply
 from proof.harness.providers import ProviderError, load_provider
 from proof.render.case_text import RenderError, render_case
 from proof.render.prompt import system_prompt
+from proof.scoring import runs as scoring_runs
 from proof.variants import sets as variant_sets
 from proof.variants.generator import BUILT_MRS
 from proof.variants.render import render_variant
@@ -494,6 +495,87 @@ def run(
         typer.echo(f"ollama: {json.dumps(manifest.ollama, ensure_ascii=False, sort_keys=True)}")
     if manifest.status != "complete":
         raise typer.Exit(1)
+
+
+# --- proof score / proof compare -------------------------------------------------------------------------------------
+
+
+def _ratio_text(ratio: dict) -> str:
+    value = ratio["value"]
+    shown = value if isinstance(value, str) else f"{value:.4f}"
+    return f"{shown} ({ratio['numerator']}/{ratio['denominator']})"
+
+
+def _split_lines(name: str, split: dict) -> list[str]:
+    by_lang = ", ".join(f"{lang} {_ratio_text(ratio)}" for lang, ratio in split["by_lang"].items())
+    return [f"{name}: {_ratio_text(split['all'])}; {by_lang}"]
+
+
+def _profile_lines(data: dict) -> list[str]:
+    m = data["metrics"]
+    units = m["units"]
+    lines = [
+        f"run {data['run_id']} ({data['run_status']}), model {', '.join(data['models_reported']) or '-'}",
+        f"units: {units['answered']} answered ({units['valid']} valid, {units['invalid']} invalid), "
+        f"{units['errors']} without answer, of {units['total']}",
+    ]
+    lines += _split_lines("S1 decision", m["S1_decision"])
+    lines += _split_lines("S2 questions recall", m["S2_questions"]["recall"])
+    lines += _split_lines("S2 questions precision", m["S2_questions"]["precision"])
+    lines += _split_lines("S3 red flags, complete", m["S3_red_flags"]["complete"])
+    lines += _split_lines("S3 red flags, incomplete", m["S3_red_flags"]["incomplete"])
+    lines += _split_lines("S4 diagnoses", m["S4_diagnoses"])
+    for mr, item in m["S5_invariance"].items():
+        lines.append(
+            f"S5 invariance {mr}: violations {_ratio_text(item['violation_rate'])}, left out: "
+            f"{item['invalid_excluded']} invalid, {item['missing_excluded']} without partner"
+        )
+    for name, item in m["S6_language_spread"].items():
+        lines.append(f"S6 spread of {name}: {item['value']}")
+    lines += _split_lines("S7 format", m["S7_format"])
+    return lines
+
+
+RunArgument = Annotated[Path, typer.Argument(exists=True, file_okay=False, help="Run directory.")]
+
+
+@app.command("score", epilog=EPILOG)
+def score(run_dir: RunArgument, packs: PacksOption = loader.PACKS_ROOT) -> None:
+    """Score a run deterministically: S1–S7 with numerators and denominators, written to profile.json."""
+    try:
+        path, data = scoring_runs.write_profile(scoring_runs.load_run(run_dir, packs))
+    except scoring_runs.ScoringError as exc:
+        _fail(exc.problems)
+    for line in _profile_lines(data):
+        typer.echo(line)
+    typer.echo(f"-> {path}")
+
+
+@app.command("compare", epilog=EPILOG)
+def compare(
+    run_a: RunArgument,
+    run_b: RunArgument,
+    out: Annotated[Path | None, typer.Option("--out", dir_okay=False, help="Write the comparison as JSON.")] = None,
+    packs: PacksOption = loader.PACKS_ROOT,
+) -> None:
+    """Compare two runs: every metric that changed and every unit whose evaluation changed."""
+    try:
+        result = scoring_runs.compare(scoring_runs.load_run(run_a, packs), scoring_runs.load_run(run_b, packs))
+    except scoring_runs.ScoringError as exc:
+        _fail(exc.problems)
+    typer.echo(f"a: {result['a']['run_id']} ({', '.join(result['a']['models']) or '-'})")
+    typer.echo(f"b: {result['b']['run_id']} ({', '.join(result['b']['models']) or '-'})")
+    typer.echo(f"metrics changed: {len(result['metrics'])}")
+    for change in result["metrics"]:
+        typer.echo(f"  {change['metric']}: {change['a']} -> {change['b']} (delta {change['delta']})")
+    typer.echo(f"units changed: {len(result['units_changed'])}")
+    for change in result["units_changed"]:
+        typer.echo(f"  {change['unit_id']}: {change['a']} -> {change['b']}")
+    if result["units_only_in_a"] or result["units_only_in_b"]:
+        typer.echo(f"units only in a: {len(result['units_only_in_a'])}, only in b: {len(result['units_only_in_b'])}")
+    if out is not None:
+        out.write_bytes((json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8"))
+        typer.echo(f"-> {out}")
 
 
 # --- proof review ----------------------------------------------------------------------------------------------------

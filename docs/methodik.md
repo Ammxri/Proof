@@ -338,6 +338,36 @@ every chosen language. A unit's messages are the system prompt of its language a
   parameters, time stamps, tokens and costs (PR-N01, PR-N02), and the declared origin and server region of the
   model. A western model is refused unless its region is the EU (PR-N03).
 
+### 6.5 Scoring
+
+A run is scored deterministically against the keys of its collection and variant set; no language model takes part
+(PR-N04). The result is a profile of separate metrics, each with numerator and denominator; an empty denominator gives
+"n/a", never 0, and no value combines metrics (PR-P02).
+
+| Metric | Definition (micro average over units) |
+|---|---|
+| S1 decision | `decision` equals the key's determinability, over all answered units |
+| S2 questions | recall: required questions named, over units that have any; precision: named questions that are required, over all named questions |
+| S3 red flags | recall of the key's red flags, over units with at least one, separately for complete units (base cases, MR3) and incomplete ones (MR1) |
+| S4 diagnoses | at least one key diagnosis named, over units with at least one |
+| S5 invariance | violation rate per relation: MR1 against its absolute expectation, MR3 against the answer to the base case in the same language, MR5 between the answers to the base case in two languages |
+| S6 language spread | max − min over the languages of S1 and of both S3 values |
+| S7 format | valid answers among all answered units |
+
+- An invalid answer counts in S1–S4 as the empty answer: no decision, empty lists (A-13).
+- A unit without answer (transmission error) is counted but not scored (A-36).
+- In S5 a pair with an invalid answer, or whose partner has no answer, is left out of the denominator and counted.
+- Every metric is also given per language.
+
+```bash
+uv run proof score .proof/runs/<run>
+uv run proof compare .proof/runs/<run a> .proof/runs/<run b>
+```
+
+`score` writes `profile.json` into the run directory. `compare` lists every metric that changed and every unit whose
+evaluation changed (validity, decision, red flags found, diagnosis hit, required questions found); this is the
+regression between two model versions (PR-D02).
+
 ## 7 Physician review
 
 Each language needs a physician review of its templates and of a sample of at least 10 % of the cases; for Chinese,
