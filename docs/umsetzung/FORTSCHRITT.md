@@ -2,20 +2,78 @@
 
 ## Stand
 
-**09.11.2026 – Phase 3, U6 abgeschlossen.**
-- U1 bis U6 sind auf dem Zweig `dev` committet: Grundgerüst, Regelmotor, Fieber-Regelpaket mit Migration, Fallschema
-  mit Sampler und Fever-100, Darstellung mit Prompt, Antwortschema und Prüfvermerken, Varianten MR1, MR3 und MR5.
+**09.11.2026 – Phase 3, U7 umgesetzt bis auf den Qwen-Probelauf; Blocker B11 offen.**
+- U1 bis U6 sind abgeschlossen; U7 (Testlauf) ist auf `dev` committet.
+- Der Qwen-Probelauf wartet auf B11: Qwen3 8B lässt sich über Ollamas OpenAI-Schnittstelle nicht ohne Denkmodus
+  betreiben (ENTSCHEIDUNGEN.md).
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U6 unter Windows und Linux grün (Lauf 42580257122 auf `0a62a5b`).
+- Die CI ist für U6 unter Windows und Linux grün (Lauf 42580257122 auf `0a62a5b`); der Beleg für U7 folgt nach dem
+  Push.
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
 - **Plan:** U1–U14 aus [KONZEPT.md](KONZEPT.md); v0.1 = U1–U9, v0.5 = U10–U12, v1.0 = U13–U14; GO-1 vor U13.
 
-**Nächster Schritt:** U7 (Testlauf: Anbieter-YAML, Client, Zwischenspeicher, EU-Sperre, Manifest, Qwen-Probelauf). Vor
-dem Probelauf prüfe ich, dass kein NeuroGrid-Lauf rechnet (A-30).
+**Nächster Schritt:** Entscheidung zu B11, dann Qwen-Probelauf (10 Fälle × 3 Sprachen) und U8 (Bewertung).
 
 ## Verlauf
+
+### 09.11.2026 – U7 Testlauf
+**Neue Auslegungen:** A-77 bis A-80 (Prüfmodell, Digest, Anbieterdatei, Testlauf). **Offen:** B11.
+
+**Umgesetzt** (`src/proof/harness/`):
+- **Anbieter** (`providers.py`, A-79):
+  - YAML je Endpunkt, Schlüssel nur über den Namen einer Umgebungsvariable.
+  - Temperatur fest 0, kein JSON-Modus, nur erlaubte Parameter.
+  - `https` außer für diesen Rechner. Westliche Modelle nur mit Region `EU` (PR-N03). Platzhalter sperren die Datei.
+- **Client** (`client.py`): OpenAI-kompatibles Chatprotokoll, kein zweiter Versuch, keine Umleitungen,
+  TLS-Prüfung an. Bei Ollama Version, Digest und Details aus `/api/version` und `/api/tags` (A-78). Der Schlüssel wird
+  aus gespeicherten Fehlertexten entfernt.
+- **Zwischenspeicher** (`cache.py`): Antworten nach Anfrage-Hash unter `$PROOF_HOME/cache/` (A-19), Fehler nie.
+- **Lauf** (`run.py`, A-80):
+  - Einheiten aus Sammlung und Variantensatz in den gewählten Sprachen.
+  - `manifest.json` mit Seeds, Modellversion, Parametern, Zeitstempeln, Token und Kosten; `units.jsonl` mit allen
+    Antworten.
+  - `--resume` sendet nur Einheiten ohne Antwort; `--from-manifest` wiederholt einen Lauf.
+- **Befehl:** `proof run --provider … --set … [--variants …] [--lang …] [--max-cases …]`, `--resume`,
+  `--from-manifest`.
+- **Beispiel-Anbieter** (`providers/`):
+  - `qwen-local.yaml`: Qwen3 8B in Ollama, Preis 0.
+  - `deepseek.yaml`: Basis-URL und Modell aus der DeepSeek-Doku; Preise sind Platzhalter.
+  - `western-eu.yaml`: Vorlage mit Platzhaltern für Endpunkt, Modell und Preise.
+- **Abhängigkeit:** httpx 0.28.1 (BSD-3, KONZEPT §2) mit anyio, h11, httpcore; certifi wie unter D-10.
+- **Tests:** Stub-Server im Testordner (`tests/integration/`) mit OpenAI-Protokoll und Ollama-Endpunkten.
+
+**Qwen lokal** (A-77):
+- `qwen3:8b` geladen: 5,2 GB, Q4_K_M, 8,2 B Parameter, Digest
+  `500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41`, Ollama 0.11.11.
+- Vorher geprüft: kein NeuroGrid-Lauf (nur ein CI-Warteskript einer anderen Sitzung), Grafikkarte frei (0 %, 0 MiB).
+- Vorhandene Modelle unverändert.
+
+**Kurzlauf gegen das echte Qwen** (`FEV-000001` in zh, en, de; nicht der Probelauf aus der DoD):
+- 3 von 3 Einheiten beantwortet, 53 s, 3717 Eingabe- und 2043 Ausgabe-Token, Kosten 0 EUR.
+- Das Manifest enthält Digest, Version und Details.
+- Wiederholung aus dem Manifest: gleiche Anfrage-Hashes, 0 Anfragen, alles aus dem Zwischenspeicher.
+- Alle drei Antworten beginnen mit `<think>…</think>` und sind nach A-13 ungültig. Das JSON danach wäre plausibel
+  gewesen. Ursache und Optionen: B11.
+
+**Geprüft** (lokal, Windows 11, Python 3.12.15):
+- `uv run pytest --cov`: 753 Tests grün, Abdeckung 98,70 % (6:40 min).
+- `ruff check` und `ruff format --check`: sauber.
+- Lizenzprüfung: 59 Pakete, 0 abgebrochen, 0 gemeldet.
+
+**Nicht lokal ausgeführt:** `pip-audit`; die Prüfung läuft in der CI.
+
+**Abnahme U7 (DoD aus KONZEPT.md):** erfüllt bis auf den Qwen-Probelauf.
+- Temperatur 0 in jeder Anfrage (`test_a_run_sends_every_unit_once_with_temperature_zero`).
+- Keine zweite Anfrage nach ungültigem JSON (`test_no_second_attempt_after_an_invalid_answer`).
+- Treffer im Zwischenspeicher ohne HTTP (`test_cached_replies_need_no_http_and_a_repeat_has_the_same_requests`).
+- Erkennungswert für Geheimnisse nirgends (`test_no_secret_is_stored_anywhere`).
+- Westlicher Anbieter ohne EU abgewiesen, mit EU im Manifest vermerkt (`test_western_providers_need_the_eu`).
+- Manifest mit Seed, Modellversion, Parametern, Zeitstempel, Token und Kosten
+  (`test_the_manifest_records_what_repeats_the_run`).
+- Wiederholung aus dem Manifest ergibt gleiche Anfrage-Hashes (Test und echter Kurzlauf).
+- Offen: Qwen-Probelauf (10 Fälle × 3 Sprachen) mit Manifest; wartet auf B11.
 
 ### 09.11.2026 – U6 Varianten MR1, MR3, MR5
 **Neue Auslegungen:** A-74 bis A-76 (sprachunabhängige Varianten, Variantensätze und Varianten-Seed, MR1).

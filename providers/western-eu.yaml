@@ -1,0 +1,17 @@
+# Template for a western model. Western models run only via servers in the EU (PR-N03); the region is a declaration
+# that the run manifest records. Endpoint, model and prices are filled in by the project lead; until then the file is
+# refused because of its placeholders.
+name: western-eu
+api: openai_chat
+base_url: "<PLATZHALTER: OpenAI-kompatibler Endpunkt auf einem Server in der EU, https>"
+model: "<PLATZHALTER: Modellname>"
+api_key_env: WESTERN_EU_API_KEY
+origin: western
+region: EU
+params:
+  max_tokens: 1024
+pricing:
+  input_per_mtok: "<PLATZHALTER: Preis je 1 Mio. Eingabe-Token>"
+  output_per_mtok: "<PLATZHALTER: Preis je 1 Mio. Ausgabe-Token>"
+  currency: EUR
+timeout_seconds: 300

@@ -1,0 +1,17 @@
+# DeepSeek over its OpenAI-compatible API (PR-C05). Base URL and model names as documented on api-docs.deepseek.com,
+# checked on 09.11.2026. A run is paid and is started by the project lead with an own key (D-06).
+name: deepseek
+api: openai_chat
+base_url: https://api.deepseek.com
+# deepseek-flash or deepseek-v4-pro; deepseek-flash is served by DeepSeek-V4.1-Flash-1017 (docs, 09.11.2026).
+model: deepseek-flash
+api_key_env: DEEPSEEK_API_KEY
+origin: cn
+region: CN
+params:
+  max_tokens: 1024
+  thinking: {type: disabled}
+# <PLATZHALTER: Preise je 1 Mio. Token (Eingabe, Ausgabe, Währung) trägt der Projektverantwortliche ein (A-20).>
+# Without prices the manifest says "Preis nicht angegeben".
+pricing: null
+timeout_seconds: 300

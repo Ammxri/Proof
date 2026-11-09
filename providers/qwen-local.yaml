@@ -1,0 +1,18 @@
+# Qwen running locally in Ollama (D-06): the test model of this project, offline weights, no costs.
+# Ollama's OpenAI-compatible endpoint; the model's digest is read from Ollama and stored in the run manifest (A-21).
+name: qwen-local
+api: openai_chat
+base_url: http://127.0.0.1:11434/v1
+model: qwen3:8b
+api_key_env: null
+origin: cn
+# Declared location of the server: this computer, currently in China.
+region: CN
+ollama_digest: true
+params:
+  max_tokens: 1024
+  seed: 0
+# Qwen3 thinks before answering. Ollama 0.11.11 ignores a switch to turn thinking off on its OpenAI-compatible
+# endpoint (tested on 09.11.2026), so no such switch is set here; the answers contain the model's thinking (RK-08).
+pricing: {input_per_mtok: 0, output_per_mtok: 0, currency: EUR}
+timeout_seconds: 300

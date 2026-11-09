@@ -18,7 +18,7 @@ Die Eingabefelder des Auftrags waren leer. Belegt bzw. angenommen:
 | Nicht anfassen | alle anderen Projekte, vor allem NeuroGrid (D-01); Diagohelp-Ordner (A-02) |
 | Freigabemodus | angenommen: A, autonom nach Konzeptfreigabe (A-01) |
 
-## Blocker (alle entschieden, siehe D-01 bis D-08 und D-11)
+## Blocker (B1 bis B10 entschieden, siehe D-01 bis D-08 und D-11; B11 offen)
 
 ### B1 Startzeitpunkt – entschieden durch D-01
 **Entscheidung:** Die Startbedingung „erst nach NeuroGrid-G1“ entfällt, denn die Projekte hängen nicht voneinander ab.
@@ -135,6 +135,32 @@ Optionen:
   60+ der PRD sind dann gefährdet.
 - C: Alle Zuordnungen werden migriert, mit deutlich markierter Platzhalterquelle („Quelle ausstehend“). Die Quellen
   lieferst du oder die ärztliche Prüfung nach. PR-K08 bleibt bis dahin „teilweise“, und das Release ist gesperrt.
+
+### B11 Qwen ohne Denkmodus über Ollama – offen (U7)
+Befund vom 09.11.2026:
+- **Modell:** Geladen ist `qwen3:8b` (5,2 GB, Digest `500a1f06…`, A-77). Es ist ein Hybridmodell, das vor der Antwort
+  „denkt“. Ein reines Instruct-Modell von Qwen3 gibt es in Ollama nur mit 4 B und 30 B.
+- **Schnittstelle:** Ollama 0.11.11 ignoriert auf seiner OpenAI-kompatiblen Schnittstelle jeden Schalter, der das
+  Denken abstellt (`think: false`, `options.think`; `reasoning_effort` wird abgelehnt). Die Antwort beginnt dann mit
+  `<think>…</think>`, erst danach folgt das JSON. Nach A-13 ist jede solche Antwort ungültig.
+- **Kurzlauf** (1 Fall × 3 Sprachen): 3 von 3 Antworten ungültig. Das JSON am Ende wäre jeweils plausibel gewesen
+  (`refer_urgent`, `rf.qsofa_ge2`).
+- **Ollamas eigene API** (`POST /api/chat` mit `think: false`) liefert die Antwort ohne Denkteil.
+
+Optionen:
+- **A (Empfehlung):** Eine zweite Schnittstellenart `ollama_chat` für lokale Ollama-Modelle.
+  - Gleiche Nachrichten, Temperatur 0, Seed und Tokengrenze; der Denkmodus ist abschaltbar und steht im Manifest.
+  - Anfragen gehen nur an diesen Rechner.
+  - **Abweichung** von KONZEPT 4.9 und 5.2, die für Ollama nur das OpenAI-Protokoll vorsehen.
+  - Die PRD verlangt „lokale Modelle (vLLM/Ollama)“ ohne Vorgabe der Schnittstelle (PR-F07). Prüfmodell bleibt
+    Qwen3 8B.
+- **B:** Prüfmodell `qwen2.5:7b-instruct`, ein reines Instruct-Modell ohne Denkmodus, eine Generation älter.
+  - 4,7 GB zusätzlich, nur hinzugefügt. Keine Änderung am Konzept.
+  - `qwen3:8b` bleibt geladen, denn Ollama-Modelle werden nur hinzugefügt (A-30).
+- **C:** Qwen3 8B mit Denkmodus. Die ungültigen Antworten sind Messergebnis (RK-08).
+  - Keine Änderung, aber Probe- und Volllauf zeigen dann kaum mehr als S7 = 0.
+
+Nicht empfohlen: Ollama aktualisieren. Das wäre eine globale Änderung auf dem gemeinsamen Rechner (A-30).
 
 ## Annahmen (Nicht-Blocker)
 
@@ -588,6 +614,50 @@ inaktiv. Leukozyten stehen als Kontextfakt im Katalog (PRD-Beispiel); keine Rege
 - Die Erwartung ist die Entscheidung, die das Regelwerk auf den Variantenfakten berechnet: `ask`, oder `refer_urgent`,
   wenn ein anderes Warnzeichen sichtbar bleibt. Dazu steht das entfernte Feld in `questions_include`; es ist zugleich
   die einzige Pflichtfrage der Variante.
+
+### Annahmen aus U7
+
+**A-77 Lokales Prüfmodell.** Präzisiert D-06.
+- Gewählt ist `qwen3:8b` (Q4_K_M, 5,2 GB, Digest `500a1f067a9f…`), geladen am 09.11.2026 mit Ollama 0.11.11.
+- Das neuere `qwen3.5:9b` ist 6,6–7,6 GB groß, passt kaum in 8 GB Grafikspeicher und braucht eine neuere
+  Ollama-Version. Ollama zu aktualisieren wäre eine globale Änderung (A-30).
+- Vorhandene Modelle (`mistral`, `nomic-embed-text`) blieben unverändert.
+- Ob Qwen3 8B ohne Denkmodus laufen kann, ist offen (B11).
+
+**A-78 Modellversion bei Ollama.** Präzisiert A-21 und KONZEPT 5.2.
+- Der Digest steht in Ollama 0.11.11 nicht in `POST /api/show`, sondern in `GET /api/tags`.
+- Proof liest Version (`GET /api/version`), Digest und Details (Parametergröße, Quantisierung) daher dort, auf demselben
+  lokalen Rechner.
+
+**A-79 Anbieterdatei.** Präzisiert KONZEPT 4.9.
+- Erlaubte Parameter: `max_tokens`, `seed`, `top_p`, `think` (Ollama), `thinking` und `reasoning_effort` (DeepSeek).
+  Temperatur, JSON-Modus, Streaming und alles andere weist der Lader ab; die Temperatur ist fest 0.
+- `http` nur für diesen Rechner, sonst `https`.
+- Ein westlicher Anbieter braucht die Region `EU` (PR-N03).
+- Platzhalter `<PLATZHALTER: …>` machen eine Datei unbrauchbar, bis sie ausgefüllt ist.
+- Fehlen bei einem Anbieter die Preise, steht „Preis nicht angegeben“ im Manifest (A-20). Das lokale Qwen hat den
+  Preis 0.
+- Die Beispieldatei für DeepSeek nennt Basis-URL und Modell aus der DeepSeek-Doku (Stand 09.11.2026); die Preise sind
+  Platzhalter.
+
+**A-80 Testlauf.** Präzisiert KONZEPT 4.10 und A-36.
+- **Einheiten:** Eine Einheit ist ein Basisfall oder eine Variante mit eigener Anfrage (MR1, MR3), in einer Sprache.
+  Nachrichten: Systemprompt der Sprache, dann der Falltext.
+- **Ablage:** `$PROOF_HOME/runs/<zeit>-<anbieter>/` mit `manifest.json` und `units.jsonl`.
+  - Während des Laufs wird jede Einheit sofort angehängt.
+  - Am Ende steht je Einheit eine Zeile in Planreihenfolge.
+- **Manifest:** Zeitstempel, Versionen, Git-Stand, Plattform, die ganze Anbieterkonfiguration ohne Geheimnisse,
+  Temperatur 0, Herkunft und Region.
+  - Dazu Sammlung und Variantensatz mit Hashes und Seeds, Hashes aller Systemprompts und Vorlagen, gemeldete
+    Modellversionen und Ollama-Digest.
+  - Dazu Zähler der Einheiten, Token (alle sowie nur die neu angefragten) und Kosten aus den neu angefragten Token.
+- **Fehler:** Eine fehlgeschlagene Einheit (Netz, HTTP-Status, Antwort ohne Text, Umleitung) bekommt den Status
+  `error` und wird nicht wiederholt. Der Lauf ist dann `incomplete`. `--resume` sendet nur Einheiten ohne Antwort.
+- **Zwischenspeicher:** Er hält nur Antworten, keine Fehler.
+- **Wiederholung:** `--from-manifest` baut dieselben Anfragen in ein neues Verzeichnis; mit dem Zwischenspeicher
+  braucht das keine Anfrage.
+- **Geheimnisse:** Der API-Schlüssel steht nur im `Authorization`-Kopf. In gespeicherten Fehlertexten wird er
+  entfernt.
 
 ## Entscheidungen des Projektverantwortlichen
 

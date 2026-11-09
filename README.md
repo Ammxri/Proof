@@ -72,6 +72,22 @@ uv run proof variants build --collection data/collections/fever-100 --variant-se
 uv run proof variants validate data/collections/fever-100/variants/1
 ```
 
+## Test runs
+
+A run sends every unit (case or variant, in each language) to one model: temperature 0, no second attempt, replies
+cached by request hash. Providers are YAML files in [`providers/`](providers/); API keys come only from environment
+variables ([`.env.example`](.env.example)). Western models run only via EU servers.
+
+```bash
+uv run proof run --provider providers/qwen-local.yaml --set data/collections/fever-100 \
+  --variants data/collections/fever-100/variants/1
+uv run proof run --resume .proof/runs/<run>
+uv run proof run --from-manifest .proof/runs/<run>/manifest.json
+```
+
+The run directory holds `manifest.json` (seeds, model version, parameters, time stamps, tokens, costs) and
+`units.jsonl` with every answer.
+
 ## Physician review
 
 Each language needs a physician review of its templates and a sample of the cases (PRD §10). The records are in

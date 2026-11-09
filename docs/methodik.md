@@ -322,6 +322,19 @@ domain allows (A-13). A Markdown code block, text around the object, a duplicate
 invalid; nothing is repaired. A code named twice is still an allowed code (decision A-73). The JSON Schema is in
 [`schema/response.schema.json`](../schema/response.schema.json).
 
+### 6.4 Test run
+
+A run sends each *unit* to one model: every base case and every variant with a request of its own (MR1, MR3), each in
+every chosen language. A unit's messages are the system prompt of its language and its text.
+
+- Every request has temperature 0; there is no second attempt and no JSON mode (PRD §7, A-38). A unit that fails
+  (network, HTTP status, no text) is recorded as an error; `--resume` sends only units without an answer (A-36).
+- Replies are cached by the hash of base URL, model, parameters and messages, never the API key (A-19). A run
+  repeated from its manifest builds the same requests and is answered from the cache.
+- The manifest records seeds, the model versions the replies name (for Ollama also the model's digest), all
+  parameters, time stamps, tokens and costs (PR-N01, PR-N02), and the declared origin and server region of the
+  model. A western model is refused unless its region is the EU (PR-N03).
+
 ## 7 Physician review
 
 Each language needs a physician review of its templates and of a sample of at least 10 % of the cases; for Chinese,

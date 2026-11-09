@@ -5,6 +5,7 @@ Every command's help ends with the fixed notices in zh, en and de (A-24); regist
 
 from __future__ import annotations
 
+import json
 import sys
 from datetime import date
 from pathlib import Path
@@ -18,6 +19,9 @@ from proof.cases import collection, profiles, review
 from proof.cases.model import Case
 from proof.core import canonical, disclaimer, i18n
 from proof.core.paths import proof_home
+from proof.harness import run as harness_run
+from proof.harness.client import Reply
+from proof.harness.providers import ProviderError, load_provider
 from proof.render.case_text import RenderError, render_case
 from proof.render.prompt import system_prompt
 from proof.variants import sets as variant_sets
@@ -413,6 +417,83 @@ def render(
         typer.echo(system_prompt(domain, lang))
         typer.echo("-" * 40)
     typer.echo(rendering.text, nl=False)
+
+
+# --- proof run -------------------------------------------------------------------------------------------------------
+
+
+def _progress(number: int, total: int, unit: harness_run.Unit, reply: Reply, cached: bool) -> None:
+    source = "cache" if cached else "request"
+    typer.echo(f"  {number}/{total} {unit.unit_id}: {reply.status} ({source})")
+
+
+@app.command("run", epilog=EPILOG)
+def run(
+    provider_file: Annotated[
+        Path | None, typer.Option("--provider", dir_okay=False, help="Provider YAML (see providers/).")
+    ] = None,
+    collection_dir: Annotated[
+        Path | None,
+        typer.Option("--set", file_okay=False, help="Collection directory, e.g. data/collections/fever-100."),
+    ] = None,
+    variants_dir: Annotated[
+        Path | None, typer.Option("--variants", file_okay=False, help="Variant set directory (MR1, MR3 units).")
+    ] = None,
+    langs: Annotated[list[str] | None, typer.Option("--lang", help="Language; repeat (default: zh, en, de).")] = None,
+    max_cases: Annotated[
+        int | None, typer.Option("--max-cases", help="Only the first N cases and their variants.")
+    ] = None,
+    out: Annotated[
+        Path | None, typer.Option("--out", file_okay=False, help="Run directory (default: $PROOF_HOME/runs/<id>).")
+    ] = None,
+    resume: Annotated[
+        Path | None, typer.Option("--resume", file_okay=False, help="Continue this run: send units without answer.")
+    ] = None,
+    from_manifest: Annotated[
+        Path | None, typer.Option("--from-manifest", help="Repeat the run this manifest describes (new directory).")
+    ] = None,
+    packs: PacksOption = loader.PACKS_ROOT,
+) -> None:
+    """Send every unit to a model: temperature 0, no second attempt, replies cached by request hash."""
+    modes = sum(value is not None for value in (provider_file, resume, from_manifest))
+    if modes != 1:
+        _fail(["choose exactly one of --provider (new run), --resume or --from-manifest"])
+    try:
+        if provider_file is not None:
+            if collection_dir is None:
+                _fail(["--provider needs --set"])
+            config = harness_run.configure(
+                load_provider(provider_file),
+                collection_dir,
+                variants_dir=variants_dir,
+                langs=tuple(langs) if langs else i18n.LANGUAGES,
+                max_cases=max_cases,
+            )
+            directory = out
+        elif resume is not None:
+            config = harness_run.read_manifest(resume).config
+            directory = resume
+        else:
+            assert from_manifest is not None  # noqa: S101 - one mode is set
+            config = harness_run.read_manifest(from_manifest).config
+            directory = out
+        outcome = harness_run.execute(config, directory, resume=resume is not None, root=packs, progress=_progress)
+    except (ProviderError, harness_run.RunError) as exc:
+        _fail(exc.problems)
+    manifest = outcome.manifest
+    units = manifest.units
+    typer.echo(f"run {manifest.run_id}: {manifest.status} -> {outcome.directory}")
+    typer.echo(
+        f"units: {units.ok} ok, {units.error} error, {units.open} open of {units.total}; {units.requests} requests"
+    )
+    typer.echo(f"tokens: {manifest.tokens.prompt} prompt, {manifest.tokens.completion} completion")
+    cost = manifest.cost
+    typer.echo(f"cost: {cost if isinstance(cost, str) else f'{cost.amount} {cost.currency}'}")
+    typer.echo(f"models: {', '.join(manifest.models_reported) or '-'}")
+    if manifest.ollama is not None:
+        typer.echo(f"ollama: {json.dumps(manifest.ollama, ensure_ascii=False, sort_keys=True)}")
+    if manifest.status != "complete":
+        raise typer.Exit(1)
 
 
 # --- proof review ----------------------------------------------------------------------------------------------------
