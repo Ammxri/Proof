@@ -388,6 +388,22 @@ physician review.
 
 The shipped records are placeholders until the reviews are delivered; `proof review verify` rejects them.
 
+### 7.1 Dataset card and release package
+
+`proof card` writes the dataset card of a collection, `proof release` the package (decisions A-82 to A-84).
+
+- **Card:** the package's `README.md` with Hugging Face metadata. It holds the notices in zh, en and de and these
+  sections: summary, provenance (seeds, own ranges with source, SynthEHR profiles with their discarded rows), rules and
+  keys with the sources of the active rules, physician review per language with names and scope, limitations, licence,
+  files and contact.
+- **Package:** cases, variant sets, the text of every case and variant in zh, en and de, the system prompts, the JSON
+  Schemas, the rule packs with `RULES.md`, the review records, the licences, `release.json` and `SHA256SUMS`.
+- **Release checks:** a release is refused unless collection and variant sets validate, each language has a valid
+  physician review of the current templates (from version 0.5 on also of the case sample), `data/card.yaml` has no
+  placeholder, the repository has no uncommitted changes, the card is complete and the package holds no placeholder.
+- **Draft:** `--draft` builds the package anyway and marks it as a draft in the directory name and the card; the open
+  findings stand in the card and in `release.json`. A draft is not a release and not meant for upload.
+
 ## 8 The PRD example, recalculated
 
 PRD §5 shows case `FEV-000123` with facts temperature 39.2 °C, respiratory rate 24/min, systolic pressure 96 mmHg,

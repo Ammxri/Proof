@@ -484,3 +484,8 @@ Sie stehen gleichlautend in ENTSCHEIDUNGEN.md und gelten mit der Freigabe dieses
 | Hugging-Face-Namensraum, Pages-Adresse | Karte, `pages.yml` | du |
 | Autor- und Kontaktangabe der Datensatzkarte | Karte | du |
 | Datenlizenz der SynthEHR-Ausgabe | Karte, Abschlussbericht | Klärung offen (D-03) |
+
+Nachtrag U9 (A-82):
+- Die Kontaktangabe der Karte ist deine stehende Angabe für Projektpapiere.
+- Der Stand der SynthEHR-Datenlizenz steht als Platzhalter in `data/card.yaml` und sperrt bis zur Klärung das Release.
+- Die Karte braucht keinen Hugging-Face-Namensraum; er bleibt offen für das Hochladen (U12, manuell).

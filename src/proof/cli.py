@@ -16,6 +16,7 @@ import typer
 import proof
 import proof_rules
 from proof.cases import collection, profiles, review
+from proof.cases import release as releases
 from proof.cases.model import Case
 from proof.core import canonical, disclaimer, i18n
 from proof.core.paths import proof_home
@@ -576,6 +577,69 @@ def compare(
     if out is not None:
         out.write_bytes((json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8"))
         typer.echo(f"-> {out}")
+
+
+# --- proof card, proof release --------------------------------------------------------------------------------------
+
+ReleaseSetOption = Annotated[
+    Path,
+    typer.Option("--set", exists=True, file_okay=False, help="Collection directory, e.g. data/collections/fever-100."),
+]
+DraftOption = Annotated[
+    bool,
+    typer.Option(
+        "--draft",
+        help="Draft (A-41): marked as such; missing reviews, placeholders and git state are reported, not refused.",
+    ),
+]
+
+
+def _prepare(collection_dir: Path, draft: bool, packs: Path) -> releases.Prepared:
+    try:
+        return releases.prepare(collection_dir, repo=Path.cwd(), root=packs, draft=draft)
+    except (releases.ReleaseError, review.ReviewError) as exc:
+        _fail(exc.problems)
+
+
+@app.command("card", epilog=EPILOG)
+def card(
+    collection_dir: ReleaseSetOption,
+    draft: DraftOption = False,
+    out: Annotated[Path | None, typer.Option("--out", dir_okay=False, help="Write the card to this file.")] = None,
+    packs: PacksOption = loader.PACKS_ROOT,
+) -> None:
+    """Dataset card of a collection: provenance, rules, physician review, limitations, licence and notices."""
+    prepared = _prepare(collection_dir, draft, packs)
+    text = releases.card_text(prepared)
+    if out is None:
+        typer.echo(text, nl=False)
+        return
+    out.write_bytes(text.encode("utf-8"))
+    typer.echo(f"-> {out}")
+
+
+@app.command("release", epilog=EPILOG)
+def release(
+    collection_dir: ReleaseSetOption,
+    draft: DraftOption = False,
+    out: Annotated[
+        Path | None, typer.Option("--out", file_okay=False, help="Parent directory (default: $PROOF_HOME/releases).")
+    ] = None,
+    packs: PacksOption = loader.PACKS_ROOT,
+) -> None:
+    """Build the release package; refused without valid physician reviews and checks unless --draft."""
+    prepared = _prepare(collection_dir, draft, packs)
+    parent = out if out is not None else proof_home() / "releases"
+    parent.mkdir(parents=True, exist_ok=True)
+    try:
+        target = releases.write(prepared, parent)
+    except releases.ReleaseError as exc:
+        _fail(exc.problems)
+    for problem in prepared.problems:
+        typer.echo(f"draft: {problem}")
+    if draft:
+        typer.echo(f"DRAFT, not a release and not meant for upload: {len(prepared.problems)} open finding(s)")
+    typer.echo(f"-> {target}")
 
 
 # --- proof review ----------------------------------------------------------------------------------------------------

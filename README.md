@@ -99,6 +99,18 @@ uv run proof score .proof/runs/<run>
 uv run proof compare .proof/runs/<run a> .proof/runs/<run b>
 ```
 
+## Dataset card and release
+
+`proof card` writes the dataset card (`README.md` with Hugging Face metadata), `proof release` the package with cases,
+variants, renderings, prompts, schemas, rules, review records, licences and `SHA256SUMS`
+([`docs/methodik.md`](docs/methodik.md), section 7.1). A release is refused without valid physician reviews; until
+then `--draft` builds a package that is marked as a draft and is not meant for upload.
+
+```bash
+uv run proof card --set data/collections/fever-100 --draft
+uv run proof release --set data/collections/fever-100 --draft
+```
+
 ## Physician review
 
 Each language needs a physician review of its templates and a sample of the cases (PRD §10). The records are in

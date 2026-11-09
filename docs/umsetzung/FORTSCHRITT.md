@@ -2,18 +2,54 @@
 
 ## Stand
 
-**09.11.2026 – Phase 3, U8 abgeschlossen.**
-- U1 bis U8 sind auf dem Zweig `dev` committet, zuletzt die Bewertung S1–S7 mit Profil und Vergleich zweier Läufe.
+**09.11.2026 – Phase 3, U9 in Arbeit.**
+- U1 bis U8 sind auf dem Zweig `dev` committet. U9 bringt Datensatzkarte, Release-Paket und Entwurfsmodus.
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U8 unter Windows und Linux grün (Lauf 42590841767 auf `a6a7b3d`).
+- Die CI ist für U8 unter Windows und Linux grün (Lauf 42590841767 auf `a6a7b3d`). Der Beleg für U9 folgt nach dem
+  Push.
+- Der Volllauf Qwen auf Fever-100 läuft (`.proof/runs/u9-fever100`); Profil und Entwurfspaket folgen.
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
 - **Plan:** U1–U14 aus [KONZEPT.md](KONZEPT.md); v0.1 = U1–U9, v0.5 = U10–U12, v1.0 = U13–U14; GO-1 vor U13.
 
-**Nächster Schritt:** U9 (Datensatzkarte, Release-Prüfungen, Entwurfspaket Fever-100, Volllauf Qwen auf Fever-100).
+**Nächster Schritt:** U9 abschließen (Volllauf Qwen, Profil, Entwurfspaket Fever-100), danach U10.
 
 ## Verlauf
+
+### 09.11.2026 – U9 Datensatzkarte und Release-Paket
+**Neue Auslegungen:** A-82 (Datensatzkarte), A-83 (Release-Prüfungen), A-84 (Paketinhalt).
+
+**Umgesetzt:**
+- `src/proof/report/card.py`: Datensatzkarte als `README.md` mit Hugging-Face-Metadaten.
+  - Hinweissätze in zh, en und de, dazu die Abschnitte Zusammenfassung, Herkunft, Regeln und Schlüssel, ärztliche
+    Prüfung, Grenzen, Lizenz, Dateien und Kontakt.
+  - Die Herkunft nennt Seeds, eigene Bereiche mit Quelle und die SynthEHR-Profile mit den verworfenen Zeilen (D-03).
+  - `missing_parts` prüft eine Karte auf jeden Pflichtteil.
+- `src/proof/cases/release.py`: Release-Paket mit Prüfungen.
+  - Prüfungen: Daten gültig, Vermerke je Sprache gültig, kein Platzhalter, kein offener git-Stand, Karte vollständig.
+  - `SHA256SUMS` wird nach dem Schreiben gegengeprüft.
+  - Entwurfsmodus: Ordner `…-DRAFT`, Vermerk in der Karte, offene Befunde in Karte und `release.json`.
+- `review.language_status`: Stand eines Vermerks für Karte und Release.
+- `data/card.yaml`: Kontaktangabe und Stand der SynthEHR-Datenlizenz (Platzhalter bis zur Klärung).
+- **Befehle:** `proof card --set <sammlung> [--draft] [--out …]` und `proof release --set <sammlung> [--draft] [--out …]`.
+- **Doku:** `docs/methodik.md` Abschnitt 7.1, README, KONZEPT 14 (Nachtrag), Matrix.
+
+**Geprüft** (lokal, Windows 11, Python 3.12.15):
+- Betroffene Tests grün: `test_card.py`, `test_release.py`, `test_review.py`, `test_i18n.py`, `test_cli.py`,
+  `test_repository.py`. Die Vollsuite läuft in der CI, weil der Qwen-Volllauf parallel rechnet.
+- `ruff check` und `ruff format --check`: sauber.
+
+**Abnahme U9 (DoD aus KONZEPT.md):** in Arbeit.
+- Release verweigert ohne gültige Vermerke, je Fehlerfall ein Test: fehlender Vermerk, Platzhalter, reine Vorprüfung,
+  zh ohne Praxis in China, geänderte zh-Vorlagen, Datum in der Zukunft, Stichprobe ab 0.5, Platzhalter in
+  `data/card.yaml`, offene Änderungen, kein git-Arbeitsbaum (`tests/integration/test_release.py`).
+- Entwurfspaket in Karte und Ordnername markiert (`test_a_draft_package_is_marked_and_complete`).
+- Karte mit dem Satz aus PR-A01 in zh/en/de und allen Pflichtabschnitten
+  (`test_the_card_states_the_reference_sentence_in_every_language`, `test_the_card_has_every_required_part`).
+- Paket mit vollständiger `SHA256SUMS` (`test_a_release_with_valid_reviews_is_complete`,
+  `test_the_package_check_finds_every_change`).
+- Offen: Volllauf Qwen mit Profil, Entwurfspaket Fever-100, CI-Beleg.
 
 ### 09.11.2026 – U8 Bewertung
 **Neue Auslegung:** A-81 (Einzelheiten der Kennzahlen, Profil, Vergleich).

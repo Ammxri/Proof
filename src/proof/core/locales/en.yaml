@@ -29,3 +29,5 @@ review:
     Please fill in the file review_{lang}.yaml: name, role, clinic or practice, country, date and scope. Hashes and case
     ids are already filled in. Saved as review/{lang}.yaml, the record is checked by "proof review verify". A pre-review
     by a student is entered with the role pre_reviewer and does not replace the physician review.
+release:
+  draft: 'Draft: not a release and not meant for upload.'

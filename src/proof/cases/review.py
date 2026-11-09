@@ -246,13 +246,91 @@ def verify(
     return report
 
 
-def _verify_cases(path: Path, directory: Path, eligible: Sequence[Review], lang: str, report: VerifyReport) -> None:
-    manifest = read_manifest(directory)
-    reviews = [
+def _eligible(reviews: Iterable[Review], lang: str) -> list[Review]:
+    """Reviews that count as the physician review of ``lang`` (for zh with clinical practice in China)."""
+    return [
         review
-        for review in eligible
+        for review in reviews
+        if review.role == "physician" and (lang != "zh" or review.clinical_practice_country == CHINA)
+    ]
+
+
+def _of_collection(reviews: Iterable[Review], manifest: collections.CollectionManifest) -> list[Review]:
+    return [
+        review
+        for review in reviews
         if review.collection == manifest.name and review.collection_sha256 == manifest.cases_sha256
     ]
+
+
+@dataclass(frozen=True)
+class LanguageStatus:
+    """Review state of one language for a dataset card or release (PR-A02, PR-A06).
+
+    ``problems`` is empty exactly when the review is valid; the sample counts only when ``cases_required``.
+    ``reviews`` holds the entries of the record once it is complete and well-formed.
+    """
+
+    lang: str
+    path: Path
+    problems: tuple[str, ...]
+    reviews: tuple[Review, ...]
+    placeholders: int
+    sample: tuple[str, ...]
+    covered: tuple[str, ...]
+    cases_required: bool
+
+    @property
+    def ok(self) -> bool:
+        return not self.problems
+
+
+def language_status(
+    path: Path,
+    lang: str,
+    collection_dir: Path,
+    *,
+    cases_required: bool,
+    root: Path = loader.PACKS_ROOT,
+    today: dt.date | None = None,
+) -> LanguageStatus:
+    """Check the record of ``lang`` as :func:`verify` does and collect what a dataset card shows about it.
+
+    ``covered`` lists the sample cases of the collection that a counting physician review of this version of the
+    collection checked; the sample is required for validity only when ``cases_required``.
+    """
+    manifest = read_manifest(collection_dir)
+    report = verify(path, lang, collection_dir=collection_dir if cases_required else None, root=root, today=today)
+    reviews: tuple[Review, ...] = ()
+    found = 0
+    if path.is_file():
+        try:
+            data = yamlio.load_file(path)
+        except yamlio.YamlError:
+            data = None
+        found = len(placeholders(data))
+        if data is not None and not found:
+            try:
+                reviews = ReviewRecord.model_validate(data).reviews
+            except ValidationError:
+                reviews = ()
+    chosen = sample(manifest, lang)
+    checked = {case_id for review in _of_collection(_eligible(reviews, lang), manifest) for case_id in review.cases}
+    return LanguageStatus(
+        lang=lang,
+        path=path,
+        problems=tuple(report.problems),
+        reviews=reviews,
+        placeholders=found,
+        sample=chosen,
+        covered=tuple(case_id for case_id in chosen if case_id in checked),
+        cases_required=cases_required,
+    )
+
+
+def _verify_cases(path: Path, directory: Path, eligible: Sequence[Review], lang: str, report: VerifyReport) -> None:
+    manifest = read_manifest(directory)
+    reviews = _of_collection(eligible, manifest)
     if not reviews:
         report.problems.append(f"{path}: no physician review of collection {manifest.name} in its current form")
         return

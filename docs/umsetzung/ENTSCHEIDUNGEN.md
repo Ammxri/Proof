@@ -687,6 +687,54 @@ inaktiv. Leukozyten stehen als Kontextfakt im Katalog (PRD-Beispiel); keine Rege
 - **Vergleich:** Je Einheit verglichen werden Gültigkeit, Entscheidung, gefundene Warnzeichen, Diagnosetreffer und
   gefundene Pflichtfragen.
 
+### Annahmen aus U9
+
+**A-82 Datensatzkarte.** Präzisiert A-24, A-27 und KONZEPT 14.
+- Die Karte ist Englisch wie bei Hugging Face üblich. Die beiden Hinweissätze und der Entwurfsvermerk stehen in zh, en
+  und de.
+- Pflichtabschnitte in fester Reihenfolge: Notices, Dataset summary, Provenance, Rules and keys, Physician review,
+  Limitations, Licence, Files, Contact. Ein Test prüft Abschnitte, Hinweissätze und Metadaten.
+- Die Metadaten nutzen nur Felder der Hugging-Face-Vorlage `datasetcard.md`: `pretty_name`, `license`, `language`,
+  `language_details`, `annotations_creators`, `language_creators`, `source_datasets`, `size_categories`, `tags`,
+  `configs`. `task_categories` fehlt, weil keine Kategorie der festen Liste sicher passt. Die Prüfung gegen die
+  Felddoku folgt in U12.
+- Alles, was die Karte sagt, stammt aus Sammlung, Variantensätzen, Regelpaketen, Prüfvermerken und
+  `data/card.yaml`. Diese Datei hält, was sonst nirgends steht:
+  - die Kontaktangabe, deine stehende Angabe für Projektpapiere;
+  - den Stand der Datenlizenz der SynthEHR-Ausgabe, als Platzhalter bis zur Klärung (D-03, RK-03).
+- Ein Platzhalter in `data/card.yaml` sperrt das Release, nicht den Entwurf.
+
+**A-83 Release-Prüfungen.** Präzisiert A-23, A-41 und PR-A02.
+- Ein Release wird verweigert, solange einer dieser Punkte fehlt:
+  - Sammlung und alle Variantensätze sind gültig, wie `cases validate` und `variants validate` sie prüfen;
+  - je Sprache gibt es einen gültigen ärztlichen Vermerk über die aktuellen Vorlagen, für zh mit Praxis in China;
+  - `data/card.yaml` hat keinen Platzhalter;
+  - das Repository ist ein git-Arbeitsbaum ohne offene Änderungen, damit Paket und Commit zusammenpassen;
+  - die Karte ist vollständig, und das Paket enthält keinen Platzhalter.
+- Die Stichprobe der Fälle zählt ab Version 0.5. So steht es in der PRD-Spalte „Version“ von PR-A02: „0.1
+  (Vorlagen), 0.5 (Fälle)“. Für 0.1 nennt die Karte trotzdem, welche Fälle geprüft sind.
+- Ein Entwurf (`--draft`) meldet Vermerke, Platzhalter und git-Stand in Karte und `release.json`, ohne abzubrechen.
+  Ungültige Daten und fehlende Dateien stoppen auch einen Entwurf.
+- Ein vorhandenes Paketverzeichnis wird nie überschrieben. Das Paket entsteht in einem Zwischenordner und wird erst
+  nach bestandener Paketprüfung umbenannt.
+
+**A-84 Paketinhalt.** Präzisiert A-27 und A-46.
+- Ordnername `proof-<sammlung>-<version>`, beim Entwurf mit `-DRAFT`. Voreinstellung für das Ziel ist
+  `$PROOF_HOME/releases/`, also nicht versioniert.
+- Inhalt:
+  - `README.md`: die Karte;
+  - `data/cases.jsonl`, `data/collection.json` und `data/variants/<seed>/`;
+  - `data/renderings/<sprache>.jsonl`: der Text jedes Falls und jeder Variante mit eigenem Text, also ohne MR5;
+  - `data/prompts/system_<sprache>.txt`;
+  - `schema/` aus den Modellen;
+  - `rules/<paket>/` für das Domänenpaket und die Bibliotheken, die es nutzt;
+  - `rules/RULES.md`, eine Kopie von `docs/regeln.md`;
+  - `review/<sprache>.yaml`;
+  - `LICENSE` (CC BY 4.0, aus `LICENSE-DATA`), `LICENSE-CODE` (Apache-2.0, aus `LICENSE`) und `NOTICE`;
+  - `release.json` mit Herkunft, Vorlagen-Hashes, Stand der Vermerke und den offenen Befunden;
+  - `SHA256SUMS` im Format von `sha256sum`.
+- Regelpakete und Schemas stehen unter Apache-2.0, Fälle, Varianten, Darstellungen und Prompts unter CC BY 4.0.
+
 ## Entscheidungen des Projektverantwortlichen
 
 **D-01 Projekte sind voneinander unabhängig (08.11.2026).** Deine Vorgabe: „nichts abändern. Das heißt, nichts von

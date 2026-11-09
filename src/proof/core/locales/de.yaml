@@ -31,3 +31,5 @@ review:
     Bitte füllen Sie die Datei review_{lang}.yaml aus: Name, Rolle, Klinik oder Praxis, Land, Datum und Umfang. Hashes
     und Fall-IDs sind bereits eingetragen. Gespeichert als review/{lang}.yaml prüft „proof review verify“ den Vermerk.
     Eine Vorprüfung durch Studierende wird mit der Rolle pre_reviewer eingetragen und ersetzt die ärztliche Prüfung nicht.
+release:
+  draft: 'Entwurf: kein Release und nicht zum Hochladen bestimmt.'

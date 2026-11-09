@@ -23,3 +23,5 @@ review:
   record_heading: 审核记录
   record_task: >-
     请填写文件 review_{lang}.yaml：姓名、角色、医院或诊所、国家、日期和审核范围。哈希值和病例编号已预先填好。保存为 review/{lang}.yaml 后，可用“proof review verify”检查该记录。医学生的预审以角色 pre_reviewer 记录，不能替代医师审核。
+release:
+  draft: 草稿：不是正式发布版本，不得上传。
