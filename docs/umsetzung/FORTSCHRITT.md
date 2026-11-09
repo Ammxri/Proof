@@ -6,7 +6,7 @@
 - U1 (Grundgerüst), U2 (Regelmotor), U3 (Fieber-Regelpaket und Migration) und U4 (Fallschema, Sampler, Fever-100)
   sind auf dem Zweig `dev` committet.
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U3 unter Windows und Linux grün (Lauf 42536070825); der Beleg für U4 folgt nach dem Push.
+- Die CI ist für U4 unter Windows und Linux grün (Lauf 42569793312 auf `90aaa3c`).
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
@@ -84,7 +84,12 @@
 
 **Nicht lokal ausgeführt:** `pip-audit`; die Prüfung läuft in der CI.
 
-**Abnahme U4 (DoD aus KONZEPT.md):** erfüllt, der CI-Beleg folgt.
+**CI:** Lauf 42569793312 (ci #6) auf `90aaa3c`, beide Jobs erfolgreich: `test (ubuntu-latest)` in 58 s,
+`test (windows-latest)` in 1:47 min. Alle Schritte grün: Lint, Tests mit Abdeckung, Lizenzprüfung, `pip-audit`, Wheel
+in frischer Umgebung. Die Golden-Hashes und der bytegleiche Neubau von Fever-100 gelten damit unter beiden Systemen.
+Die Protokolle der Schritte zeigt GitHub nur angemeldet; gelesen wurde der Status je Schritt.
+
+**Abnahme U4 (DoD aus KONZEPT.md):** erfüllt.
 - Alle Fever-100-Fälle bestehen Pydantic und JSON Schema (`test_fever_100_is_valid`,
   `test_fever_100_passes_the_json_schema`).
 - Gleicher Seed, bytegleicher Fall: Golden-Hashes (`test_golden_case_hashes`) und bytegleicher Neubau von Fever-100
