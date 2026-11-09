@@ -2,19 +2,66 @@
 
 ## Stand
 
-**09.11.2026 – Phase 3, U5 abgeschlossen.**
-- U1 bis U5 sind auf dem Zweig `dev` committet: Grundgerüst, Regelmotor, Fieber-Regelpaket mit Migration, Fallschema
-  mit Sampler und Fever-100, Darstellung mit Prompt, Antwortschema und Prüfvermerken.
+**09.11.2026 – Phase 3, U6 abgeschlossen.**
+- U1 bis U6 sind auf dem Zweig `dev` committet: Grundgerüst, Regelmotor, Fieber-Regelpaket mit Migration, Fallschema
+  mit Sampler und Fever-100, Darstellung mit Prompt, Antwortschema und Prüfvermerken, Varianten MR1, MR3 und MR5.
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U5 unter Windows und Linux grün (Lauf 42574043812 auf `3407f79`).
+- Die CI ist für U5 unter Windows und Linux grün (Lauf 42574043812 auf `3407f79`); der Beleg für U6 folgt nach dem
+  Push.
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
 - **Plan:** U1–U14 aus [KONZEPT.md](KONZEPT.md); v0.1 = U1–U9, v0.5 = U10–U12, v1.0 = U13–U14; GO-1 vor U13.
 
-**Nächster Schritt:** U6 (Variantenmodell, MR1, MR3, MR5, Varianten-Seed).
+**Nächster Schritt:** U7 (Testlauf: Anbieter-YAML, Client, Zwischenspeicher, EU-Sperre, Manifest, Qwen-Probelauf). Vor
+dem Probelauf prüfe ich, dass kein NeuroGrid-Lauf rechnet (A-30).
 
 ## Verlauf
+
+### 09.11.2026 – U6 Varianten MR1, MR3, MR5
+**Neue Auslegungen:** A-74 bis A-76 (sprachunabhängige Varianten, Variantensätze und Varianten-Seed, MR1).
+
+**Umgesetzt:**
+- **Variantenmodell** (`src/proof/variants/model.py`): genau die Felder aus KONZEPT 4.7, Erwartung `absolute` oder
+  `invariant` (A-14); JSON Schema `schema/variant.schema.json`.
+- **Relationen** (`src/proof/variants/generator.py`):
+  - MR1 entfernt ein kritisches Feld; der Schlüssel wird neu berechnet. Die Erwartung ist die Entscheidung des Motors
+    auf den Variantenfakten und das Feld unter den Fragen (A-76).
+  - MR3 zeigt die vier Abschnitte in einer der 23 anderen Reihenfolgen; Fakten und Schlüssel bleiben.
+  - MR5 legt je Basisfall die drei Sprachpaare an; verglichen werden die Antworten auf den Basisfall (A-37, A-74).
+  - Feld und Reihenfolge kommen aus dem Varianten-Seed; mehrere Varianten je Fall ziehen ohne Wiederholung (A-75).
+- **Variantensätze** (`src/proof/variants/sets.py`): `<sammlung>/variants/<seed>/` mit `variants.jsonl` und
+  `variants.json`. Die Prüfung vergleicht jede Variante mit ihrem Basisfall und baut den Satz aus dem Seed neu.
+- **Befehle:** `proof variants build --collection … --variant-seed …` und `proof variants validate …`;
+  `proof render … --variants … --variant-id …` zeigt eine Variante.
+- **Satz zu Fever-100**, Varianten-Seed 1 (`data/collections/fever-100/variants/1/`), gebaut aus Commit `19af369`
+  (sauberer Arbeitsbaum):
+
+  | Merkmal | Wert |
+  |---|---|
+  | Varianten | MR1 100, MR3 100, MR5 300 |
+  | MR1, erwartete Entscheidung | `ask` 57, `refer_urgent` 43 |
+  | MR1, häufigste entfernte Felder | Bewusstsein 20, Temperatur 16, Kreatinin 12 |
+  | Einheiten je Sprache | 300 (100 Basisfälle, 100 MR1, 100 MR3) |
+
+- **Doku:** `docs/methodik.md` Abschnitt 5.5, README, Matrix.
+
+**Geprüft** (lokal, Windows 11, Python 3.12.15):
+- `uv run pytest --cov`: 710 Tests grün, Abdeckung 99,18 % (5:20 min).
+- `ruff check` und `ruff format --check`: sauber; Schemata aktuell.
+- `proof variants validate data/collections/fever-100/variants/1`: 500 Varianten gültig.
+- Wheel frisch installiert: `proof variants build` (Seed 4) und `validate` laufen damit.
+
+**Nicht lokal ausgeführt:** `pip-audit`; die Prüfung läuft in der CI. Keine neue Abhängigkeit.
+
+**Abnahme U6 (DoD aus KONZEPT.md):** erfüllt, der CI-Beleg folgt.
+- Jede Variante besteht das Schema und trägt ihre Erwartung
+  (`test_every_variant_passes_the_schema_and_carries_its_expectation`, `test_variant_model.py`).
+- MR1-Erwartung gleich dem Motor auf den Variantenfakten (`ask`, außer bei anderem sichtbarem Warnzeichen), das Feld
+  steht in den Fragen (`test_mr1_expects_what_the_engine_gives_on_the_variant`).
+- MR3 ändert nur die Reihenfolge (`test_mr3_changes_only_the_order`).
+- Gleicher Varianten-Seed, gleiche Varianten; neuer Seed, neue Varianten
+  (`test_same_seed_same_variants_new_seed_new_variants`).
 
 ### 09.11.2026 – U5 Darstellung, Prompt, Antwortschema, Prüfvermerke
 **Neue Auslegungen:** A-70 bis A-73 (Falltext, Stichprobe, Prüfvermerk, Antwortprüfung).

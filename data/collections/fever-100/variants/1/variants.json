@@ -1,0 +1,2078 @@
+{
+  "collection": "fever-100",
+  "collection_sha256": "5192269bce88e2ade73cfc48a0304068dd1cf0e001ff51c9ab41caed8dae8125",
+  "created_utc": "2026-11-09T07:28:41Z",
+  "domain": "fever",
+  "git": {
+    "commit": "19af3699e32d4b3a832a3bab32efbf6a16468863",
+    "dirty": false
+  },
+  "inputs": {
+    "catalog_sha256": "099c263203032ab41092b16ec892151440513f175d3f6efcdc8527c77f2e5933",
+    "profiles_sha256": {
+      "lab.bilirubin_umol_l": "11388845dca0640b029d33312f95be25ff15fbb3094cb8b3801ad0fe7b41034d",
+      "lab.creatinine_umol_l": "21ff3713297079ed5b4ca1d6ab07593be0a85afa28a7262a68f013419242d3e9",
+      "lab.crp_mg_l": "0ce88cd910b1c6993bcc9b1c41eaca803b638ff9976922322ecf13add7a4aeae",
+      "lab.lactate_mmol_l": "aa250a79c661e5636cdd5b3c14ec8056d80397168d9712409474a13c529d0787"
+    },
+    "rules_sha256": "f0c00e20e2d48b8befde52015f8dacc31dc6206066b97ecfc45dd3b02bfe8cd6",
+    "sampler_sha256": "04b2b3ea9db790f2771129c55f115424302491f9966bdb5bbd4d52fb1d42c4f6",
+    "schema_sha256": "a43e2eb52c5dbf3b7de49332fc768b5782499f8d2656ad2023b32019ca680905",
+    "sources_sha256": "ed346674b8f5e91c5f80a10533cdeff2e05aeb8fec60d78eb099bfe22e3dd324",
+    "variant_schema_sha256": "4b11b77e4cb99a91ce1628f7cef82c701b7fdccf4bf5e70cfa651efe105bdf88",
+    "vocabulary_sha256": "59c192fb259c3bdf91e35ad55f811a1c76e104a82816fd399160e388d7123f51"
+  },
+  "kind": "variants",
+  "manifest_version": 1,
+  "mrs": [
+    "MR1",
+    "MR3",
+    "MR5"
+  ],
+  "per_case": 1,
+  "platform": {
+    "implementation": "CPython",
+    "machine": "AMD64",
+    "python": "3.12.15",
+    "system": "Windows"
+  },
+  "proof_version": "0.1.0.dev0",
+  "rules_version": "0.1.0.dev0",
+  "summary": {
+    "missing": {
+      "MR1": 0,
+      "MR3": 0
+    },
+    "mr1_decisions": {
+      "ask": 57,
+      "refer_urgent": 43
+    },
+    "mr1_removed": {
+      "exam.cva_tenderness": 5,
+      "exam.neck_stiffness": 3,
+      "hx.cough": 6,
+      "hx.flank_pain": 6,
+      "hx.headache": 2,
+      "hx.onset_days": 1,
+      "lab.bilirubin_umol_l": 8,
+      "lab.creatinine_umol_l": 12,
+      "lab.crp_mg_l": 3,
+      "lab.lactate_mmol_l": 7,
+      "vital.heart_rate": 1,
+      "vital.mental_status": 20,
+      "vital.resp_rate": 8,
+      "vital.sbp": 2,
+      "vital.temp_c": 16
+    },
+    "units_per_language": 300,
+    "variants": {
+      "MR1": 100,
+      "MR3": 100,
+      "MR5": 300
+    }
+  },
+  "variant_seed": 1,
+  "variants": [
+    {
+      "sha256": "0298cfa0e6ae403ffa7cbcdac7bdac40a21bc72a7dc20af9c44bbe7b77d2c2d3",
+      "variant_id": "FEV-000001-MR1-1"
+    },
+    {
+      "sha256": "b024622baaaff0b480fcc89def69d82f2428e00101559e6e55d49b6f0c2a5142",
+      "variant_id": "FEV-000001-MR3-1"
+    },
+    {
+      "sha256": "1d837793e3c403f8e8292df3194e8660c2f74ce8f4a3f69a8b567c40bc6b5e01",
+      "variant_id": "FEV-000001-MR5-zh-en"
+    },
+    {
+      "sha256": "f16a1da5fa95ab7f641f60372bbd8a9237386d8f4cec554d7d3fa03c7ffa1c81",
+      "variant_id": "FEV-000001-MR5-zh-de"
+    },
+    {
+      "sha256": "550d06b8958c531a01342070f6fd6694abdec6fd2b25e50e33f470d5fd2f6da8",
+      "variant_id": "FEV-000001-MR5-en-de"
+    },
+    {
+      "sha256": "100e9ecbdfa11cb0e73987df71f0161ce83c9e47b95aadcefa3711237c3b3eb8",
+      "variant_id": "FEV-000002-MR1-1"
+    },
+    {
+      "sha256": "7f5245086e6c54a4d0148f67830dc7a2c26132ad03ef4f945102f8fe8a795090",
+      "variant_id": "FEV-000002-MR3-1"
+    },
+    {
+      "sha256": "6515571f291aab1d1b55342da64c62c7c38d20331f657d32a34f02e334a6906a",
+      "variant_id": "FEV-000002-MR5-zh-en"
+    },
+    {
+      "sha256": "f2e38263c20b304d0003714ecc40a23095ca8293c00e13182f4263f19c7d8dda",
+      "variant_id": "FEV-000002-MR5-zh-de"
+    },
+    {
+      "sha256": "ecea0e238203c202f817e8fb2b41b4577d47079ac1fa72a7da248ca60fce7302",
+      "variant_id": "FEV-000002-MR5-en-de"
+    },
+    {
+      "sha256": "c04e3f6777ca35836880c3d7e0d6e65cf50b697e6fc1a2174b7e40ff451c03c3",
+      "variant_id": "FEV-000003-MR1-1"
+    },
+    {
+      "sha256": "cea2fde2019cf63140dbda718987474377fc989177988851448ff3bb08f41f54",
+      "variant_id": "FEV-000003-MR3-1"
+    },
+    {
+      "sha256": "d4c40b4ec096e3cf7724b6ac365e88b5003c2458c8f570ca174a9a8443d0407d",
+      "variant_id": "FEV-000003-MR5-zh-en"
+    },
+    {
+      "sha256": "fa42882d4a48c23352cf744ab4c704170f61795a7eaf36c64763b136974303dc",
+      "variant_id": "FEV-000003-MR5-zh-de"
+    },
+    {
+      "sha256": "bae8f3c102b9e76ff6972d983ffdc8e81f662b9321ba89c48e03008eab76d364",
+      "variant_id": "FEV-000003-MR5-en-de"
+    },
+    {
+      "sha256": "9c3d6bdd36581a9ece3fceca22e47975c272de0d76865bb0fbbb8c9643cc26eb",
+      "variant_id": "FEV-000004-MR1-1"
+    },
+    {
+      "sha256": "0aa02487b0cf926103d45c9103d64bdfced61d990501aa7aa413e1a8457b573d",
+      "variant_id": "FEV-000004-MR3-1"
+    },
+    {
+      "sha256": "05ddfc12a54697ff5b93bba96e156f3aebd4ddd80de080c76b57c68e65fe10d4",
+      "variant_id": "FEV-000004-MR5-zh-en"
+    },
+    {
+      "sha256": "5235d347aa970e13e2b97592c16666079dc2dd1cfa3dd6e90a1491e48570d1ec",
+      "variant_id": "FEV-000004-MR5-zh-de"
+    },
+    {
+      "sha256": "53f80048aa7e8ad21bec749754ce56c4b6ee35c1fa5712e11f63f93990905773",
+      "variant_id": "FEV-000004-MR5-en-de"
+    },
+    {
+      "sha256": "a8726c16ec6b3864bd41ecfe95fa1c9c7bf62bb0e00d6680c0868690e78dbe94",
+      "variant_id": "FEV-000005-MR1-1"
+    },
+    {
+      "sha256": "d0c8ccb480f07efac54f1ec84cc3b177c06059ef9f8fa6341f077d4638e66dc5",
+      "variant_id": "FEV-000005-MR3-1"
+    },
+    {
+      "sha256": "a011848e6df382b19b46f0881b4d1350d578036378d1eff9a0afac872c3fa0b1",
+      "variant_id": "FEV-000005-MR5-zh-en"
+    },
+    {
+      "sha256": "7672cc2b4d75ab55e508fbb1970f46133f506169ed2e95b2ff2aba3416f08fd6",
+      "variant_id": "FEV-000005-MR5-zh-de"
+    },
+    {
+      "sha256": "fdb2329cdcc72ca4f0d6a8a00cbdbce10f931ffde95c5d176888c4789549f975",
+      "variant_id": "FEV-000005-MR5-en-de"
+    },
+    {
+      "sha256": "bc12fedda7ff5c826dd21dccde4014d2c6bff6fe432c5e1944eb4a3829c1ad71",
+      "variant_id": "FEV-000006-MR1-1"
+    },
+    {
+      "sha256": "2b37cc572d4eb2c64578986ed7dc1fce5965c2b4ff9f40ec9a4e6ea7fa3beba3",
+      "variant_id": "FEV-000006-MR3-1"
+    },
+    {
+      "sha256": "c6389eeb7d9f46f5e3fe7b1041fe1be33cd200248ab9f50955680c3db9bf8b98",
+      "variant_id": "FEV-000006-MR5-zh-en"
+    },
+    {
+      "sha256": "76a1f8150fb07a6073b25d4664ba31c62fb9822c75520f968f1660a4fbba1832",
+      "variant_id": "FEV-000006-MR5-zh-de"
+    },
+    {
+      "sha256": "5d71ed35ed0af144dcfde70261f8c9e6ee5c643dd92eaa4a0e6dc287a8b9144a",
+      "variant_id": "FEV-000006-MR5-en-de"
+    },
+    {
+      "sha256": "8f8fcb4688c1b6a72d517a36aa5d36eb7dc87226b4713ed401ef73441c7958e6",
+      "variant_id": "FEV-000007-MR1-1"
+    },
+    {
+      "sha256": "fee631f0329eceebaef2ece707d285f0ef1b7114f617011e747d86cfed7b2492",
+      "variant_id": "FEV-000007-MR3-1"
+    },
+    {
+      "sha256": "b0568545788f8119c2adb90da4cf4cdc9334f89cfb667e7d33bf0cc1a8a39fa6",
+      "variant_id": "FEV-000007-MR5-zh-en"
+    },
+    {
+      "sha256": "96aaf572aa3a8e52ba2a0d711881cd49add838834523b6713d852d35d5a57b1f",
+      "variant_id": "FEV-000007-MR5-zh-de"
+    },
+    {
+      "sha256": "301ae6003f80f37ed14b1d641ff1fc18f5fe01114c4ef6ea7d9602b6b371f404",
+      "variant_id": "FEV-000007-MR5-en-de"
+    },
+    {
+      "sha256": "a90b84c3585f821f03a5a315e97cfa3b2280591db368a02dd4dc5c1dfd718aa8",
+      "variant_id": "FEV-000008-MR1-1"
+    },
+    {
+      "sha256": "b4e71d450de1febcac47e5f08b758defd550429f9348771ecde6a386e7853030",
+      "variant_id": "FEV-000008-MR3-1"
+    },
+    {
+      "sha256": "e95cb89c7094703b97988975b9ba180a1aa34cae2bd2e362c20d411a99e22dc1",
+      "variant_id": "FEV-000008-MR5-zh-en"
+    },
+    {
+      "sha256": "48db2382a3f4c0f0fec64322212950a4bd79710155affa1ffa37cc47e8ea8ea1",
+      "variant_id": "FEV-000008-MR5-zh-de"
+    },
+    {
+      "sha256": "3bc3bf38e1735a6c37a626af12284995e4d71feb3fbaa03c481629f2c436f43b",
+      "variant_id": "FEV-000008-MR5-en-de"
+    },
+    {
+      "sha256": "ffa1d2982b23c5b4caf27ab6961425787f2d4e78e6f80f16ac7b7cdce0ddc624",
+      "variant_id": "FEV-000009-MR1-1"
+    },
+    {
+      "sha256": "68fba8f87d3c6084bf75bd2df599144be6fcc8ed81bc90a1e5a3775dcf93df85",
+      "variant_id": "FEV-000009-MR3-1"
+    },
+    {
+      "sha256": "4cace4ae56e443b144f83cbf3fd340a8c2a0b2ce722f467e4f7a0f4eefd53733",
+      "variant_id": "FEV-000009-MR5-zh-en"
+    },
+    {
+      "sha256": "d4538fa4a6310fca5026ac9ff1968c62c68ba13530ca57e7c4c4bc6376eff5c7",
+      "variant_id": "FEV-000009-MR5-zh-de"
+    },
+    {
+      "sha256": "415106d82608af0faba23e0ae41d8049497ed3971c39082622d5c81f0789c742",
+      "variant_id": "FEV-000009-MR5-en-de"
+    },
+    {
+      "sha256": "7229a01d2c45887156d94963e9d77b86f5067f478a64cf823496c1c2b86b062c",
+      "variant_id": "FEV-000010-MR1-1"
+    },
+    {
+      "sha256": "3a6fb26d18ae6224c08237da6cc08c9919fc9c9e704399bc596640eabffc51e0",
+      "variant_id": "FEV-000010-MR3-1"
+    },
+    {
+      "sha256": "004ef04c9e0bc3c974620de1a6a4860c5ac0a81e363442b8a19596f7eafcbeab",
+      "variant_id": "FEV-000010-MR5-zh-en"
+    },
+    {
+      "sha256": "b3db332d0718f958fa748f592bdb0560a50b5589f8b0169cffa534f1bee797d1",
+      "variant_id": "FEV-000010-MR5-zh-de"
+    },
+    {
+      "sha256": "5eff29783b69a9f68d828d5bbb2d29c9614c428b71cfed3286fe4fc69b87c597",
+      "variant_id": "FEV-000010-MR5-en-de"
+    },
+    {
+      "sha256": "6d983d19488a0b14e9a26bc01ac70d382b9253d46c4754d1fd5f7e6698ae87af",
+      "variant_id": "FEV-000011-MR1-1"
+    },
+    {
+      "sha256": "2f5d47794c7adfe9232e5f80e64b31e84f6434ab682566179f093f9e1f2f844a",
+      "variant_id": "FEV-000011-MR3-1"
+    },
+    {
+      "sha256": "4f7495d940a0b3f4ed662cbe69e18850713e2f4b979b87b90fe19d83ca9774a2",
+      "variant_id": "FEV-000011-MR5-zh-en"
+    },
+    {
+      "sha256": "629a04395ba538b109e8deec29901d7fb9c4eace51e2433629d6eaf2b74d9578",
+      "variant_id": "FEV-000011-MR5-zh-de"
+    },
+    {
+      "sha256": "958818011779839119b523b079d95a48899d4f9af31c23517d2089ae62f92762",
+      "variant_id": "FEV-000011-MR5-en-de"
+    },
+    {
+      "sha256": "ca478e85d4955f58b63a8f1a7cdedb869a07b2693ca28c859d6b58356ddae622",
+      "variant_id": "FEV-000012-MR1-1"
+    },
+    {
+      "sha256": "4c994515395452f2422f92296c324bf7a49f02d34020bbe5c7fb93680b64766c",
+      "variant_id": "FEV-000012-MR3-1"
+    },
+    {
+      "sha256": "90205490a297f46d4cd09138c19a26da43822e9f719ce0d37b03f8e4b9b58234",
+      "variant_id": "FEV-000012-MR5-zh-en"
+    },
+    {
+      "sha256": "c2664d5bdab16af9e4ff16ed7805c8bc572d0ab1e0bc641e343111ed9ccd56e6",
+      "variant_id": "FEV-000012-MR5-zh-de"
+    },
+    {
+      "sha256": "1099ff06caeb9023660d16d153decfabc6561464deeabf5780ff71b99df59e40",
+      "variant_id": "FEV-000012-MR5-en-de"
+    },
+    {
+      "sha256": "fa5340089150c50eb8b9033afefaf4f856842380735fd662fcdd64af0c5bd5e0",
+      "variant_id": "FEV-000013-MR1-1"
+    },
+    {
+      "sha256": "d1cf4449606db108d1ffc7ed943a8d906640a5f362280759a4cee2179af879e3",
+      "variant_id": "FEV-000013-MR3-1"
+    },
+    {
+      "sha256": "7c77495dd82cb14c45c752bd06ea6527ec7beee525490f3e640cb265b1bcb4c0",
+      "variant_id": "FEV-000013-MR5-zh-en"
+    },
+    {
+      "sha256": "82bd08efc5e900311e1d7bf5970fffccd836cdd16995d091664377bef2f94031",
+      "variant_id": "FEV-000013-MR5-zh-de"
+    },
+    {
+      "sha256": "13a51a6d5dd8114db1b1365c10a83b5514d020c969fce90c6c76c87be9570571",
+      "variant_id": "FEV-000013-MR5-en-de"
+    },
+    {
+      "sha256": "ff1df5ad428c3b85fcfead9cab60376be31245c58cd075181e9499c753a7dedb",
+      "variant_id": "FEV-000014-MR1-1"
+    },
+    {
+      "sha256": "b63596a3a58fed3a7a1f7ed7cfea32dac6322f9a50c99ae449c6c253141a7432",
+      "variant_id": "FEV-000014-MR3-1"
+    },
+    {
+      "sha256": "289334b00b21ef5efd3e82d19655d41ff484a37ee25eb90cd19aff6260e7691d",
+      "variant_id": "FEV-000014-MR5-zh-en"
+    },
+    {
+      "sha256": "71482a3cddeb919de9781d57cabc767d125ccba6e56aaeb828d0827d707279ca",
+      "variant_id": "FEV-000014-MR5-zh-de"
+    },
+    {
+      "sha256": "8fb4324ff16b671b0786d2ffe076b3d06d3d0310e181e08266f2549a9caa9e28",
+      "variant_id": "FEV-000014-MR5-en-de"
+    },
+    {
+      "sha256": "b7639213986dc457c5a92b5705db10268d6fe816ba059ac4da7564a6686eecc3",
+      "variant_id": "FEV-000015-MR1-1"
+    },
+    {
+      "sha256": "29ab2e6e04ad645d2e5054f0b46fb4f2fc07c0a9c16ecdbca4b71610e6ceccc2",
+      "variant_id": "FEV-000015-MR3-1"
+    },
+    {
+      "sha256": "3b3980e7323edda593e388b99ef217b6705e02695c3b697e3bdabb68ad7e4afc",
+      "variant_id": "FEV-000015-MR5-zh-en"
+    },
+    {
+      "sha256": "939af7b3e5d849d17ffde94a9440ad5672d752af2a4503ad71076f178e4b6187",
+      "variant_id": "FEV-000015-MR5-zh-de"
+    },
+    {
+      "sha256": "5adb0c2de89533cb40ec4b3d80b2f28aa109149cb4e1b1465dda70d7d380c70c",
+      "variant_id": "FEV-000015-MR5-en-de"
+    },
+    {
+      "sha256": "363aa6e979f92b5ee343690c5cf955fd869004ae104df4d2ad5265b5d612bbd6",
+      "variant_id": "FEV-000016-MR1-1"
+    },
+    {
+      "sha256": "ff80be9c2b8e0ccdc212e7ce92f7ca0f5e1c7652a3dcb2141e0b6ffaff5b42f5",
+      "variant_id": "FEV-000016-MR3-1"
+    },
+    {
+      "sha256": "cc4990cefbb16d40fb4699e611f59c5162a46374b87fd7c9a366bf788cb7c89b",
+      "variant_id": "FEV-000016-MR5-zh-en"
+    },
+    {
+      "sha256": "43607703445ff81207d638f672021e16cab3effb0ac84d8336c10e6d44ac251d",
+      "variant_id": "FEV-000016-MR5-zh-de"
+    },
+    {
+      "sha256": "6e7b1adf6dc06a9bc7e38f9cfc02c1a08fa58294ca4ad0f30973c7cfd24be6d3",
+      "variant_id": "FEV-000016-MR5-en-de"
+    },
+    {
+      "sha256": "29a78d19c4b4e9636735c6d7555cda06dd0d6d7a476348b690d412c011adeea4",
+      "variant_id": "FEV-000017-MR1-1"
+    },
+    {
+      "sha256": "55d523f67d7bb416d037805dbb688e9452ae6b865ef83453feb62211b57185e2",
+      "variant_id": "FEV-000017-MR3-1"
+    },
+    {
+      "sha256": "9ee1f40a5f3567cd8d135238abf3095872eaae26acfcf30c461e478a02792212",
+      "variant_id": "FEV-000017-MR5-zh-en"
+    },
+    {
+      "sha256": "3fb4733fceda10897e6d1d59e304c8bc53c3b56cf44b2060e9762f2ee89aae40",
+      "variant_id": "FEV-000017-MR5-zh-de"
+    },
+    {
+      "sha256": "dc5639675919bce6294e8bebe85c59ead50d0e9e7b5461d5846dc1085b588ca3",
+      "variant_id": "FEV-000017-MR5-en-de"
+    },
+    {
+      "sha256": "b48e5689ac30c8f2c2bf8f1ae3c3b3478d9b43c63cd9884988cbe409bde132ad",
+      "variant_id": "FEV-000018-MR1-1"
+    },
+    {
+      "sha256": "5e7088f3d954935a1229452bfeecdd0fa2af42d90c0098b2b1c72aad3a98e1f0",
+      "variant_id": "FEV-000018-MR3-1"
+    },
+    {
+      "sha256": "466204777ad763932a7bda5db3e66889f8a52e93a92449e973969d4f248e1c0b",
+      "variant_id": "FEV-000018-MR5-zh-en"
+    },
+    {
+      "sha256": "87efa56c4e590de30c4bb169f2d5c6a0f3772c39deec1b2769a72432a118cfe3",
+      "variant_id": "FEV-000018-MR5-zh-de"
+    },
+    {
+      "sha256": "c168275211914d2439de1b6d12ce83d81de70bea2bfe7942b3cce2f4053ec1a5",
+      "variant_id": "FEV-000018-MR5-en-de"
+    },
+    {
+      "sha256": "004345095f5285c1b3c4a890e456fef2801d876d75f20bcedeba4acbd4fbffed",
+      "variant_id": "FEV-000019-MR1-1"
+    },
+    {
+      "sha256": "d63c62b56df470dc40aafb0c0f5f38bc5cab0d1d4434bac4b1ec9dc15ec42e93",
+      "variant_id": "FEV-000019-MR3-1"
+    },
+    {
+      "sha256": "073943dce2421027885e62de30d752693d392f075b5ee977773bed012cc768b1",
+      "variant_id": "FEV-000019-MR5-zh-en"
+    },
+    {
+      "sha256": "cb93b0b5d0926258fac4dc7852601749b07e8ebed0ca21054f76c62b4dffc2af",
+      "variant_id": "FEV-000019-MR5-zh-de"
+    },
+    {
+      "sha256": "4f7b64f73c47f19f0010a4b930fabbc1dec88e6c0d503f7fcf6343cbaab85dd8",
+      "variant_id": "FEV-000019-MR5-en-de"
+    },
+    {
+      "sha256": "f459e5cc8af4d6faf122dad242f00a19beaf2912a1f54a1dc04977e1d93910f9",
+      "variant_id": "FEV-000020-MR1-1"
+    },
+    {
+      "sha256": "79ff469d47ccf96171a4fa5cc2f6ffe6084331d43f1c91c59cb0e60f647eae39",
+      "variant_id": "FEV-000020-MR3-1"
+    },
+    {
+      "sha256": "667938cda58e5767f5bdf3133adfeecfe15d981ab903f8741c416acb9311b6b2",
+      "variant_id": "FEV-000020-MR5-zh-en"
+    },
+    {
+      "sha256": "8b8d557bb528e3d1ee9ac22a03c29381e464c68783f0cf000630bf9f5b82f13e",
+      "variant_id": "FEV-000020-MR5-zh-de"
+    },
+    {
+      "sha256": "b258d474a183d5b9f6ebe60f2f1dd1462e580b4304b210a904fb76a03b7f5967",
+      "variant_id": "FEV-000020-MR5-en-de"
+    },
+    {
+      "sha256": "3eac474887ade45c69b19aa9662e778b0cc3e8d5c3d8b43531af3408fb208ab9",
+      "variant_id": "FEV-000021-MR1-1"
+    },
+    {
+      "sha256": "9f72ee5bec6f18786eacd2969c46b6f259c56212de19092993724f0919ad7952",
+      "variant_id": "FEV-000021-MR3-1"
+    },
+    {
+      "sha256": "73a7d84e23e91c4fd755c2b7636e43b4a7c0e1227fdcef76acc32b26d340ceee",
+      "variant_id": "FEV-000021-MR5-zh-en"
+    },
+    {
+      "sha256": "c43af6a066d664aead2d6cab1473a1c7c8717746a1c7781099e13f42cb269bb7",
+      "variant_id": "FEV-000021-MR5-zh-de"
+    },
+    {
+      "sha256": "dffcb2d5f19822812ac5e53181ec4501faf9b77d2a641ac6af3b1685efdeaa33",
+      "variant_id": "FEV-000021-MR5-en-de"
+    },
+    {
+      "sha256": "b2bdccb165780190f1a36dfaca37114853ba0ba526805efc07ca4c63e1d32e61",
+      "variant_id": "FEV-000022-MR1-1"
+    },
+    {
+      "sha256": "bb113c3f6a9e606e2e0baf4b5063405efb584da4f7c0c948ad4561705afb41a9",
+      "variant_id": "FEV-000022-MR3-1"
+    },
+    {
+      "sha256": "1194ddb3e376fa1cb947db813df12d8ea885145261b12abb407c7c3680facada",
+      "variant_id": "FEV-000022-MR5-zh-en"
+    },
+    {
+      "sha256": "500fbeb2a200fcf8777e2623fe0760f3b67eb8e0ca9e4acf1dd6a0482c95dfc3",
+      "variant_id": "FEV-000022-MR5-zh-de"
+    },
+    {
+      "sha256": "8c40969e8487383ee861c60f27e12c5ee15a93d264cb00ff9dca2bc2211dcd13",
+      "variant_id": "FEV-000022-MR5-en-de"
+    },
+    {
+      "sha256": "9716d44771c4ed729e0ab42d33ccf6b6d25304b8cd86f3ee31baeccd462b72dc",
+      "variant_id": "FEV-000023-MR1-1"
+    },
+    {
+      "sha256": "a91a98c1e481787382c7dbc59ceb8e93a0b397600c91162cff7c9bfe33535999",
+      "variant_id": "FEV-000023-MR3-1"
+    },
+    {
+      "sha256": "04c2ef67e57aa0db6fb0f97b67fe42ac74bf9ff8ef869bbbd141e46ccdddcd05",
+      "variant_id": "FEV-000023-MR5-zh-en"
+    },
+    {
+      "sha256": "22436733c06195932aaf58031a65e0a3c4d4e29581572f164a774ced64825780",
+      "variant_id": "FEV-000023-MR5-zh-de"
+    },
+    {
+      "sha256": "aacc3341eea4a516fb1f2e8ec5a66c8f6226893b5e9148a7420e24f4d5d7ecc5",
+      "variant_id": "FEV-000023-MR5-en-de"
+    },
+    {
+      "sha256": "c86602c271b04a19db65f34c58e387988bca9cab2db64ba16ddb30ce8e6b3ac2",
+      "variant_id": "FEV-000024-MR1-1"
+    },
+    {
+      "sha256": "cccbbb8b1ba8003c0f1ed96f90485c79112f2dcdef1ddae0e0e8016b8ff45ce7",
+      "variant_id": "FEV-000024-MR3-1"
+    },
+    {
+      "sha256": "e17e9e1511db5a603968a82bca66c2a416b9e09216fd079d3813113edeb01b87",
+      "variant_id": "FEV-000024-MR5-zh-en"
+    },
+    {
+      "sha256": "a2f0de1fa1bc49b09dfe7337fc1f976bd8e3f341bb3614ccde82ce49ad896fa2",
+      "variant_id": "FEV-000024-MR5-zh-de"
+    },
+    {
+      "sha256": "3e53c65913b3010273119c245b44c8550d33ddb1c17886117ec616ea2402a85e",
+      "variant_id": "FEV-000024-MR5-en-de"
+    },
+    {
+      "sha256": "f4b567fe010bbdbff9015064a1678d81429e21e8800639f32e5ba8e63d8af7c5",
+      "variant_id": "FEV-000025-MR1-1"
+    },
+    {
+      "sha256": "b5122da3a4556f75ba04e7253a085c5484ec101efcf2afcfa94075b134bfb8f0",
+      "variant_id": "FEV-000025-MR3-1"
+    },
+    {
+      "sha256": "3dba3e3fcf7c5240c80e2f2c492422b2406c4a32a92f652f6a893f229ecfa588",
+      "variant_id": "FEV-000025-MR5-zh-en"
+    },
+    {
+      "sha256": "1cc809567524f424ec7c6503ceb026d13fe6419303143f0275267baf00d6e439",
+      "variant_id": "FEV-000025-MR5-zh-de"
+    },
+    {
+      "sha256": "bd2a5b6b0b5824f5cc69a0bfc3fef6096f2f30cebef5e681f904d8ba833cfee5",
+      "variant_id": "FEV-000025-MR5-en-de"
+    },
+    {
+      "sha256": "c2f6bacb6469d888726780854bf997e401b4a94d315efa01a56e91aaa9a31436",
+      "variant_id": "FEV-000026-MR1-1"
+    },
+    {
+      "sha256": "8356e4999def0cbec4035c32c2f2895aa31e359aff4e4a6ac5a9dabf62945558",
+      "variant_id": "FEV-000026-MR3-1"
+    },
+    {
+      "sha256": "f4c08182ee1b56443c5135fc2fa8b9c8452656257abd81f72ceaeded9b1ae1a7",
+      "variant_id": "FEV-000026-MR5-zh-en"
+    },
+    {
+      "sha256": "48ff6c239f4905543d7e03fda258abc3b1608ae925647cc637c2b39ac20e672f",
+      "variant_id": "FEV-000026-MR5-zh-de"
+    },
+    {
+      "sha256": "9636bddb8a44c00c5ad6187e728ef7c56ec616313fd894cbd920cd47f5d83979",
+      "variant_id": "FEV-000026-MR5-en-de"
+    },
+    {
+      "sha256": "693fe1e835c200c54187b7a2af9aba79f079a5294c5727883a9ac04b11dfd656",
+      "variant_id": "FEV-000027-MR1-1"
+    },
+    {
+      "sha256": "fd9fb55d2211e7eb2e62f39fbdae428b64eb7cbf9f036148feced63cf337087e",
+      "variant_id": "FEV-000027-MR3-1"
+    },
+    {
+      "sha256": "cbaad75a448e31fb5652390f2775731b933b7b1e61e2932fbfd1647bef05333c",
+      "variant_id": "FEV-000027-MR5-zh-en"
+    },
+    {
+      "sha256": "42f1c992291ee022263675b696272856f24c516a2caba2e245d2ccd6139989df",
+      "variant_id": "FEV-000027-MR5-zh-de"
+    },
+    {
+      "sha256": "ea96ef39d90e25ae744a6aa6181b52561605685db7d58b5be6dbec34c16196f1",
+      "variant_id": "FEV-000027-MR5-en-de"
+    },
+    {
+      "sha256": "30619d10e7daca1ff324cdc2da68ec3936020de7eebffe02beeba2e8f565fed6",
+      "variant_id": "FEV-000028-MR1-1"
+    },
+    {
+      "sha256": "5149f5201b781ad886fd532936479c91f43ecc7f9260bfd7ab5b515a9070dec4",
+      "variant_id": "FEV-000028-MR3-1"
+    },
+    {
+      "sha256": "6de47eda2aca3bc741bc936534dfa308176a56c3c16adb75d39f201311a7f45f",
+      "variant_id": "FEV-000028-MR5-zh-en"
+    },
+    {
+      "sha256": "7097bb0ec43a25444a4692c2b65c771a225221f0ee929fb7577744a148d821aa",
+      "variant_id": "FEV-000028-MR5-zh-de"
+    },
+    {
+      "sha256": "ca24bd944a247439ca632a69e24ae0127f22350bcbd2c252abc9361be100b960",
+      "variant_id": "FEV-000028-MR5-en-de"
+    },
+    {
+      "sha256": "51259b6927819ce705851a4b49c65145fd8df21c71d05f7afa4115761fb5757a",
+      "variant_id": "FEV-000029-MR1-1"
+    },
+    {
+      "sha256": "84a726f88b6f0a7594c427b1536f55740ffcf7597963e38fd7a0a36539fb1095",
+      "variant_id": "FEV-000029-MR3-1"
+    },
+    {
+      "sha256": "50328e79c4ac0691fbbc6068897696a432b8ce7722ad4baf17af4e127f52325c",
+      "variant_id": "FEV-000029-MR5-zh-en"
+    },
+    {
+      "sha256": "fa26fac766eab2bf9f177ca28a955a57f1d58b3d6071f5969c5bef83bfcc9de3",
+      "variant_id": "FEV-000029-MR5-zh-de"
+    },
+    {
+      "sha256": "c5044d58100afa02606e153d25dbe9b1c8de5dfe69d0c8281e3ab1d7cbc6e7da",
+      "variant_id": "FEV-000029-MR5-en-de"
+    },
+    {
+      "sha256": "7e70841a14f43d8bc1a187ed5829fc83bd37de11e031d501507b393411c34eb4",
+      "variant_id": "FEV-000030-MR1-1"
+    },
+    {
+      "sha256": "6d4402da112c69b3e5bac1f53d3d83fd7708d9e29e0843e213c6955f7554aa6e",
+      "variant_id": "FEV-000030-MR3-1"
+    },
+    {
+      "sha256": "d9594c045dceed8f43999eee124ff0762d89dc5e154b3a4b0e4b46470b969468",
+      "variant_id": "FEV-000030-MR5-zh-en"
+    },
+    {
+      "sha256": "5c5157ad295c06e9ba3ccaac6ff366b44483792f0ae8e116717b51c1070f8977",
+      "variant_id": "FEV-000030-MR5-zh-de"
+    },
+    {
+      "sha256": "ea3acf5718e8d5f313f88e732009313caa44ac798c7d83bf0f68a58ac3878d4f",
+      "variant_id": "FEV-000030-MR5-en-de"
+    },
+    {
+      "sha256": "a81f4836fc805eff07ecaaecfd3e54f7e76743a3c37661f75fdc35c76951a6a4",
+      "variant_id": "FEV-000031-MR1-1"
+    },
+    {
+      "sha256": "b9d7f8001ef64853e4668b8064a800794bfea65807eeb32e21fdb5f69c0d1a17",
+      "variant_id": "FEV-000031-MR3-1"
+    },
+    {
+      "sha256": "5226e4636edbe6a51487aaffee71945a0883b3ee29c790695c527c600c375722",
+      "variant_id": "FEV-000031-MR5-zh-en"
+    },
+    {
+      "sha256": "a2103c0a7fcfd846ffeb4c371d8accaebcd96a4de1eb4f80473c8d2dc6d78802",
+      "variant_id": "FEV-000031-MR5-zh-de"
+    },
+    {
+      "sha256": "689c2632fce3687927f02ba4aae8e4850c3f7164f1a3f1581fc41766527742fe",
+      "variant_id": "FEV-000031-MR5-en-de"
+    },
+    {
+      "sha256": "206a91fa92f94867d4ac4ab2c1bc0f47d9729afe139599d1fadfb04073f590ef",
+      "variant_id": "FEV-000032-MR1-1"
+    },
+    {
+      "sha256": "fda69e88f78958369e5faa890899a3ee391688d007f255c3c3790f0b0a8c81df",
+      "variant_id": "FEV-000032-MR3-1"
+    },
+    {
+      "sha256": "6a0164ea1e4b2aa90d8166556ac1556efb371e5ed7f1843becf5a1270da00866",
+      "variant_id": "FEV-000032-MR5-zh-en"
+    },
+    {
+      "sha256": "c9460adbc6bf32672b88e372b6fc169c52f18e4c3bd91edfb1f576ddd22871cd",
+      "variant_id": "FEV-000032-MR5-zh-de"
+    },
+    {
+      "sha256": "2217bc94eece56dc185ede99cae2a360e1737f867dd97c723efa5ab7c5652bc2",
+      "variant_id": "FEV-000032-MR5-en-de"
+    },
+    {
+      "sha256": "2681e339134603ec2a38ba93cfc40a3cf1c30346f0d0d50bd6976282b2697aa7",
+      "variant_id": "FEV-000033-MR1-1"
+    },
+    {
+      "sha256": "6835c211ff2c0644623656d38a2979dd2b66cf5f1368687e92e6da26aac27a34",
+      "variant_id": "FEV-000033-MR3-1"
+    },
+    {
+      "sha256": "cbdd3706c622e6501b998d8460a3315a6b8d7b98a8176e460cbe9e588c271823",
+      "variant_id": "FEV-000033-MR5-zh-en"
+    },
+    {
+      "sha256": "0bb078c83b1b97c3606c0fd899249ac8a6d63c9d72039f4cfad7dc1fdba2a871",
+      "variant_id": "FEV-000033-MR5-zh-de"
+    },
+    {
+      "sha256": "14371bbb6f8518a9a73505db0dd21c87e329421d94fde32fa7fcf258d9cce6f8",
+      "variant_id": "FEV-000033-MR5-en-de"
+    },
+    {
+      "sha256": "8b279161e1e1db3ba87dfaec8250af4e66cece13d8640fe98cbf02840afe2495",
+      "variant_id": "FEV-000034-MR1-1"
+    },
+    {
+      "sha256": "a085ffd26b15b087a12963db48cab51eacfde813ed4f2ba2cb282680d0c25efb",
+      "variant_id": "FEV-000034-MR3-1"
+    },
+    {
+      "sha256": "2a426fb9090652d7c241bf70adc73724000cc65ff319291a5c7dbd03d93adbc7",
+      "variant_id": "FEV-000034-MR5-zh-en"
+    },
+    {
+      "sha256": "02fe50ec926692d05ead0920790eb9fc87f5f76e28953884bb15da443f275173",
+      "variant_id": "FEV-000034-MR5-zh-de"
+    },
+    {
+      "sha256": "2e15e4c94f21fd8c6549bb05161cbef6e394cd812c2ba54ef4c9366cc97dfba9",
+      "variant_id": "FEV-000034-MR5-en-de"
+    },
+    {
+      "sha256": "a5780078207e47eb00ecc018ae175c395a85ce72614be20c13da9882e3bd8c76",
+      "variant_id": "FEV-000035-MR1-1"
+    },
+    {
+      "sha256": "ac512aeb09dc92ac72e86b40bb019b79ff0df519159489bea3bd3902884d6d83",
+      "variant_id": "FEV-000035-MR3-1"
+    },
+    {
+      "sha256": "9167159aea9aa826c9291085f4f9be72969513bdd334ef3b10dad6e8e84592ea",
+      "variant_id": "FEV-000035-MR5-zh-en"
+    },
+    {
+      "sha256": "94064e3166115cbfb12107990f080597bd841bb8cd97b097ff8286c7f0660f03",
+      "variant_id": "FEV-000035-MR5-zh-de"
+    },
+    {
+      "sha256": "f3e42ff20e3d85d59185ea8ffc2e3cae6aa5ab85df49133760badb3d790e5b32",
+      "variant_id": "FEV-000035-MR5-en-de"
+    },
+    {
+      "sha256": "ba9282d8d0f6702d2820c9f91a641d92f2e3d7533c55afbf111936f498ea80f1",
+      "variant_id": "FEV-000036-MR1-1"
+    },
+    {
+      "sha256": "4a9ad22e6338c983e973f0f9001461363c1d885b26b9cad920136792902046f9",
+      "variant_id": "FEV-000036-MR3-1"
+    },
+    {
+      "sha256": "f50968b81c2e15efc04f81b5142e08c2097a26118cdaec88e7a017af0d381320",
+      "variant_id": "FEV-000036-MR5-zh-en"
+    },
+    {
+      "sha256": "a7357916c5d82c056d2eb23a123f3339c60c521c490d2c78d9ffe7d8f21ca2ec",
+      "variant_id": "FEV-000036-MR5-zh-de"
+    },
+    {
+      "sha256": "347dacec1b5d7a4e55b8f198d00213574e6d5512e5c03eff253b95e42c931c60",
+      "variant_id": "FEV-000036-MR5-en-de"
+    },
+    {
+      "sha256": "329988d65a59cc3cbf9da7df2b0296e0dae697b34f4b52da55b9914d5f9bcfe3",
+      "variant_id": "FEV-000037-MR1-1"
+    },
+    {
+      "sha256": "a52269fa1903a67cb4816f0aea2ecbd03729d3deb2e2883594644809f9ec45c8",
+      "variant_id": "FEV-000037-MR3-1"
+    },
+    {
+      "sha256": "e7d492c1bbaf3920687073bfb80fc7708a837cd859c75e69277e3a9ba554e873",
+      "variant_id": "FEV-000037-MR5-zh-en"
+    },
+    {
+      "sha256": "f908489b2e2653410ee92294093424fa123889cc953382fbb818e68b272f34f6",
+      "variant_id": "FEV-000037-MR5-zh-de"
+    },
+    {
+      "sha256": "c43e38164a2a8944dd89dea600702a10635befbdb46b9ab086afcd9336c0eef1",
+      "variant_id": "FEV-000037-MR5-en-de"
+    },
+    {
+      "sha256": "300262c006155930e5899e41880fbfd8f322d006571a79d3cca216b8e11921ed",
+      "variant_id": "FEV-000038-MR1-1"
+    },
+    {
+      "sha256": "129009c5aa4c91fb635b05692eb38b2a3cf6243fca67091e80dd62fec67b2cab",
+      "variant_id": "FEV-000038-MR3-1"
+    },
+    {
+      "sha256": "bbb1178d296e1bd5bc40cb352cf215bf570f8b0b6d8171d081e5e64b22da7dde",
+      "variant_id": "FEV-000038-MR5-zh-en"
+    },
+    {
+      "sha256": "50378bd441346711e37878d192b91b801b39123c6c442b6e95000e3d4d7776b1",
+      "variant_id": "FEV-000038-MR5-zh-de"
+    },
+    {
+      "sha256": "0d5965b797ae54ca00c0334cb5407154723e60be472d7d1fdadbc46d4a16d5d9",
+      "variant_id": "FEV-000038-MR5-en-de"
+    },
+    {
+      "sha256": "496a37bf7cbfbb01b7beafcc761b0c228d81cef0483d3915b95ba6383f3d684a",
+      "variant_id": "FEV-000039-MR1-1"
+    },
+    {
+      "sha256": "934f52940eeb18602de0076c858d7ef986f10c17721d94570178f6ee46ce9538",
+      "variant_id": "FEV-000039-MR3-1"
+    },
+    {
+      "sha256": "0891fc4872bd796282b237f92f9b14ee3e9bde78c4f3b93f47f9c4c9151a5495",
+      "variant_id": "FEV-000039-MR5-zh-en"
+    },
+    {
+      "sha256": "2f20aa5f7327b83ef6382d1557b7bec2ff8dd1c38eb60ec3cc2a8b086f833785",
+      "variant_id": "FEV-000039-MR5-zh-de"
+    },
+    {
+      "sha256": "3d3403406b0ade8e087bb148a7b93c741d39343cca013d2e22750ace41272d24",
+      "variant_id": "FEV-000039-MR5-en-de"
+    },
+    {
+      "sha256": "9b6655ff86842069eca6a55a7a12bfede1a3e9ad315bf0e4487571871a1a6ba4",
+      "variant_id": "FEV-000040-MR1-1"
+    },
+    {
+      "sha256": "a2634e2c5c673acfc4d95ee8d434be001cf1e00a3f0a7fa60577711e72239f9f",
+      "variant_id": "FEV-000040-MR3-1"
+    },
+    {
+      "sha256": "f72ce4208fd104c96660cec2324022b965437c1a6365d6385e928c9a91e292d6",
+      "variant_id": "FEV-000040-MR5-zh-en"
+    },
+    {
+      "sha256": "f2da4a2caa0246e798e392d576743b96d61613c58325c33b44a53df331088bc6",
+      "variant_id": "FEV-000040-MR5-zh-de"
+    },
+    {
+      "sha256": "bf6036a577030c86f7b8515b2af1ddee8eaa26a45a9311044c8d8989d9174499",
+      "variant_id": "FEV-000040-MR5-en-de"
+    },
+    {
+      "sha256": "98202c5b1bcfba0114fe7fd5fe6874387036badf7fc4e1d9576f84d1aa503793",
+      "variant_id": "FEV-000041-MR1-1"
+    },
+    {
+      "sha256": "0f29e530cc01a0ff18878a01ed7bb5ffcbdbbd6e4c828d17ba82ac7e3f187acd",
+      "variant_id": "FEV-000041-MR3-1"
+    },
+    {
+      "sha256": "fc7006abc43c4837df553404047fc5c58ffb1aa2629f0349f568d28231cff15f",
+      "variant_id": "FEV-000041-MR5-zh-en"
+    },
+    {
+      "sha256": "bafa879bce91917523081883408fa6d35158b9c02e377c15ef47e7bd7223549e",
+      "variant_id": "FEV-000041-MR5-zh-de"
+    },
+    {
+      "sha256": "ef1205249388120e67954dc94666833ce6a530ef4f261ca63713e10c5278daf1",
+      "variant_id": "FEV-000041-MR5-en-de"
+    },
+    {
+      "sha256": "5f42ef523dcdc8d19f77e243e6e79686adc234347fe54d5cdd818e158f2edd82",
+      "variant_id": "FEV-000042-MR1-1"
+    },
+    {
+      "sha256": "c62b97b36d04d2dc829f3ddb59dc4a95b97d728923c1bac81f8861b81daef858",
+      "variant_id": "FEV-000042-MR3-1"
+    },
+    {
+      "sha256": "8b53ca2c7632bb401203fb40ba26c800ccc41f1d5513a67fd251377030c9b952",
+      "variant_id": "FEV-000042-MR5-zh-en"
+    },
+    {
+      "sha256": "048f718b464c10c8a63c33d702d72d2397f2bdd6b5473303accb0e305240f182",
+      "variant_id": "FEV-000042-MR5-zh-de"
+    },
+    {
+      "sha256": "f90aac42afec95b4d612b9f186fe5d2754e420057fcbe251b5ab07564e87ddd0",
+      "variant_id": "FEV-000042-MR5-en-de"
+    },
+    {
+      "sha256": "9f906ede230b5355dc1af1f4a26e6c4f2d1bf7e0ec599087164ac25095f87664",
+      "variant_id": "FEV-000043-MR1-1"
+    },
+    {
+      "sha256": "36523fbf4b70a8dbc60173002960a273414366d698b38ae28526158cb861ab1e",
+      "variant_id": "FEV-000043-MR3-1"
+    },
+    {
+      "sha256": "3a691a81ce1fe319b43989157dd941aa7a3ac9105023f1beb589c15a2723ccde",
+      "variant_id": "FEV-000043-MR5-zh-en"
+    },
+    {
+      "sha256": "c5af787959ff6472174679d9a854b85226dae21d854ce70eb0b1a5014c120902",
+      "variant_id": "FEV-000043-MR5-zh-de"
+    },
+    {
+      "sha256": "27dddbfb0de287f42a60076a1b8a67f83289b60db34bb57d12e7303e9822cc9d",
+      "variant_id": "FEV-000043-MR5-en-de"
+    },
+    {
+      "sha256": "0fd3f4dcaaa7e43cac395a903d0428c9c6ac287156fd5e228866219493fdbc24",
+      "variant_id": "FEV-000044-MR1-1"
+    },
+    {
+      "sha256": "ecd2b87f56d35c64ce02350fdb6176e7579753b2afa24227aed7a6fd2a776395",
+      "variant_id": "FEV-000044-MR3-1"
+    },
+    {
+      "sha256": "e41173a6db195f51c7db511995aba88daebb61c4c092720dbb0c79042c73d953",
+      "variant_id": "FEV-000044-MR5-zh-en"
+    },
+    {
+      "sha256": "7856eb76d24b73b76716a42498fb2b2676aacdc1d338455c6c715f0ca536d091",
+      "variant_id": "FEV-000044-MR5-zh-de"
+    },
+    {
+      "sha256": "191f73dc1200ccbdadd0aa5028732f0b4d2be0aad11458db800efc7e68f824a1",
+      "variant_id": "FEV-000044-MR5-en-de"
+    },
+    {
+      "sha256": "60f2161fc009f02456a554a07ff65531d02d4abf5265199cf50a889d21ffa71c",
+      "variant_id": "FEV-000045-MR1-1"
+    },
+    {
+      "sha256": "7cc9fddcde21855270e63cdd8deb7cf58aa0165cf8c9aa5e57037af521162848",
+      "variant_id": "FEV-000045-MR3-1"
+    },
+    {
+      "sha256": "7222a668bfe254d2461f1bc62cf68c9e0cd1a0bf93da270ee6bf8925ddccb701",
+      "variant_id": "FEV-000045-MR5-zh-en"
+    },
+    {
+      "sha256": "e5780378be45fe8a2b9252375100d48c3332994b0fca8f34c0a193a1b53f9293",
+      "variant_id": "FEV-000045-MR5-zh-de"
+    },
+    {
+      "sha256": "333a2ec92917ffc6b4a76cfefd47b829874724a452805331ba250359349e7959",
+      "variant_id": "FEV-000045-MR5-en-de"
+    },
+    {
+      "sha256": "35bcd5e46c875c75dfd4bed68e8df88275e54fcc81afb2941d28625da2635f2c",
+      "variant_id": "FEV-000046-MR1-1"
+    },
+    {
+      "sha256": "1a4d4941eb40fff3bb25c690bed57fd5c12ac2c0bdec3a46e8edbead7193eb5d",
+      "variant_id": "FEV-000046-MR3-1"
+    },
+    {
+      "sha256": "ec30bbbc910373a085f2393bac2f99fdb56061cf3222b0e0ade415c686a51745",
+      "variant_id": "FEV-000046-MR5-zh-en"
+    },
+    {
+      "sha256": "2106b3b8d0b82028f691082cee30a8a5a125e2c5387902ee3b8a8121ede7d222",
+      "variant_id": "FEV-000046-MR5-zh-de"
+    },
+    {
+      "sha256": "ae98dffc2ad9728bec918c65a7eeb9c0aa000c9efaffd5a1c30ebef47472e817",
+      "variant_id": "FEV-000046-MR5-en-de"
+    },
+    {
+      "sha256": "75889f72b273cd8708d3b5f7fdb2ec92b2564004a5807fdfc7cd17dde6426f4a",
+      "variant_id": "FEV-000047-MR1-1"
+    },
+    {
+      "sha256": "9e96e17e19165e2aca673e8f4a3294e81018a79efd368bcff8488e562bdfe928",
+      "variant_id": "FEV-000047-MR3-1"
+    },
+    {
+      "sha256": "39658e16370975a224ef49d42279e5137aaf0f1ff4659e31a39ded395e577d30",
+      "variant_id": "FEV-000047-MR5-zh-en"
+    },
+    {
+      "sha256": "0bcb4b38fec5a64ab4145c8c0deb13f801e24db12c346fbb826122dd0dcb44e3",
+      "variant_id": "FEV-000047-MR5-zh-de"
+    },
+    {
+      "sha256": "6c399eaaabcb4ea71c0a3c5d7777be5ac709de19773e968c2b7c9015703b934f",
+      "variant_id": "FEV-000047-MR5-en-de"
+    },
+    {
+      "sha256": "53139b158b03352ea3f79e64868dc2a06e272b5118c3b21fa8cd7bd516deaad1",
+      "variant_id": "FEV-000048-MR1-1"
+    },
+    {
+      "sha256": "cb22a738b58f1433349ac698e02131f935fac0fbd232040dc1a7f0a630a8e687",
+      "variant_id": "FEV-000048-MR3-1"
+    },
+    {
+      "sha256": "f535ce62f336a8db9bcad9b4135cf4eccda2aa209eb37224d3105d861a92c65e",
+      "variant_id": "FEV-000048-MR5-zh-en"
+    },
+    {
+      "sha256": "8fceab1ba91aa9a7a79660d57876f646dfbfc64ccf1374544b97a9c41b49aee6",
+      "variant_id": "FEV-000048-MR5-zh-de"
+    },
+    {
+      "sha256": "231662177d0af96c3d89e696286bbe2d6fac06643985b0dc3ac05900f82d167f",
+      "variant_id": "FEV-000048-MR5-en-de"
+    },
+    {
+      "sha256": "1df0f21b3253174dcf342ce6ff42a0c60a43ce6d766ed7c0c7a2178c7eb1cfde",
+      "variant_id": "FEV-000049-MR1-1"
+    },
+    {
+      "sha256": "51150b7c3dd5f4a05997c8fe6f9d73992e1584bbcf594490f5981e2543fe164e",
+      "variant_id": "FEV-000049-MR3-1"
+    },
+    {
+      "sha256": "95e3fea56518166e2c28e2eb839b1ba9eb6a4d4f9518e4361894bf01b6495318",
+      "variant_id": "FEV-000049-MR5-zh-en"
+    },
+    {
+      "sha256": "081580ab01a71be6c97b45e302e4aad874395c08278bb2bb41ddb908558154d9",
+      "variant_id": "FEV-000049-MR5-zh-de"
+    },
+    {
+      "sha256": "5004b707eefaf1cfccd242dce7347c5333764c0b88902baea81c66ba4e340f06",
+      "variant_id": "FEV-000049-MR5-en-de"
+    },
+    {
+      "sha256": "87b9a973dbc170be843a3701541d440950314e5578f70a27373970f07aac4d0c",
+      "variant_id": "FEV-000050-MR1-1"
+    },
+    {
+      "sha256": "a75344b7e84a7dc28bc4289999c2403c1d82689a22718dff89f05ffc218c8dbf",
+      "variant_id": "FEV-000050-MR3-1"
+    },
+    {
+      "sha256": "883ea80ce20093c037471892e4e3dae48b5f5a8331a98826a33f550efa70ba01",
+      "variant_id": "FEV-000050-MR5-zh-en"
+    },
+    {
+      "sha256": "8598cca86c68dd5015033a89cb5c209dbb32a41d51f7decf18b8bfd73927bdb0",
+      "variant_id": "FEV-000050-MR5-zh-de"
+    },
+    {
+      "sha256": "ef8aeea51faee09a734614999b74eb3200f554393597c9325e7f6ffc1f16d2f7",
+      "variant_id": "FEV-000050-MR5-en-de"
+    },
+    {
+      "sha256": "88149f221ef6119434dddf324c005abc1b41de2380bebe6ef796d56beb9b3cb0",
+      "variant_id": "FEV-000051-MR1-1"
+    },
+    {
+      "sha256": "a9d2b9faf3a42590c2c6d3c55daebb09b1c5c9caeb0ab589e974960438929b57",
+      "variant_id": "FEV-000051-MR3-1"
+    },
+    {
+      "sha256": "a52cf2c9a636d8ff836766faaa690cf2e6b3c31ee14a62cc06d3523075e66ca6",
+      "variant_id": "FEV-000051-MR5-zh-en"
+    },
+    {
+      "sha256": "b21904df1328400b408b35811e0585ca8dff849440c59f9684357f7343039d50",
+      "variant_id": "FEV-000051-MR5-zh-de"
+    },
+    {
+      "sha256": "d28d9cd787bd38372ee9be381cad6321980a651cf5c82786157d475147a24a5d",
+      "variant_id": "FEV-000051-MR5-en-de"
+    },
+    {
+      "sha256": "622fd52067a5aedae6e948fbf6b4a34b36058413b61ecccf55eb12c0855992e3",
+      "variant_id": "FEV-000052-MR1-1"
+    },
+    {
+      "sha256": "f2dd005e23917180e80082accdfe3927068670838c94d74d250e303e139a41b5",
+      "variant_id": "FEV-000052-MR3-1"
+    },
+    {
+      "sha256": "27a5c402af669da165b9a603e1044ea6f21d21edc5d6750008824665d1df9442",
+      "variant_id": "FEV-000052-MR5-zh-en"
+    },
+    {
+      "sha256": "8199deae264ad82a8c3102820f2e81604b69ca808abfa074bf98af1fe9a025c5",
+      "variant_id": "FEV-000052-MR5-zh-de"
+    },
+    {
+      "sha256": "6f9553297b073e1ad5ad31108de1cafb72cdb12a94302121573dfe52b085928a",
+      "variant_id": "FEV-000052-MR5-en-de"
+    },
+    {
+      "sha256": "c6c366e98e76babd6615a8311321ebd63cfd1c63a669fc781bbfce38d6b6d7f6",
+      "variant_id": "FEV-000053-MR1-1"
+    },
+    {
+      "sha256": "1ce8aef1174fc1c4bc3ed8916b18ea9cfc899c30648455f3a931ee817e450306",
+      "variant_id": "FEV-000053-MR3-1"
+    },
+    {
+      "sha256": "1fc39202dbdb72c6ab51c5cb32691167b9f745112842fc56303591bf86fc34da",
+      "variant_id": "FEV-000053-MR5-zh-en"
+    },
+    {
+      "sha256": "b3131dcdf459e86c45ca21c0162437a361834c45e2629e0f7061449aa57463e6",
+      "variant_id": "FEV-000053-MR5-zh-de"
+    },
+    {
+      "sha256": "04799d4b860d16214b074542c0a6494e438ae47267b4ed8f20fce2fba9c3f4a6",
+      "variant_id": "FEV-000053-MR5-en-de"
+    },
+    {
+      "sha256": "efc798c18c321b7f20a2c4e4c834aa94e90f78ab96159f1f08180b60b3624228",
+      "variant_id": "FEV-000054-MR1-1"
+    },
+    {
+      "sha256": "0354271792d454c05bd891821b3006e8ac5e5b5cdcf12bf67c06c275674cb90f",
+      "variant_id": "FEV-000054-MR3-1"
+    },
+    {
+      "sha256": "e5b4c6c517637f0ba68f57c1a2b63b6f2a3b258554348bc1e37571df87f8380b",
+      "variant_id": "FEV-000054-MR5-zh-en"
+    },
+    {
+      "sha256": "0873ed52dadae7e25a776dea6d027aa14d7338760dda27df61b5f36d87c182bf",
+      "variant_id": "FEV-000054-MR5-zh-de"
+    },
+    {
+      "sha256": "55389dd1f3b81044f12790bdeffbd2dc231f762efec63eea5f36a05174fa3a47",
+      "variant_id": "FEV-000054-MR5-en-de"
+    },
+    {
+      "sha256": "613ee1d8deec43e8cf9a0aeed8bd6a8e212c9677ae1a19cd18c38806a7e429f8",
+      "variant_id": "FEV-000055-MR1-1"
+    },
+    {
+      "sha256": "2e9b234c1d89b9ca1f74bec6e93d515f1d472a917e7d97df7f1b9f18c511d9e0",
+      "variant_id": "FEV-000055-MR3-1"
+    },
+    {
+      "sha256": "ca6ff01200f314b41bd98a25799a9c3dffbcf204ac0cf9369f2ddde2409b1462",
+      "variant_id": "FEV-000055-MR5-zh-en"
+    },
+    {
+      "sha256": "91d500011989ae9e81eff88976579d26da90b5267a61311c903cfa2f68683bdf",
+      "variant_id": "FEV-000055-MR5-zh-de"
+    },
+    {
+      "sha256": "079a3edfddb7cb9eaf393938f5a0c49f37f7111b955833c86ed185fb7e52a441",
+      "variant_id": "FEV-000055-MR5-en-de"
+    },
+    {
+      "sha256": "831caa04869a1f5d0181270a39e5213c30d9f376421156f8b25020097be83516",
+      "variant_id": "FEV-000056-MR1-1"
+    },
+    {
+      "sha256": "a407218401c5765180b96057952e98605944722c4e7adc40046cc3d92e140d91",
+      "variant_id": "FEV-000056-MR3-1"
+    },
+    {
+      "sha256": "eee1e6731673865117c102b2e90d4fe351f776cdd5205af107742995540464aa",
+      "variant_id": "FEV-000056-MR5-zh-en"
+    },
+    {
+      "sha256": "3882b5e39eb0ff65726db4d09ffd41bf80232927c00e5e63dfe79ef3c850c9f6",
+      "variant_id": "FEV-000056-MR5-zh-de"
+    },
+    {
+      "sha256": "360e3ba4682e30acc9797c88dbf08d2190ca9664b7945209e8e281e77a5dd063",
+      "variant_id": "FEV-000056-MR5-en-de"
+    },
+    {
+      "sha256": "a41de46fed0e43366af155263e688cdf2180cfbc64fd0318e5fc3c1732d1a2ba",
+      "variant_id": "FEV-000057-MR1-1"
+    },
+    {
+      "sha256": "f123871ec82a0118d7dc9886e8ef6692a48835f95e010a50d38010567ecf24ec",
+      "variant_id": "FEV-000057-MR3-1"
+    },
+    {
+      "sha256": "d424274b416a7c3cf6f731279415976f66c48f5889ec8d53278463fcdbcae687",
+      "variant_id": "FEV-000057-MR5-zh-en"
+    },
+    {
+      "sha256": "26ff00d0ba60d22f4caef9de131e2a365f6d3289accf931c0be2994e31136d6c",
+      "variant_id": "FEV-000057-MR5-zh-de"
+    },
+    {
+      "sha256": "1a585b119384834586b0b830552cde0ac7ce228754091cfd94f49aa92e1039fb",
+      "variant_id": "FEV-000057-MR5-en-de"
+    },
+    {
+      "sha256": "933eea0ac7b84a57a71414543f180eec528396b7851ecf5cc86660722ddd11d2",
+      "variant_id": "FEV-000058-MR1-1"
+    },
+    {
+      "sha256": "90e44dafdc7205c30df9c5927d4c6711400cd5d8848c1deacef44170f7a9b108",
+      "variant_id": "FEV-000058-MR3-1"
+    },
+    {
+      "sha256": "a01a321f9bdc31291938ab2eb99267f01a197c9b07c3c85c2e842f03d5802fb6",
+      "variant_id": "FEV-000058-MR5-zh-en"
+    },
+    {
+      "sha256": "7e64a5f774481c2d6e59c5974880304772d282dc5fcf8e6dfab4922312bdf130",
+      "variant_id": "FEV-000058-MR5-zh-de"
+    },
+    {
+      "sha256": "d5cdfd021b714cc0abe647ad2743ca2dd4d887f4ca7447aa0120a842a4c984fd",
+      "variant_id": "FEV-000058-MR5-en-de"
+    },
+    {
+      "sha256": "d75bb2b738b06d19895cd5e627d6506adc4c7afb78e7f93eab521dc2588d823f",
+      "variant_id": "FEV-000059-MR1-1"
+    },
+    {
+      "sha256": "1fc56f94a3bc64f525812bbc73bd5dda3b6671cd6859e6f5d36f3a30885c4ba1",
+      "variant_id": "FEV-000059-MR3-1"
+    },
+    {
+      "sha256": "c23927138c7464f5fab2cb9dfd04c652aebc2401a67206c868fcbe7b0c76881a",
+      "variant_id": "FEV-000059-MR5-zh-en"
+    },
+    {
+      "sha256": "17ea17bfe4e20d67b6675138d06f6c61dc1506ffd7b6d7ee4c5ea09b8aa6b763",
+      "variant_id": "FEV-000059-MR5-zh-de"
+    },
+    {
+      "sha256": "a55e2dc20468a2742927e6a95c74a6a2d171c56228bde2175a0c4a659c284102",
+      "variant_id": "FEV-000059-MR5-en-de"
+    },
+    {
+      "sha256": "90bf1ffa70d81e8bd18f8690f5e4dfaa4f107cbf839f567acc24d56fba3650b7",
+      "variant_id": "FEV-000060-MR1-1"
+    },
+    {
+      "sha256": "8bd6c793bf10684082763ac90679c3f2a1a202658d9992351c9c80738e3b72f2",
+      "variant_id": "FEV-000060-MR3-1"
+    },
+    {
+      "sha256": "f9893b2aa757930092f98c3fa4c2f161a82ad08b020d8a56ff394051a49e47c0",
+      "variant_id": "FEV-000060-MR5-zh-en"
+    },
+    {
+      "sha256": "66b4440ea5552193b8ce0e697af7ddd5bb02d7106940821ac276c92170a43964",
+      "variant_id": "FEV-000060-MR5-zh-de"
+    },
+    {
+      "sha256": "92a3a6687e7a11730c0982bfe1c343c1d6f1fcbaa0b7b6a7be04b933ac282a91",
+      "variant_id": "FEV-000060-MR5-en-de"
+    },
+    {
+      "sha256": "4b2de6e56b3f3fdb685f64c9e845fb430f7711d564d1e58e20f735a11e812ddf",
+      "variant_id": "FEV-000061-MR1-1"
+    },
+    {
+      "sha256": "2416c7194ff18a45511efb4ef090504ebe3644d0eea4918f82af1c01dd4fddfa",
+      "variant_id": "FEV-000061-MR3-1"
+    },
+    {
+      "sha256": "d2298fba38c9727be6433eb858a704c56d86fb0015ebd02de73324c1f4495f2a",
+      "variant_id": "FEV-000061-MR5-zh-en"
+    },
+    {
+      "sha256": "652dc88c62c764024fcf1c6a312195e53d49cf5cb8ac3c979ac5c011121d1683",
+      "variant_id": "FEV-000061-MR5-zh-de"
+    },
+    {
+      "sha256": "9ef27718f4a561bb3a93db9999504420a2768e0a44669b187e437283017d0244",
+      "variant_id": "FEV-000061-MR5-en-de"
+    },
+    {
+      "sha256": "15faf1338ed8e8349102f99c4041dea9df2b9c5d679a40c8c138e048ad4e9446",
+      "variant_id": "FEV-000062-MR1-1"
+    },
+    {
+      "sha256": "2d3b1226a67a0fe915fc2228193e16b135a70cc6f91745684ef3644250defcb6",
+      "variant_id": "FEV-000062-MR3-1"
+    },
+    {
+      "sha256": "c822d8e0a446ae8b15f8c24cde3fbd5a36b61d628c79cc05e81e6a6ee9815677",
+      "variant_id": "FEV-000062-MR5-zh-en"
+    },
+    {
+      "sha256": "90a9ccef1546432ff98325a36531ca9ddb634b0f0009650077dc0c8392cb1618",
+      "variant_id": "FEV-000062-MR5-zh-de"
+    },
+    {
+      "sha256": "4411baef06deedd5d4f2eb9c583cd74aa769cbb1ab25e4fc7a76ba701d6f803b",
+      "variant_id": "FEV-000062-MR5-en-de"
+    },
+    {
+      "sha256": "d910aeb5ab60bdae8d0d6c6f5a5e7cd181574d2611e44417a1e67a39b23f926c",
+      "variant_id": "FEV-000063-MR1-1"
+    },
+    {
+      "sha256": "5c66bef483fb84fb23483836b7e3d2cdd8ddfc482f9308d1adfd68bbc4038eb2",
+      "variant_id": "FEV-000063-MR3-1"
+    },
+    {
+      "sha256": "7bdcdaf0a5a5a1f3fe4d876a6ede9b59901aca4c8ad064cb4fc899b107969582",
+      "variant_id": "FEV-000063-MR5-zh-en"
+    },
+    {
+      "sha256": "9c5fff76819526e880a7f503bb009775033a9ac645abf3210acabef06b4c47c5",
+      "variant_id": "FEV-000063-MR5-zh-de"
+    },
+    {
+      "sha256": "4f7ad0644c39192d6ad4820c78eb6e75b6ca02c1788f5b4addf7417ba1d4f176",
+      "variant_id": "FEV-000063-MR5-en-de"
+    },
+    {
+      "sha256": "b35beb56ed03d8e5f71ba0d2ba7f71feeb7716828c553b50d2ec742e38f72029",
+      "variant_id": "FEV-000064-MR1-1"
+    },
+    {
+      "sha256": "d26fa05ea37e206ac3cae17e03a195922949eb6ded5ff604163df2faeec2dd82",
+      "variant_id": "FEV-000064-MR3-1"
+    },
+    {
+      "sha256": "be587057f9736cbbf2d753588bef552578dcc2d37960006baeec8e4dc6a9f733",
+      "variant_id": "FEV-000064-MR5-zh-en"
+    },
+    {
+      "sha256": "ddfb996bf93288d0d399c04975a7733901c8148ef32b1f11798dd05f1887d581",
+      "variant_id": "FEV-000064-MR5-zh-de"
+    },
+    {
+      "sha256": "8f4278568fce3225283623208cfc431d4a758360a0c7cf035e4c36354524ffff",
+      "variant_id": "FEV-000064-MR5-en-de"
+    },
+    {
+      "sha256": "9aa5dce22ec45920054df270c0705f6a8371915a16e10d1080e9497572670a40",
+      "variant_id": "FEV-000065-MR1-1"
+    },
+    {
+      "sha256": "a29eaf600338c34373951b1e514731fe868630336896c786310bf86a930514be",
+      "variant_id": "FEV-000065-MR3-1"
+    },
+    {
+      "sha256": "9fbc11c06bcf6c4b4fd453df29f37e826bac73fdc6086d04c98cbdee61309846",
+      "variant_id": "FEV-000065-MR5-zh-en"
+    },
+    {
+      "sha256": "7497bf32c0e3e98ea586991e2e1a94b891e6691472bc2a279ed5abd4bfa2e4d3",
+      "variant_id": "FEV-000065-MR5-zh-de"
+    },
+    {
+      "sha256": "ba77561fc814ec161ece74374bcbb2dcda91f2d0ba7f9172658bd3cdbab76303",
+      "variant_id": "FEV-000065-MR5-en-de"
+    },
+    {
+      "sha256": "1310e17374273be8e1e15a4c4565d6be4469e6c506a8fac26e7b81bc7db31453",
+      "variant_id": "FEV-000066-MR1-1"
+    },
+    {
+      "sha256": "ab63bef6a881183b899a889272ec2ca79da15f3e28eced859ae815b32da03bd8",
+      "variant_id": "FEV-000066-MR3-1"
+    },
+    {
+      "sha256": "3c39c40308a3bcaeeb239fee02a7f556880f99ad893a5cd9b3d0fd07fd3bce5c",
+      "variant_id": "FEV-000066-MR5-zh-en"
+    },
+    {
+      "sha256": "5a7a437a872ddf3ef025b429f42cd8a378d20d2283d352c9bfd77b635d64cfb7",
+      "variant_id": "FEV-000066-MR5-zh-de"
+    },
+    {
+      "sha256": "6e3a3188a98d84a6c53b4c35342f3ab3a3f3b9d0652032e30660186a5633e558",
+      "variant_id": "FEV-000066-MR5-en-de"
+    },
+    {
+      "sha256": "9177254ed70cfa8eeacdee5a702dc6497a3e4b9f741e9a90d8ecef0fca742ad1",
+      "variant_id": "FEV-000067-MR1-1"
+    },
+    {
+      "sha256": "783b7eeb96e833efc8b5341b63cb32aa587422d405a15c6af9ad8aa8fd898448",
+      "variant_id": "FEV-000067-MR3-1"
+    },
+    {
+      "sha256": "aa3edfb2282b62096aea81b36777f133b2ce4aab7ef612b5e843cd8885ca70f4",
+      "variant_id": "FEV-000067-MR5-zh-en"
+    },
+    {
+      "sha256": "5672baa187d2dc87b93fc918cd96e36fde26bb4ac813c0d1751a649f683b182e",
+      "variant_id": "FEV-000067-MR5-zh-de"
+    },
+    {
+      "sha256": "d6b4ae9236413427587fd29d76d99da06d5d45085a3678d7aeebebd16cfd0fbc",
+      "variant_id": "FEV-000067-MR5-en-de"
+    },
+    {
+      "sha256": "55b276feea7f5c8c5dff652178f63366b41ff235d7d733d886a21250729c5869",
+      "variant_id": "FEV-000068-MR1-1"
+    },
+    {
+      "sha256": "64188f41a2c3c277f6028c101c2b66eb79ea7be760b02982fbb9d3b98a0a6c1f",
+      "variant_id": "FEV-000068-MR3-1"
+    },
+    {
+      "sha256": "e7a186a4d98374776727dee5dc86057d8e7ec50559d6e787627ecac72336ef1b",
+      "variant_id": "FEV-000068-MR5-zh-en"
+    },
+    {
+      "sha256": "f626bff854b4fb967eb335a9cb9c33b4a1c212bb8c7346b5555e8db920dca314",
+      "variant_id": "FEV-000068-MR5-zh-de"
+    },
+    {
+      "sha256": "26d4d1b079fa840dbbfc24b3a3e5085082cc80cd02c1a2c0bc777929735226e7",
+      "variant_id": "FEV-000068-MR5-en-de"
+    },
+    {
+      "sha256": "1ea728548f1716031616df15b4cec255e7b1b6c67f4dd4de27a8568d2e2ea66d",
+      "variant_id": "FEV-000069-MR1-1"
+    },
+    {
+      "sha256": "5558725ff852af9a05a8d95cd4a7b8f81fc3d70b96e2e94f57ad9b455e23b7c4",
+      "variant_id": "FEV-000069-MR3-1"
+    },
+    {
+      "sha256": "b68fa027395cb73d7df6f2be0b75cc0ee08669ca73f563b6212bbaca7073908a",
+      "variant_id": "FEV-000069-MR5-zh-en"
+    },
+    {
+      "sha256": "e9ee03c9a6134f3fcb6caf27388dfb0556219c4db8878fc639355526485ec877",
+      "variant_id": "FEV-000069-MR5-zh-de"
+    },
+    {
+      "sha256": "b4f462aba9f39814a4a999593f818100b52c721e6cc0224b9de826cb04ab5389",
+      "variant_id": "FEV-000069-MR5-en-de"
+    },
+    {
+      "sha256": "84dbd2a53611d683207c3b018d6d441f5caa9a4b76ca4d4a9eb6ace6f1bc2fe6",
+      "variant_id": "FEV-000070-MR1-1"
+    },
+    {
+      "sha256": "56405c5ca742700dfce6f41d217e56ca4de94beb15d061d5437b1237ac3985ad",
+      "variant_id": "FEV-000070-MR3-1"
+    },
+    {
+      "sha256": "50a75dc6d7ae3198005a4855f515843b9604e54060565aa86fc5f8079b80fc65",
+      "variant_id": "FEV-000070-MR5-zh-en"
+    },
+    {
+      "sha256": "15061cf6a19a53a5c582c770ae0a67ea7907d2823132457a4cb2835b1a05b8fa",
+      "variant_id": "FEV-000070-MR5-zh-de"
+    },
+    {
+      "sha256": "f70d5d980776a7aaeeabe311ae760a771e640b4970b6dc652f06383d73871738",
+      "variant_id": "FEV-000070-MR5-en-de"
+    },
+    {
+      "sha256": "29586bdde465570e3418fd839d10ca18d123ebc79febf0f71007ae9ae8258ccd",
+      "variant_id": "FEV-000071-MR1-1"
+    },
+    {
+      "sha256": "8f2425e9b15bce25e299b592422299b25a66319f513cb38641c15e7a7e26de25",
+      "variant_id": "FEV-000071-MR3-1"
+    },
+    {
+      "sha256": "7b32ef605b90e61ffe30b75b6742dfaa4f0f7307ab82c49e4fc9454324c8638a",
+      "variant_id": "FEV-000071-MR5-zh-en"
+    },
+    {
+      "sha256": "1b2b352ddeb845cd0624fbcc0a1cf38fb629115b0d58d70e5a146a225a3f7eb0",
+      "variant_id": "FEV-000071-MR5-zh-de"
+    },
+    {
+      "sha256": "b70d82fbdaecb28dbf63c97d948132d6f9dd9808bce61aa5b8b9e3381cce2707",
+      "variant_id": "FEV-000071-MR5-en-de"
+    },
+    {
+      "sha256": "20442615509beac1beb7a8b37f7bbe49e2e47de58327cc324219f9e0f96361d6",
+      "variant_id": "FEV-000072-MR1-1"
+    },
+    {
+      "sha256": "194705a8622dfd8a7196f3dfb9c5748f0276cbe922d340ea00ee839b62fb20ff",
+      "variant_id": "FEV-000072-MR3-1"
+    },
+    {
+      "sha256": "5c2ae59b0d31e1cf0a1cc8f373a3c0ed8f002d8a013bcad67956a60a96085c09",
+      "variant_id": "FEV-000072-MR5-zh-en"
+    },
+    {
+      "sha256": "8d09eec0dc1ef972a14867d5d79a345f3d121f9f7fd3573081e4a011baad97b1",
+      "variant_id": "FEV-000072-MR5-zh-de"
+    },
+    {
+      "sha256": "7f405d3b6c149b72396451fb819b9ac4d3840ace997715ad44a9ee57a2bc1130",
+      "variant_id": "FEV-000072-MR5-en-de"
+    },
+    {
+      "sha256": "854f7383274437f3b60e38cde0008f843bcc9e6b335c4fe164edda1b7f1176df",
+      "variant_id": "FEV-000073-MR1-1"
+    },
+    {
+      "sha256": "0c8340356580ba609801ada1315576e6f8efdf23681a371b61686a45262cd4b5",
+      "variant_id": "FEV-000073-MR3-1"
+    },
+    {
+      "sha256": "48548ba146219fd3b3376e1f39d547b012e33a418ff7b712c36e95f39cc91286",
+      "variant_id": "FEV-000073-MR5-zh-en"
+    },
+    {
+      "sha256": "000e729543ab1ea299c59b937bb49fe18c6b7a4274677d8ac4c6c8a7cc5689e4",
+      "variant_id": "FEV-000073-MR5-zh-de"
+    },
+    {
+      "sha256": "04b4181025050e9435cd2ee586427572fdecab362503180cc748e371baea8668",
+      "variant_id": "FEV-000073-MR5-en-de"
+    },
+    {
+      "sha256": "6202041c9c2e4f21d14eb1a907a0f8e13b606f760b8706821d96152465b03b6b",
+      "variant_id": "FEV-000074-MR1-1"
+    },
+    {
+      "sha256": "ad62916be812cf1a480ec7aeb045105eda3f1a23e2279cb25ffc48a43b1e788d",
+      "variant_id": "FEV-000074-MR3-1"
+    },
+    {
+      "sha256": "b8d134b8f8a51921fbdac262dc67ed49f8793e3a1407fb5db7ee8b9500f56b97",
+      "variant_id": "FEV-000074-MR5-zh-en"
+    },
+    {
+      "sha256": "5b40376d310df102c3848b783ef36b762fd99c270cdf864b3a96c3abaa77ab3a",
+      "variant_id": "FEV-000074-MR5-zh-de"
+    },
+    {
+      "sha256": "4dde0bb51e9906794cc62d07d2339875ac9f3a8c80113f83875a467a173a3483",
+      "variant_id": "FEV-000074-MR5-en-de"
+    },
+    {
+      "sha256": "a593ee8a1ffaa7d52407d12a2dc0fd5508848cf5a6e02c5a1f0c3e9c8690944e",
+      "variant_id": "FEV-000075-MR1-1"
+    },
+    {
+      "sha256": "6a364795c0d3cbbbb5eec6c862348e9f397502e9f8bb2b116610470117199805",
+      "variant_id": "FEV-000075-MR3-1"
+    },
+    {
+      "sha256": "1ac2360fa31d5e6799b0bac34dbc990c77000f355a2bbf2fdd93d14b40cac694",
+      "variant_id": "FEV-000075-MR5-zh-en"
+    },
+    {
+      "sha256": "3f47e1cc50b043b2737abb62416307a89b6607d468f764c14f9cd6b5afde114b",
+      "variant_id": "FEV-000075-MR5-zh-de"
+    },
+    {
+      "sha256": "ce864e80db335a48bdc9eff9247eb14c425a8b1281192ae3dfac5fab90cf8279",
+      "variant_id": "FEV-000075-MR5-en-de"
+    },
+    {
+      "sha256": "5785fa2f3239f19f20f4c2de51317b5a4ab2b8110574d4f80a35212a2c04b9f9",
+      "variant_id": "FEV-000076-MR1-1"
+    },
+    {
+      "sha256": "6d8e00cacda77bf8f067809e4775923d7aa414bfafe59885ea86f357ac4075db",
+      "variant_id": "FEV-000076-MR3-1"
+    },
+    {
+      "sha256": "132b64fd8d3f7f313589155c7d013a8f1237f9515abec63ddf8e2f34183611db",
+      "variant_id": "FEV-000076-MR5-zh-en"
+    },
+    {
+      "sha256": "937c4b673e8343c1de2ec04aa0df3c957e0c0cf93254301beccaadf97383f63e",
+      "variant_id": "FEV-000076-MR5-zh-de"
+    },
+    {
+      "sha256": "8cce16d8e92797d89f97640c22e0b4c83dc2d9e2d53117c350778581b57d5384",
+      "variant_id": "FEV-000076-MR5-en-de"
+    },
+    {
+      "sha256": "8a1febdaf89fef19703f20a759b3c79e78acd33a017dc528996ec583f1f653fb",
+      "variant_id": "FEV-000077-MR1-1"
+    },
+    {
+      "sha256": "6afe4e3aebd19c5056891b1c4904133f90aabd2be7555d6ed96fbd2159bd2f3a",
+      "variant_id": "FEV-000077-MR3-1"
+    },
+    {
+      "sha256": "db6f7bfb6b619c89373219eb1fd34bff3633536297b1659ce9b9e2db448a543c",
+      "variant_id": "FEV-000077-MR5-zh-en"
+    },
+    {
+      "sha256": "a9f04e6cbca203d35d8453edde845a6a6aec0d328d85a9bce64770297f5792ea",
+      "variant_id": "FEV-000077-MR5-zh-de"
+    },
+    {
+      "sha256": "c0c88bd93c4ca23bdcceade554507ecdf3210d767a1ea06bb860084beb705067",
+      "variant_id": "FEV-000077-MR5-en-de"
+    },
+    {
+      "sha256": "951becec77e20381a398f07c22d4dad7f29ba26b43bc432acfbadde085cb97cc",
+      "variant_id": "FEV-000078-MR1-1"
+    },
+    {
+      "sha256": "5f3f16f72a4a894105df59feb704d81e58aad44767cada5c207c4db0606c859e",
+      "variant_id": "FEV-000078-MR3-1"
+    },
+    {
+      "sha256": "a80f4fb27bb94226df4635737d8ee38bf6e9ab3f2280dcc4084bf19b5f99d917",
+      "variant_id": "FEV-000078-MR5-zh-en"
+    },
+    {
+      "sha256": "1a499d59e40576f1d77ca0845ddc648fa74bdf2eec372bf603bd63e467cdf5e3",
+      "variant_id": "FEV-000078-MR5-zh-de"
+    },
+    {
+      "sha256": "ac7238e341b594c0361cfe394a6a3867250f0ed0723cf67feedccd491be196ce",
+      "variant_id": "FEV-000078-MR5-en-de"
+    },
+    {
+      "sha256": "17e5294aa9fd981d144a76b492077ddedda6c75a70914a54c19d23304157e20b",
+      "variant_id": "FEV-000079-MR1-1"
+    },
+    {
+      "sha256": "605ebe2bbdc58f936acc4bc6c021783df7c030d45cea9f7cd6f238df982846a1",
+      "variant_id": "FEV-000079-MR3-1"
+    },
+    {
+      "sha256": "8fffe38614e0f4c178c1964d9767e2f3c4d7f0c59728939cbdf1e0e43dca271a",
+      "variant_id": "FEV-000079-MR5-zh-en"
+    },
+    {
+      "sha256": "a94dcfdc4fb8ecc6895d7aa532f3bf9c217b407924cae7a56d07917cc63dc220",
+      "variant_id": "FEV-000079-MR5-zh-de"
+    },
+    {
+      "sha256": "fcc0cdeea36a2165c9bb1d702c788ca051c89e49eaa385a2c7d3c7a9bd7107ee",
+      "variant_id": "FEV-000079-MR5-en-de"
+    },
+    {
+      "sha256": "0fd8ced59965028026801f7eadc48ce1d96c00139b06abff701c4fef118e3289",
+      "variant_id": "FEV-000080-MR1-1"
+    },
+    {
+      "sha256": "dea0fe64a5af7a939aab9ed2390338100a78dd8aadce000bc0278c82224e1d16",
+      "variant_id": "FEV-000080-MR3-1"
+    },
+    {
+      "sha256": "9c2ae3444108a709e602e29cc55657312da99a5bd3152507e66540751306b8ce",
+      "variant_id": "FEV-000080-MR5-zh-en"
+    },
+    {
+      "sha256": "58de4a54a7ccfa40affbbb135991b9c45ed93830647d89166362ba7d6d8e27fb",
+      "variant_id": "FEV-000080-MR5-zh-de"
+    },
+    {
+      "sha256": "fb438e0b83fd47b5fc02c72d89baa6319333b27650abaf70a50e8d3810419b6a",
+      "variant_id": "FEV-000080-MR5-en-de"
+    },
+    {
+      "sha256": "afa7dc51cfd98da3e6f40115860cbfbad472c830c3f6e804c627928cfc460016",
+      "variant_id": "FEV-000081-MR1-1"
+    },
+    {
+      "sha256": "1acace24fe6e4187cad114819237be01d97cb5d926d18a5616900eacf31af730",
+      "variant_id": "FEV-000081-MR3-1"
+    },
+    {
+      "sha256": "ee49c70beac768fa6084ae8aa6aa613bb28289049cc6ec18132731d320fc6f52",
+      "variant_id": "FEV-000081-MR5-zh-en"
+    },
+    {
+      "sha256": "86805e101036ac63e743f7f5e6023d276ab8cd7ba2d1d69dd2549672cdd16df9",
+      "variant_id": "FEV-000081-MR5-zh-de"
+    },
+    {
+      "sha256": "6c38cb96b1b7be3a8d7bcf241b8d5aeacae3834035c801bc6b067110fff3d46a",
+      "variant_id": "FEV-000081-MR5-en-de"
+    },
+    {
+      "sha256": "0d9f8dbf67a2cd4028438b4e0ee95c618a8023d8a475310a66d92ed81a5c8a79",
+      "variant_id": "FEV-000082-MR1-1"
+    },
+    {
+      "sha256": "e09619bcc5b0c2c5f3f2e0fda34e619931d5e36cb08297244475cbfd147e47e1",
+      "variant_id": "FEV-000082-MR3-1"
+    },
+    {
+      "sha256": "42cc630fc8821d6185090306a73562e5dd8a7e2b959257af5fd41be686749e06",
+      "variant_id": "FEV-000082-MR5-zh-en"
+    },
+    {
+      "sha256": "10811ffb213f9619bac56f12f1bded818b2c4671e3fe20f8077d9f7c0189743f",
+      "variant_id": "FEV-000082-MR5-zh-de"
+    },
+    {
+      "sha256": "f21dd7a83728b53f6c6d820f04e2bab1a670f712bb995456bd0a4a732235b7f0",
+      "variant_id": "FEV-000082-MR5-en-de"
+    },
+    {
+      "sha256": "687c401893cf8ebc77a4c8ecea0c514fec6e8d90564cc483214e76b5cf92f3b8",
+      "variant_id": "FEV-000083-MR1-1"
+    },
+    {
+      "sha256": "765baeb278b71b2839ef6faecd56e983526db81c31f48398a51e5e92604534c3",
+      "variant_id": "FEV-000083-MR3-1"
+    },
+    {
+      "sha256": "2a40652161b08563567cf595bfb94033f4971d704ebff63b8e1075ccd8385440",
+      "variant_id": "FEV-000083-MR5-zh-en"
+    },
+    {
+      "sha256": "20855fbb4918498607b97e79a4753fdc8fdad0bb8da3e1150289076ee2fbddef",
+      "variant_id": "FEV-000083-MR5-zh-de"
+    },
+    {
+      "sha256": "12b7487f15de588526f659ffaf42f0e755844d71df967a74e1cda6ca0923b7df",
+      "variant_id": "FEV-000083-MR5-en-de"
+    },
+    {
+      "sha256": "f3048f07c4290a7782dea9a1eec72268d13c9f25a96a6d79bc5e3d67b9437d36",
+      "variant_id": "FEV-000084-MR1-1"
+    },
+    {
+      "sha256": "11819ef83e4c668e0d50d1c7880e434f0a8c8aaeba2fefe64110e2255e866158",
+      "variant_id": "FEV-000084-MR3-1"
+    },
+    {
+      "sha256": "fc27d1e3f37ea391525c087e7249a5b658afb02829ed6f9d58c6ca97b6be35fe",
+      "variant_id": "FEV-000084-MR5-zh-en"
+    },
+    {
+      "sha256": "81f708ae6740b435e8b244b0155f1e5e6915eb53f8c70efee3cd57fb9e073ca4",
+      "variant_id": "FEV-000084-MR5-zh-de"
+    },
+    {
+      "sha256": "10b56947c1d6b4b342a30e13c2d5a8b6257c1be3a6ffbc209661318f9fde1e4f",
+      "variant_id": "FEV-000084-MR5-en-de"
+    },
+    {
+      "sha256": "9c4a53d42e8cf9f2b9aa991f732a1e879031d86ffc9c20e54e86dcc253e28ab0",
+      "variant_id": "FEV-000085-MR1-1"
+    },
+    {
+      "sha256": "50beeef4fd5017417117dba48d7f91bb27aec066b75823f29e8e200af04a50f5",
+      "variant_id": "FEV-000085-MR3-1"
+    },
+    {
+      "sha256": "84c9ff25fb96a0b0fc268834c6d7804198554de1d9c6032290b81e81ebe2753c",
+      "variant_id": "FEV-000085-MR5-zh-en"
+    },
+    {
+      "sha256": "f3be19a01dfec79c5f746db38519ff8e9228ab456033fc854f20195a43a8e137",
+      "variant_id": "FEV-000085-MR5-zh-de"
+    },
+    {
+      "sha256": "a135d3e177783e826377416d3971fe84de4b7993ca6ee2f30c929c746d8b0503",
+      "variant_id": "FEV-000085-MR5-en-de"
+    },
+    {
+      "sha256": "9485934da7d66bc34d9b0680928199f1d9985b28afd40fdf80c2ce1b8fcaf14c",
+      "variant_id": "FEV-000086-MR1-1"
+    },
+    {
+      "sha256": "5e7748c8b069f1cd37073dfd0fe93a1950551969b78a769387e99cc6cacc4750",
+      "variant_id": "FEV-000086-MR3-1"
+    },
+    {
+      "sha256": "a8ac3f39a7cf675fe1ff69bf71eb0eb9b0e5ee2bfd6f32142349686454b7e79a",
+      "variant_id": "FEV-000086-MR5-zh-en"
+    },
+    {
+      "sha256": "de6fd92948ed63908c5a9d6d70fd258663b720047550d0fef1e5dad3a9f01b57",
+      "variant_id": "FEV-000086-MR5-zh-de"
+    },
+    {
+      "sha256": "2d5e8e46f6d338aeff7ecf69126faf1549bf1ef041346e1e53e37a447870f140",
+      "variant_id": "FEV-000086-MR5-en-de"
+    },
+    {
+      "sha256": "68920e5671503f734e98cf972439ed19cdd5c3c0c14edb31a76179c3abd4517b",
+      "variant_id": "FEV-000087-MR1-1"
+    },
+    {
+      "sha256": "7c325d8308fa4e3f680741c1282b1bd7b3c933623ad176b888c7826b35b88e58",
+      "variant_id": "FEV-000087-MR3-1"
+    },
+    {
+      "sha256": "5c7846ec02f72a82662df530473c704a92f62b3e5e434516035b5258020a82f8",
+      "variant_id": "FEV-000087-MR5-zh-en"
+    },
+    {
+      "sha256": "c6d97fd9f62468c7bda7ff1f4159f7ac74fe30243c3cc5407f4e037ce7ea6d7b",
+      "variant_id": "FEV-000087-MR5-zh-de"
+    },
+    {
+      "sha256": "1f108f95f194b320c9c38fe0e4427ce5821c52803cc2f15a416f3d45668d7278",
+      "variant_id": "FEV-000087-MR5-en-de"
+    },
+    {
+      "sha256": "58f9a86da8e134bb79cc732cc8012920172cea7bddd1d973577014da290fe579",
+      "variant_id": "FEV-000088-MR1-1"
+    },
+    {
+      "sha256": "939f62159d4f103cd7564545e96e1f92a8fcf22f28e77a7ab53c0604275a7b29",
+      "variant_id": "FEV-000088-MR3-1"
+    },
+    {
+      "sha256": "daaf3535d30d2cf7bb3cd95a752d827041e08aece72f2a7114c41a95e7703b07",
+      "variant_id": "FEV-000088-MR5-zh-en"
+    },
+    {
+      "sha256": "a81a7a259427fc25bd466c58ee9a43f01de3ae0a409f25fbcac4c9055e84b36a",
+      "variant_id": "FEV-000088-MR5-zh-de"
+    },
+    {
+      "sha256": "bd6c9d9348cc4b312d8d6478ff44c1d7bbc2e0afec6c4766a06486455801315e",
+      "variant_id": "FEV-000088-MR5-en-de"
+    },
+    {
+      "sha256": "e3f59d54aefaf3f94abf88fc5e4026668a59851c7252fe5b0a1e7e9c07d7dbb9",
+      "variant_id": "FEV-000089-MR1-1"
+    },
+    {
+      "sha256": "93681e783ff89051db0d220a03a2464b2b12ab30c151846066a75da366e8741e",
+      "variant_id": "FEV-000089-MR3-1"
+    },
+    {
+      "sha256": "2947738149882af7fa7cdf0549d3b11d02f9bbc2a4a7e8019767c75a97b7ee43",
+      "variant_id": "FEV-000089-MR5-zh-en"
+    },
+    {
+      "sha256": "b1f77bddb15790b93c46c00d8ee56506b50474ec0d13318bbd282293f4e8a390",
+      "variant_id": "FEV-000089-MR5-zh-de"
+    },
+    {
+      "sha256": "6c9670927231b795e9af07b5a3578a22253b92d95b538a8ce256cae07cc73ece",
+      "variant_id": "FEV-000089-MR5-en-de"
+    },
+    {
+      "sha256": "cdf537f16b6be3552df8f6caed2398ab48513e40084ec11c84b7f4cde845528a",
+      "variant_id": "FEV-000090-MR1-1"
+    },
+    {
+      "sha256": "0a9f873e5ba955cc05f39cb318d2fa793214d9e9917916a0b28b6ad57a70f657",
+      "variant_id": "FEV-000090-MR3-1"
+    },
+    {
+      "sha256": "7994e6b85e8c837c8534bfdb1091b1bcba134b876e7d3c1b70d972c757cdbd0a",
+      "variant_id": "FEV-000090-MR5-zh-en"
+    },
+    {
+      "sha256": "19db843cbde2a66de7c6a46af5dfc9bf362898b8e07b05dc641bd99b0c31fe5c",
+      "variant_id": "FEV-000090-MR5-zh-de"
+    },
+    {
+      "sha256": "64187873eeb43c4137fd04064f87068a5464025c385b045c4d4a1be703739ad2",
+      "variant_id": "FEV-000090-MR5-en-de"
+    },
+    {
+      "sha256": "60d22b4ad0e815456591acf0768d199a58a55e1382c1dc6a045a0c3229d3e866",
+      "variant_id": "FEV-000091-MR1-1"
+    },
+    {
+      "sha256": "81cef5f1a9adc89a72f0ee70d1dc16f1bdf365ce2a5af1a1f71d64fb3e10b1c5",
+      "variant_id": "FEV-000091-MR3-1"
+    },
+    {
+      "sha256": "e380dea5b2fd14f5a6a15e51a25b9da6fc4b89ec393497f511d79795ade5dddc",
+      "variant_id": "FEV-000091-MR5-zh-en"
+    },
+    {
+      "sha256": "b56e424ecd1d5005cd06ef45320ff592a1c3109625b71cb477cb210a4fe9384e",
+      "variant_id": "FEV-000091-MR5-zh-de"
+    },
+    {
+      "sha256": "0742d58a91a0e46a5dc5950b10317e3dcd093bd6256cee55a811085b3bcd5623",
+      "variant_id": "FEV-000091-MR5-en-de"
+    },
+    {
+      "sha256": "ff9034fd7fce7218df0148b34261d76e386d4338c64a4d577095b89998900da9",
+      "variant_id": "FEV-000092-MR1-1"
+    },
+    {
+      "sha256": "a1e875bc7b2d3cad0c67f7c48f608470007ec2df2230aad8df3d4a858931d4a8",
+      "variant_id": "FEV-000092-MR3-1"
+    },
+    {
+      "sha256": "4ced4f5dbd1df9fee248b34614070bbe8221dee1843ad8b46755eaa2457a88c3",
+      "variant_id": "FEV-000092-MR5-zh-en"
+    },
+    {
+      "sha256": "9db04b33b7d2932ee1209292cba4ac00d93d27c99a7a02d5242993ddaa93bf0c",
+      "variant_id": "FEV-000092-MR5-zh-de"
+    },
+    {
+      "sha256": "7940612b474edf61b53e5ce49ef96e5abdc4110261c7c4e5d37c898da90e8ca9",
+      "variant_id": "FEV-000092-MR5-en-de"
+    },
+    {
+      "sha256": "8dde4038212a09d2d65e9513bf771cd3232d50bbec727434faff6e4925421fcf",
+      "variant_id": "FEV-000093-MR1-1"
+    },
+    {
+      "sha256": "4f2bbd4077a98d662e7702b62c62ca7428f2836b41418919920cdf8da0087d59",
+      "variant_id": "FEV-000093-MR3-1"
+    },
+    {
+      "sha256": "9c0975ead9c3fb175e8e905d7ae2a6bf4752990120f23dadfe32091f1af2ac96",
+      "variant_id": "FEV-000093-MR5-zh-en"
+    },
+    {
+      "sha256": "621d0d66e5ae05590515f26e91d07bebfd4032ca04700611168cf8bc48725f49",
+      "variant_id": "FEV-000093-MR5-zh-de"
+    },
+    {
+      "sha256": "626e18b8431e7d885ac7dfc816fe06746fc3929b899bcd972b54ef47b3a63fc6",
+      "variant_id": "FEV-000093-MR5-en-de"
+    },
+    {
+      "sha256": "d7c7ecc55aff11ec31db2851396a1db7a1adc3536fd9ffe7af23fd82b8af16b2",
+      "variant_id": "FEV-000094-MR1-1"
+    },
+    {
+      "sha256": "050f03d599eee1e923f67a861c08090de66a52374c1f7300cf83fabeae23fc27",
+      "variant_id": "FEV-000094-MR3-1"
+    },
+    {
+      "sha256": "86055ef217f103838cbca0d7cd02ef6defe8701170aa7b3b48b620ccd2250feb",
+      "variant_id": "FEV-000094-MR5-zh-en"
+    },
+    {
+      "sha256": "7b41074ceb6b9fa5b94396e9bffa7df6c8fd24b6706788bc00a0699cb62c280f",
+      "variant_id": "FEV-000094-MR5-zh-de"
+    },
+    {
+      "sha256": "47c588f97974bb43f1600536d67658ffeeea26b27bcca5cbc1debcc6961dabef",
+      "variant_id": "FEV-000094-MR5-en-de"
+    },
+    {
+      "sha256": "c4648904b90c148a6f6bf0169bc26ef10fbe7686129c506db4953d0f05ee9bd2",
+      "variant_id": "FEV-000095-MR1-1"
+    },
+    {
+      "sha256": "7d925c8b67c68b7c722e746d09e5c2a7ce0b23eeea73678953343ca8c6794166",
+      "variant_id": "FEV-000095-MR3-1"
+    },
+    {
+      "sha256": "0c0939dc65cd7e70da079500b878655ca4fd872c7b1cae19dbd4f4589d8cda08",
+      "variant_id": "FEV-000095-MR5-zh-en"
+    },
+    {
+      "sha256": "2d11539a7751eefa14d237e8b0c005db2f18b8d910090dbefa71ca1492f41b96",
+      "variant_id": "FEV-000095-MR5-zh-de"
+    },
+    {
+      "sha256": "da23ea80a96d74a7f359ab68dd226633143c0ce0f2265059d5c856e4963a70b3",
+      "variant_id": "FEV-000095-MR5-en-de"
+    },
+    {
+      "sha256": "c74287c0e7578ae8d21ee61a515e2b6966dc964a161f498c7b580686a47cf63c",
+      "variant_id": "FEV-000096-MR1-1"
+    },
+    {
+      "sha256": "fc240354d43498051d618a9c3aa9a83f4efc3addae74fd6c88cebc28d27e9682",
+      "variant_id": "FEV-000096-MR3-1"
+    },
+    {
+      "sha256": "153112b329ac5fed42527878448f1f92716b874f2eec5e25537287f90be01f7b",
+      "variant_id": "FEV-000096-MR5-zh-en"
+    },
+    {
+      "sha256": "b815ca23940348ee03652da71f691498bad125c5119101967de54495835daf53",
+      "variant_id": "FEV-000096-MR5-zh-de"
+    },
+    {
+      "sha256": "1f3a368483035ccb7d4d50fdf1d3963d49136045709e54669bf64531046c22a0",
+      "variant_id": "FEV-000096-MR5-en-de"
+    },
+    {
+      "sha256": "bade15c2f2b4522b3d826ce8311980aad025097e653232a927fd0bd4f87cad31",
+      "variant_id": "FEV-000097-MR1-1"
+    },
+    {
+      "sha256": "fae62529de792d4c93e90da337c8e468e77111110056f4e5f8e58b73f2d0c7d5",
+      "variant_id": "FEV-000097-MR3-1"
+    },
+    {
+      "sha256": "0a1bbc452bf9abfe7feada77ca22f8b0406724aec3d46af65971be4d34285f6b",
+      "variant_id": "FEV-000097-MR5-zh-en"
+    },
+    {
+      "sha256": "10485911d2cf9967848dcca5d10f9f427d4fc3cfc69fbc6a4ddd92acf2a3dd0a",
+      "variant_id": "FEV-000097-MR5-zh-de"
+    },
+    {
+      "sha256": "f0b8f6023e7972ea127fc0035a5104d3c6fc5e8bd850332fbd6d16be42afe4c1",
+      "variant_id": "FEV-000097-MR5-en-de"
+    },
+    {
+      "sha256": "2e110f600b291c73d9b1e3502a26942b3c19ef5d98e6b3f416b0951ff343b2cb",
+      "variant_id": "FEV-000098-MR1-1"
+    },
+    {
+      "sha256": "701ee9588accf2968d442c33ec05ea64299b3a53dfd03d41fe3c576d2072dcd8",
+      "variant_id": "FEV-000098-MR3-1"
+    },
+    {
+      "sha256": "8211e302cafeb039eb313ed688ef32ed82128c6942dd81fdb3892c34b15485cf",
+      "variant_id": "FEV-000098-MR5-zh-en"
+    },
+    {
+      "sha256": "83d465fbd61e3b41adbf77efec8565be460d794dd4b1ef11007803f8eeab0062",
+      "variant_id": "FEV-000098-MR5-zh-de"
+    },
+    {
+      "sha256": "1ad08f2ed76326c4ac784e9a87599cb02c1202e6bd1e0d235981250b944429ae",
+      "variant_id": "FEV-000098-MR5-en-de"
+    },
+    {
+      "sha256": "9ad09535643d4e5ee0d67606f71f76490422af01d39388ac68f810310f2f88c5",
+      "variant_id": "FEV-000099-MR1-1"
+    },
+    {
+      "sha256": "82624f897a2c7e6223dd74fb6899f71cb0eb2d6b9a5575c605039a8a13febe21",
+      "variant_id": "FEV-000099-MR3-1"
+    },
+    {
+      "sha256": "5adc61bede08b19d4dad747dd6672bfa72dbddb5bce839eb35414b9d6071e7f2",
+      "variant_id": "FEV-000099-MR5-zh-en"
+    },
+    {
+      "sha256": "186e0f3721ec4bcf8acde5b919c7a28485ea1cde40aba93e4c13a1ff9f8605ab",
+      "variant_id": "FEV-000099-MR5-zh-de"
+    },
+    {
+      "sha256": "fcb352b8a4f27dd5e82eaa512a33d31032052bf4b6afb55c6d6b9c38f44d7686",
+      "variant_id": "FEV-000099-MR5-en-de"
+    },
+    {
+      "sha256": "bdfe852dbf6703358ea073e663a1dd939218705d3b7159f8f4d41fefe7b0297f",
+      "variant_id": "FEV-000100-MR1-1"
+    },
+    {
+      "sha256": "68e92cf0c07c6e8dd7f9e148ad37e68cea09b6a3c9af48cb6353bc20fd01ee6d",
+      "variant_id": "FEV-000100-MR3-1"
+    },
+    {
+      "sha256": "ecb850c4813d227799cf24cbd1ca2db1760c1ded0cc7d804a4ecfa407513fc59",
+      "variant_id": "FEV-000100-MR5-zh-en"
+    },
+    {
+      "sha256": "16a10cda0b208208971b99cd40b0834317ccf52616a2bd57df1261342906945b",
+      "variant_id": "FEV-000100-MR5-zh-de"
+    },
+    {
+      "sha256": "92b1e0f1508b1889170bb898611ff0015d34605afbc8e0db5630bebaee82f1ff",
+      "variant_id": "FEV-000100-MR5-en-de"
+    }
+  ],
+  "variants_sha256": "fd918b947e6bc073a2390a806c53558c8e14932de5cd82088326d6504fc2c328"
+}
