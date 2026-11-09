@@ -329,6 +329,9 @@ every chosen language. A unit's messages are the system prompt of its language a
 
 - Every request has temperature 0; there is no second attempt and no JSON mode (PRD §7, A-38). A unit that fails
   (network, HTTP status, no text) is recorded as an error; `--resume` sends only units without an answer (A-36).
+- Two protocols: OpenAI-compatible chat completions for APIs, vLLM and Ollama, and Ollama's own chat API for local
+  models whose thinking must be switched off; the local Qwen3 8B uses the latter (D-12). The answer is the message
+  text; a separate thinking part is not part of it.
 - Replies are cached by the hash of base URL, model, parameters and messages, never the API key (A-19). A run
   repeated from its manifest builds the same requests and is answered from the cache.
 - The manifest records seeds, the model versions the replies name (for Ollama also the model's digest), all

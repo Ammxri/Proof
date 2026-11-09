@@ -18,7 +18,7 @@ Die Eingabefelder des Auftrags waren leer. Belegt bzw. angenommen:
 | Nicht anfassen | alle anderen Projekte, vor allem NeuroGrid (D-01); Diagohelp-Ordner (A-02) |
 | Freigabemodus | angenommen: A, autonom nach Konzeptfreigabe (A-01) |
 
-## Blocker (B1 bis B10 entschieden, siehe D-01 bis D-08 und D-11; B11 offen)
+## Blocker (alle entschieden, siehe D-01 bis D-08, D-11 und D-12)
 
 ### B1 Startzeitpunkt – entschieden durch D-01
 **Entscheidung:** Die Startbedingung „erst nach NeuroGrid-G1“ entfällt, denn die Projekte hängen nicht voneinander ab.
@@ -136,7 +136,7 @@ Optionen:
 - C: Alle Zuordnungen werden migriert, mit deutlich markierter Platzhalterquelle („Quelle ausstehend“). Die Quellen
   lieferst du oder die ärztliche Prüfung nach. PR-K08 bleibt bis dahin „teilweise“, und das Release ist gesperrt.
 
-### B11 Qwen ohne Denkmodus über Ollama – offen (U7)
+### B11 Qwen ohne Denkmodus über Ollama – entschieden (D-12)
 Befund vom 09.11.2026:
 - **Modell:** Geladen ist `qwen3:8b` (5,2 GB, Digest `500a1f06…`, A-77). Es ist ein Hybridmodell, das vor der Antwort
   „denkt“. Ein reines Instruct-Modell von Qwen3 gibt es in Ollama nur mit 4 B und 30 B.
@@ -622,7 +622,7 @@ inaktiv. Leukozyten stehen als Kontextfakt im Katalog (PRD-Beispiel); keine Rege
 - Das neuere `qwen3.5:9b` ist 6,6–7,6 GB groß, passt kaum in 8 GB Grafikspeicher und braucht eine neuere
   Ollama-Version. Ollama zu aktualisieren wäre eine globale Änderung (A-30).
 - Vorhandene Modelle (`mistral`, `nomic-embed-text`) blieben unverändert.
-- Ob Qwen3 8B ohne Denkmodus laufen kann, ist offen (B11).
+- Qwen3 8B läuft über Ollamas eigene API ohne Denkmodus (B11, D-12).
 
 **A-78 Modellversion bei Ollama.** Präzisiert A-21 und KONZEPT 5.2.
 - Der Digest steht in Ollama 0.11.11 nicht in `POST /api/show`, sondern in `GET /api/tags`.
@@ -630,8 +630,13 @@ inaktiv. Leukozyten stehen als Kontextfakt im Katalog (PRD-Beispiel); keine Rege
   lokalen Rechner.
 
 **A-79 Anbieterdatei.** Präzisiert KONZEPT 4.9.
-- Erlaubte Parameter: `max_tokens`, `seed`, `top_p`, `think` (Ollama), `thinking` und `reasoning_effort` (DeepSeek).
-  Temperatur, JSON-Modus, Streaming und alles andere weist der Lader ab; die Temperatur ist fest 0.
+- Erlaubte Parameter: `max_tokens`, `seed`, `top_p`, `think` (nur mit `ollama_chat`), `thinking` und
+  `reasoning_effort` (DeepSeek, nicht mit `ollama_chat`). Temperatur, JSON-Modus, Streaming und alles andere weist der
+  Lader ab; die Temperatur ist fest 0.
+- Schnittstellen (D-12): `openai_chat` sendet an `<base_url>/chat/completions`. `ollama_chat` sendet an
+  `<base_url>/api/chat`; dort ist `base_url` der Ollama-Server auf diesem Rechner. Die Werte für die Stichprobe stehen
+  unter `options`: Temperatur 0, `num_predict` als Tokengrenze, `seed`, `top_p`. Der Schalter `think` steht oben.
+  Eine Antwort besteht nur aus `message.content`; ein Denkteil gehört nicht dazu.
 - `http` nur für diesen Rechner, sonst `https`.
 - Ein westlicher Anbieter braucht die Region `EU` (PR-N03).
 - Platzhalter `<PLATZHALTER: …>` machen eine Datei unbrauchbar, bis sie ausgefüllt ist.
@@ -807,3 +812,12 @@ die Auslegungen A-31 bis A-48. Die Umsetzung läuft im Freigabemodus A (A-01) bi
 - Eine Zuordnung des Prototyps, die das Kapitel nicht belegt, wird keine Regel. Die Migrationstabelle nennt den Grund.
 - `GENERELL_HOCH` wird begründet ausgelassen. `UR` wird als Harnstoff migriert; die Zuordnungen zu Harnsäure entfallen.
 - Für die Fieberregeln und Warnzeichen gilt D-04 unverändert: Originalpublikationen und Leitlinien.
+
+**D-12 Ollamas eigene API für lokale Modelle (B11): Empfehlung A bestätigt (09.11.2026).** Deine Antwort:
+„A: Ollama-API“.
+- Neben dem OpenAI-Protokoll gibt es die Schnittstellenart `ollama_chat`: `POST /api/chat` auf dem Ollama-Server
+  dieses Rechners, mit `think: false`. Das ist eine bewusste **Abweichung** von KONZEPT 4.9 und 5.2, die für Ollama
+  nur das OpenAI-Protokoll vorsahen. Die PRD (PR-F07) gibt die Schnittstelle lokaler Modelle nicht vor.
+- Nachrichten, Temperatur 0, Seed und Tokengrenze sind in beiden Schnittstellen gleich; die Schnittstelle und der
+  Denkschalter stehen im Manifest.
+- Prüfmodell bleibt Qwen3 8B (A-77); `providers/qwen-local.yaml` nutzt `ollama_chat`.

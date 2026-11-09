@@ -197,6 +197,8 @@ ollama_digest: true              # Digest über /api/show (A-21)
 params: {max_tokens: 1024, seed: 0, think: false}   # temperature ist fest 0 und nicht einstellbar
 pricing: {input_per_mtok: 0, output_per_mtok: 0, currency: EUR}  # bei APIs Eingabe von dir (A-20)
 ```
+Nachtrag U7 (D-12, A-78): Für lokale Ollama-Modelle gibt es zusätzlich `api: ollama_chat` mit `base_url`
+`http://127.0.0.1:11434`; nur dort lässt sich der Denkmodus abschalten. Den Digest liefert `GET /api/tags`.
 
 ### 4.10 Lauf (`.proof/runs/<run_id>/`)
 - `manifest.json` (PR-N01, PR-N02):
@@ -238,7 +240,8 @@ ausgeschlossen (Test).
 Die Hilfe jedes Befehls endet mit den Hinweissätzen in zh/en/de (A-24).
 
 ### 5.2 Netz
-- Ausgehend nur zur `base_url` des gewählten Anbieters: `POST /chat/completions`, dazu bei Ollama `POST /api/show`.
+- Ausgehend nur zur `base_url` des gewählten Anbieters: `POST /chat/completions`, bei `ollama_chat` `POST /api/chat`,
+  dazu bei Ollama `GET /api/version` und `GET /api/tags` (Nachtrag U7: D-12, A-78).
 - TLS-Prüfung bleibt an, es gibt Zeitlimits, und Umleitungen auf andere Hosts werden abgewiesen.
 - Keine Telemetrie, sonst keine Netzaufrufe; Ausnahme ist der einmalige Download des PDF-Browsers.
 

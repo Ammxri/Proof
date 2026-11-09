@@ -302,3 +302,24 @@ def test_command_line_errors(args, message, repo_root, monkeypatch):
     result = runner.invoke(app, ["run", *args])
     assert result.exit_code == 1
     assert message in result.output
+
+
+def test_ollama_api_runs_without_thinking(stub, home, demo):
+    """D-12: Ollama's own API with thinking off; temperature 0 under options; the answer excludes any thinking."""
+    url, state = stub
+    params = {"max_tokens": 64, "seed": 7, "think": False}
+    provider = _provider(url.removesuffix("/v1"), api="ollama_chat", api_key_env=None, params=params)
+    outcome = harness_run.execute(_config(provider, demo, max_cases=1, langs=["zh"]), home / "o", root=demo[2])
+    assert outcome.manifest.status == "complete" and outcome.manifest.units.ok == 3
+    for request in state.chat_requests():
+        assert request["path"] == "/api/chat"
+        body = request["body"]
+        assert body["think"] is False and body["stream"] is False and "temperature" not in body
+        assert body["options"] == {"temperature": 0, "num_predict": 64, "seed": 7}
+    units = harness_run.read_units(outcome.directory)
+    assert all(json.loads(unit["text"])["rationale"] == "stub" for unit in units)
+    assert units[0]["completion_tokens"] == 20 and units[0]["finish_reason"] == "stop"
+    assert outcome.manifest.ollama["digest"] == "d" * 64
+    state.mode = "empty"
+    empty = harness_run.execute(_config(provider, demo, max_cases=1, langs=["de"]), home / "o2", root=demo[2])
+    assert "no message.content" in harness_run.read_units(empty.directory)[0]["error"]

@@ -1,6 +1,6 @@
-"""Provider configuration (PR-F07, PR-C05, PR-N03, KONZEPT 4.9): one YAML file per model endpoint.
+"""Provider configuration (PR-F07, PR-C05, PR-N03, KONZEPT 4.9, D-12): one YAML file per model endpoint.
 
-A provider names an OpenAI-compatible chat endpoint (API, Ollama or vLLM), the model, where the API key comes from
+A provider names a chat endpoint, the model, where the API key comes from
 (the *name* of an environment variable, never the key), the origin of the model and the declared server region, the
 request parameters and the prices. Rules that are checked when the file is loaded:
 
@@ -9,6 +9,9 @@ request parameters and the prices. Rules that are checked when the file is loade
 - **Western models only via EU servers** (PR-N03): a provider of origin ``western`` must declare the region ``EU``.
   The region is a declaration; Proof cannot check it technically and records it in the run manifest (D-06).
 - **TLS:** remote endpoints need ``https``; plain ``http`` is accepted only for this computer (localhost).
+- **Two protocols** (D-12): ``openai_chat`` (``POST <base_url>/chat/completions``) for APIs, vLLM and Ollama, and
+  ``ollama_chat`` (``POST <base_url>/api/chat``), Ollama's own API on this computer, where thinking can be switched
+  off. Messages, temperature 0, seed and token limit are the same in both.
 - **Placeholders** ``<PLATZHALTER: …>`` mark details the project lead still has to fill in; a provider that contains
   one is refused.
 """
@@ -90,7 +93,7 @@ class Provider(_Model):
     """``providers/<name>.yaml``."""
 
     name: Annotated[StrictStr, StringConstraints(pattern=r"^[a-z0-9][a-z0-9_.-]*$")]
-    api: Literal["openai_chat"]
+    api: Literal["openai_chat", "ollama_chat"]
     base_url: StrictStr
     model: Annotated[StrictStr, StringConstraints(min_length=1)]
     api_key_env: Annotated[StrictStr, StringConstraints(pattern=r"^[A-Z][A-Z0-9_]*$")] | None = None
@@ -110,8 +113,15 @@ class Provider(_Model):
             raise ValueError(f"base_url must be an http(s) URL without query, got {self.base_url!r}")
         if parts.scheme == "http" and parts.hostname not in LOCAL_HOSTS:
             raise ValueError("plain http is allowed only for this computer; remote endpoints need https")
-        if self.ollama_digest and parts.hostname not in LOCAL_HOSTS:
+        if (self.ollama_digest or self.api == "ollama_chat") and parts.hostname not in LOCAL_HOSTS:
             raise ValueError("an Ollama provider runs on this computer (localhost)")
+        if self.api == "ollama_chat":
+            if parts.path not in ("", "/"):
+                raise ValueError("an ollama_chat base_url is the Ollama server itself, e.g. http://127.0.0.1:11434")
+            if self.params.thinking is not None or self.params.reasoning_effort is not None:
+                raise ValueError("thinking and reasoning_effort belong to other APIs; Ollama uses think")
+        elif self.params.think is not None:
+            raise ValueError("think is Ollama's switch and needs api ollama_chat (D-12)")
         return self
 
     @property
@@ -120,8 +130,9 @@ class Provider(_Model):
 
     @property
     def endpoint(self) -> str:
-        """URL of the chat completions endpoint."""
-        return self.base_url.rstrip("/") + "/chat/completions"
+        """URL of the chat endpoint of the provider's protocol."""
+        path = "/api/chat" if self.api == "ollama_chat" else "/chat/completions"
+        return self.base_url.rstrip("/") + path
 
     @property
     def host_root(self) -> str:

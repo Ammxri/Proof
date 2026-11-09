@@ -1,6 +1,7 @@
-"""OpenAI-compatible chat client (PR-F07, PR-N05, KONZEPT 5.2) and the request hash for the cache (A-19).
+"""Chat client (PR-F07, PR-N05, KONZEPT 5.2, D-12) and the request hash for the cache (A-19).
 
-- Every request carries ``temperature: 0`` and the provider's allowed parameters; no JSON mode, no streaming (A-38).
+- Two protocols: OpenAI-compatible chat completions, and Ollama's own ``/api/chat`` on this computer (D-12).
+- Every request carries temperature 0 and the provider's allowed parameters; no JSON mode, no streaming (A-38).
 - There is no second attempt: a network error, a status other than 200 or a reply without text is recorded as an
   error of that unit (A-36). Redirects are not followed, TLS verification stays on, and requests go only to the
   provider's endpoint (and, for Ollama, its version and model list on the same host).
@@ -26,14 +27,20 @@ ERROR_TEXT_LIMIT = 500
 
 
 def request_body(provider: Provider, messages: Sequence[Message]) -> dict[str, Any]:
-    """The JSON body of a chat request: model, messages, temperature 0, the provider's parameters, no streaming."""
-    return {
-        "model": provider.model,
-        "messages": [dict(message) for message in messages],
-        "temperature": TEMPERATURE,
-        "stream": False,
-        **provider.params.request_fields(),
-    }
+    """The JSON body of a chat request: model, messages, temperature 0, the provider's parameters, no streaming.
+
+    Ollama's own API takes sampling settings under ``options`` (``num_predict`` is its token limit) and the thinking
+    switch ``think`` at the top level.
+    """
+    fields = provider.params.request_fields()
+    base = {"model": provider.model, "messages": [dict(message) for message in messages], "stream": False}
+    if provider.api == "ollama_chat":
+        options = {"temperature": TEMPERATURE}
+        names = {"max_tokens": "num_predict", "seed": "seed", "top_p": "top_p"}
+        options.update({names[key]: value for key, value in fields.items() if key in names})
+        think = {"think": fields["think"]} if "think" in fields else {}
+        return {**base, **think, "options": options}
+    return {**base, "temperature": TEMPERATURE, **fields}
 
 
 def request_hash(provider: Provider, messages: Sequence[Message]) -> str:
@@ -73,6 +80,24 @@ class Reply:
 
 def _count(value: Any) -> int | None:
     return value if isinstance(value, int) and not isinstance(value, bool) and value >= 0 else None
+
+
+def parse_ollama_reply(data: Any) -> Reply:
+    """Read Ollama's ``/api/chat`` reply: the answer is ``message.content``; thinking, if any, is not part of it."""
+    message = data.get("message") if isinstance(data, dict) else None
+    text = message.get("content") if isinstance(message, dict) else None
+    if not isinstance(text, str):
+        return Reply(status="error", error="the reply has no message.content")
+    model = data.get("model")
+    finish = data.get("done_reason")
+    return Reply(
+        status="ok",
+        text=text,
+        model=model if isinstance(model, str) else None,
+        prompt_tokens=_count(data.get("prompt_eval_count")),
+        completion_tokens=_count(data.get("eval_count")),
+        finish_reason=finish if isinstance(finish, str) else None,
+    )
 
 
 def parse_reply(data: Any) -> Reply:
@@ -146,7 +171,7 @@ class Client:
             data = json.loads(response.text)
         except ValueError:
             return Reply(status="error", error="the reply is not JSON")
-        reply = parse_reply(data)
+        reply = parse_ollama_reply(data) if self.provider.api == "ollama_chat" else parse_reply(data)
         return reply if reply.text is None else Reply(**{**reply.to_json(), "text": self._redact(reply.text)})
 
     def ollama_info(self) -> dict[str, Any]:

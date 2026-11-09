@@ -2,20 +2,51 @@
 
 ## Stand
 
-**09.11.2026 – Phase 3, U7 umgesetzt bis auf den Qwen-Probelauf; Blocker B11 offen.**
-- U1 bis U6 sind abgeschlossen; U7 (Testlauf) ist auf `dev` committet.
-- Der Qwen-Probelauf wartet auf B11: Qwen3 8B lässt sich über Ollamas OpenAI-Schnittstelle nicht ohne Denkmodus
-  betreiben (ENTSCHEIDUNGEN.md).
+**09.11.2026 – Phase 3, U7 abgeschlossen.**
+- U1 bis U7 sind auf dem Zweig `dev` committet, zuletzt der Testlauf mit Qwen-Probelauf. B11 ist als D-12
+  entschieden (Ollamas eigene API für lokale Modelle).
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U7 unter Windows und Linux grün (Lauf 42584216435 auf `1aaee9a`).
+- Die CI ist für U7 unter Windows und Linux grün (Lauf 42584216435 auf `1aaee9a`); der Beleg für den Nachtrag D-12
+  folgt nach dem Push.
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
 - **Plan:** U1–U14 aus [KONZEPT.md](KONZEPT.md); v0.1 = U1–U9, v0.5 = U10–U12, v1.0 = U13–U14; GO-1 vor U13.
 
-**Nächster Schritt:** Entscheidung zu B11, dann Qwen-Probelauf (10 Fälle × 3 Sprachen) und U8 (Bewertung).
+**Nächster Schritt:** U8 (Bewertung S1–S7, Profil, `proof score`, `proof compare`).
 
 ## Verlauf
+
+### 09.11.2026 – U7 abgeschlossen: Ollamas eigene API (D-12) und Qwen-Probelauf
+**Entscheidung:** B11 entschieden als D-12 („A: Ollama-API“).
+
+**Umgesetzt:**
+- Schnittstellenart `ollama_chat` (`POST /api/chat` auf diesem Rechner):
+  - Temperatur 0, `num_predict`, `seed` und `top_p` stehen unter `options`, der Schalter `think` oben.
+  - Die Antwort ist `message.content`; ein Denkteil gehört nicht dazu.
+- Der Lader weist ab: `think` ohne `ollama_chat`, `thinking` oder `reasoning_effort` mit `ollama_chat` sowie einen
+  entfernten Ollama-Server.
+- `providers/qwen-local.yaml` nutzt `ollama_chat` mit `think: false`.
+- KONZEPT 4.9 und 5.2 haben einen Nachtrag mit Verweis auf D-12.
+- Stub-Server und Tests decken `/api/chat` ab.
+
+**Qwen-Probelauf** (`.proof/runs/u7-probe`, nicht versioniert):
+- **Umfang:** Fälle `FEV-000001` bis `FEV-000010` in zh, en und de, dazu ihre MR1- und MR3-Varianten aus Seed 1. Das
+  sind 90 Einheiten, 30 davon Basisfälle.
+- **Vorher geprüft:** kein NeuroGrid-Lauf, Grafikkarte ohne Last.
+- **Ergebnis:** Status `complete`, 90 von 90 Einheiten beantwortet, 0 Fehler, 90 Anfragen.
+  - Laufzeit 804 s, Median 8 s je Einheit, höchstens 19 s.
+  - 111 642 Eingabe- und 15 602 Ausgabe-Token, Kosten 0 EUR.
+- **Manifest:** Modell `qwen3:8b`, Digest `500a1f067a9f…`, Ollama 0.11.11, Q4_K_M, Parameter `max_tokens` 1024,
+  `seed` 0, `think: false`, Schnittstelle `ollama_chat`.
+- **Formprüfung:** Alle 90 Antworten sind gültiges JSON nach A-13, in jeder Sprache und für Basisfälle, MR1 und MR3;
+  alle endeten mit `stop`. Die Kennzahlen S1–S7 berechnet erst U8.
+
+**Geprüft** (lokal, Windows 11, Python 3.12.15):
+- `uv run pytest --cov`: 762 Tests grün, Abdeckung 98,72 % (4:41 min).
+- `ruff check` und `ruff format --check`: sauber.
+
+**Abnahme U7 (DoD aus KONZEPT.md):** erfüllt; der Qwen-Probelauf ist mit Manifest belegt (oben).
 
 ### 09.11.2026 – U7 Testlauf
 **Neue Auslegungen:** A-77 bis A-80 (Prüfmodell, Digest, Anbieterdatei, Testlauf). **Offen:** B11.
@@ -76,7 +107,7 @@ damit auf beiden Systemen.
 - Manifest mit Seed, Modellversion, Parametern, Zeitstempel, Token und Kosten
   (`test_the_manifest_records_what_repeats_the_run`).
 - Wiederholung aus dem Manifest ergibt gleiche Anfrage-Hashes (Test und echter Kurzlauf).
-- Offen: Qwen-Probelauf (10 Fälle × 3 Sprachen) mit Manifest; wartet auf B11.
+- Offen: Qwen-Probelauf (10 Fälle × 3 Sprachen) mit Manifest; wartet auf B11 (erledigt, siehe Eintrag oben).
 
 ### 09.11.2026 – U6 Varianten MR1, MR3, MR5
 **Neue Auslegungen:** A-74 bis A-76 (sprachunabhängige Varianten, Variantensätze und Varianten-Seed, MR1).

@@ -1,4 +1,4 @@
-"""A local stub of an OpenAI-compatible chat endpoint with Ollama's version and model list (KONZEPT §9).
+"""A local stub of an OpenAI-compatible chat endpoint and of Ollama's own API (KONZEPT §9, D-12).
 
 The stub records every request (path, headers, body) and answers according to ``mode``:
 
@@ -40,7 +40,11 @@ class StubState:
     lock: threading.Lock = field(default_factory=threading.Lock)
 
     def chat_requests(self) -> list[dict[str, Any]]:
-        return [request for request in self.requests if request["path"].endswith("/chat/completions")]
+        return [
+            request
+            for request in self.requests
+            if request["path"].endswith("/chat/completions") or request["path"] == "/api/chat"
+        ]
 
 
 class _Handler(BaseHTTPRequestHandler):
@@ -76,7 +80,8 @@ class _Handler(BaseHTTPRequestHandler):
         with self.state.lock:
             self.state.requests.append({"path": self.path, "headers": dict(self.headers), "body": body})
             number = len(self.state.chat_requests())
-        if not self.path.endswith("/chat/completions"):
+        native = self.path == "/api/chat"
+        if not (native or self.path.endswith("/chat/completions")):
             self._send(404, {"error": "not found"})
             return
         mode = "error" if number <= self.state.fail_first else self.state.mode
@@ -85,10 +90,24 @@ class _Handler(BaseHTTPRequestHandler):
         elif mode == "redirect":
             self._send(302, {"error": "moved"}, {"Location": "https://example.org/v1/chat/completions"})
         elif mode == "empty":
-            self._send(200, {"choices": []})
+            self._send(200, {"done": True} if native else {"choices": []})
         else:
             text = json.dumps(ANSWER) if mode == "valid" else "Here is my answer: pneumonia."
             prompt_tokens = sum(len(message["content"]) for message in body["messages"]) // 4
+            if native:
+                thinking = {} if body.get("think") is False else {"thinking": "Let me think."}
+                self._send(
+                    200,
+                    {
+                        "model": "stub-model",
+                        "message": {"role": "assistant", "content": text, **thinking},
+                        "done": True,
+                        "done_reason": "stop",
+                        "prompt_eval_count": prompt_tokens,
+                        "eval_count": 20,
+                    },
+                )
+                return
             self._send(
                 200,
                 {
