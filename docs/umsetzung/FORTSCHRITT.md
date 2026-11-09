@@ -2,19 +2,99 @@
 
 ## Stand
 
-**09.11.2026 – Phase 3, U3 abgeschlossen.**
-- U1 (Grundgerüst), U2 (Regelmotor) und U3 (Fieber-Regelpaket und Migration) sind auf dem Zweig `dev` committet.
+**09.11.2026 – Phase 3, U4 abgeschlossen.**
+- U1 (Grundgerüst), U2 (Regelmotor), U3 (Fieber-Regelpaket und Migration) und U4 (Fallschema, Sampler, Fever-100)
+  sind auf dem Zweig `dev` committet.
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U3 unter Windows und Linux grün (Lauf 42536070825).
+- Die CI ist für U3 unter Windows und Linux grün (Lauf 42536070825); der Beleg für U4 folgt nach dem Push.
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
 - **Plan:** U1–U14 aus [KONZEPT.md](KONZEPT.md); v0.1 = U1–U9, v0.5 = U10–U12, v1.0 = U13–U14; GO-1 vor U13.
 
-**Nächster Schritt:** U4 (Sampler, Fallschema, Fever-100). Die Laborprofile sind schon in U3 gebaut (A-56). Danach
-folgt der Haltepunkt zu den dünnen Status-Töpfen (RK-02).
+**Nächster Schritt:** U5 (Darstellung zh/en/de, Prompt, Antwortschema, Prüfvermerke).
 
 ## Verlauf
+
+### 09.11.2026 – U4 Fallschema, Sampler, Fever-100
+**Neue Auslegungen:** A-66 bis A-69 (Sampler über die Regeln, Hintergrundverteilungen, Patient, Sammlungen).
+
+**Umgesetzt:**
+- **Fallschema** (`src/proof/cases/model.py`): `Case` mit genau den PRD-Feldern (A-34). Das JSON Schema
+  `schema/case.schema.json` wird mit `tools/export_schemas.py` aus dem Modell erzeugt; ein Test prüft, dass es aktuell
+  ist. Der Schlüssel nimmt jetzt nur `ddx.*` unter `ddx` und nur `rf.*` unter `red_flags` an.
+- **Sampler** (`src/proof/cases/sampler.py`, `constraints.py`):
+  - Ziel eines Falls: Diagnose und Warnzeichen-Status aus dem Zielplan; Seed *s* bekommt Eintrag (*s* − 1) mod Länge.
+  - Das Ziel wird über die Regeln erreicht: Ihre Bedingungen werden in Alternativen zerlegt, eine passende wird
+    gezogen (A-66). Ein Test prüft für jede Regel und jede Alternative, dass sie die Regel wirklich entscheidet.
+  - Die übrigen Fakten kommen aus Hintergrundverteilungen (A-67). Laborwerte stammen aus den SynthEHR-Quantilen,
+    Vitalwerte und Leukozyten aus eigenen Bereichen mit Quelle (SIRS und qSOFA, Sepsis-3).
+  - Sampler-Profil der Fieberdomäne: `packs/fever/sampler.yaml`; Alter 18–90 Jahre (A-68).
+  - Der Lader prüft das Profil vollständig: jedes Feld, Typ, Raster, physiologische Grenzen, Quellen, dünne Status und
+    erreichbare Ziele.
+- **Laborprofile:** volles Format `LabProfile` mit Prüfung auf innere Stimmigkeit (Zählwerte, Quantile, Status).
+- **Sammlungen** (`src/proof/cases/collection.py`, A-69):
+  - `proof cases build --domain fever --n 100 --seed-start 1` schreibt `cases.jsonl` und `collection.json`.
+  - `proof cases validate <pfad>` prüft Schema, kanonische Form, Fakten, neu berechnete Schlüssel, Neuziehung aus dem
+    Seed und das Manifest gegen Fälle und Eingaben.
+- **Fever-100:** `data/collections/fever-100/`, gebaut aus Commit `3bc3f33` (sauberer Arbeitsbaum).
+- **Repository-Prüfung (PR-C02):** kein Programm, keine Bibliothek, kein Quelltext von SynthEHR; Proof startet außer
+  git kein Programm.
+- **Doku:** `docs/methodik.md` Abschnitt 5 (Sampler, Hintergrund, Sammlungen), `docs/daten/synthehr.md` (SynthEHR-Lauf
+  und Weg zu den Profilen), README.
+- **Entwicklungsabhängigkeit:** `jsonschema` 4.26.0 (MIT, KONZEPT §2) mit `attrs`, `referencing`, `rpds-py` und
+  `jsonschema-specifications` (alle MIT).
+
+**Haltepunkt nach U4 (KONZEPT §11):**
+- **Neubeschriftungen:** 0 von 100. Der Sampler erreicht jedes Ziel über die Regeln.
+- **Status-Töpfe (RK-02):** Alle Töpfe, die der Sampler zieht, haben mindestens 21 Patienten (CRP 294/514,
+  Kreatinin 243/366/892, Bilirubin 902/561, Laktat 31/59). Laktat „niedrig“ hat 9 Patienten und wird nicht gezogen; keine
+  aktive Regel braucht ihn. CRP und Bilirubin haben keinen Topf „niedrig“, weil ihre untere Referenzgrenze 0 ist. Ein
+  eigener Ersatzbereich war deshalb nicht nötig.
+- **Verteilung Fever-100:**
+
+  | Merkmal | Wert |
+  |---|---|
+  | Ziele | je Planeintrag 14 oder 15 Fälle |
+  | Entscheidbarkeit | `answer` 42, `refer_urgent` 58 (Basisfälle sind nie `ask`, A-33) |
+  | Warnzeichen `rf.qsofa_ge2` | 58 Fälle |
+  | Fieberdiagnosen | bakterielle Meningitis 65, Sepsis 50, akute Pyelonephritis 37, Pneumonie 31 |
+  | Labordiagnosen | CRP-Diagnosen je 54, Laktat-Diagnosen je 44, Bilirubin-Diagnosen je 33, Kreatinin-Diagnosen je 25, `ddx.sepsis_aki` 13 |
+  | Diagnosen je Fall | 1 bis 19, Median 8 |
+  | Kritische Felder je Fall | 1 bis 12, Median 6; jeder Fall hat mindestens eines (Material für MR1) |
+  | Patienten | 47 `f`, 53 `m`, Alter 20 bis 90 |
+
+- **Befunde für die ärztliche Prüfung:**
+  - Die Meningitis-Regel (2 von 4 Kardinalsymptomen, A-60) greift in einem Fieberfall schon bei Kopfschmerz,
+    Nackensteifigkeit oder verändertem Bewusstsein. Verändertes Bewusstsein ist zugleich qSOFA-Kriterium. Deshalb
+    tragen 65 von 100 Fällen `ddx.bacterial_meningitis`.
+  - Die migrierten Laborregeln der Fieberdomäne (A-64) fügen je erhöhtem Wert drei bis fünf Diagnosen hinzu, z. B.
+    `ddx.gilbert_syndrome` bei erhöhtem Bilirubin oder `ddx.metformin_lactic_acidosis` bei erhöhtem Laktat.
+  - Beides folgt aus den Entwurfsregeln, nicht aus dem Sampler. Ändern lässt es sich nur über die Regeln
+    (Meningitis-Lesart, Auswahl der Laborregeln in `packs/fever/pack.yaml`).
+
+**Geprüft** (lokal, Windows 11, Python 3.12.15):
+- `uv run pytest --cov`: 584 Tests grün, Abdeckung 99,87 % (4:25 min).
+- `ruff check` und `ruff format --check`: sauber.
+- `proof cases validate data/collections/fever-100`: 100 Fälle gültig, 0 neu beschriftet.
+- Schlüssel mit Ablation: langsamster Fall etwa 10 bis 25 ms (Grenze 1 s, PR-F04); der Test misst über alle 100 Fälle.
+- Lizenzprüfung: 53 Pakete, 0 abgebrochen, 0 gemeldet.
+- Wheel neu gebaut und in eine frische Umgebung installiert. Es enthält die neuen Module und `sampler.yaml`;
+  `proof cases build` und `validate` laufen damit.
+
+**Nicht lokal ausgeführt:** `pip-audit`; die Prüfung läuft in der CI.
+
+**Abnahme U4 (DoD aus KONZEPT.md):** erfüllt, der CI-Beleg folgt.
+- Alle Fever-100-Fälle bestehen Pydantic und JSON Schema (`test_fever_100_is_valid`,
+  `test_fever_100_passes_the_json_schema`).
+- Gleicher Seed, bytegleicher Fall: Golden-Hashes (`test_golden_case_hashes`) und bytegleicher Neubau von Fever-100
+  (`test_fever_100_is_rebuilt_byte_for_byte`); in der CI unter Windows und Linux.
+- Schlüssel mit Ablation unter 1 s je Fall, Maximum über die Sammlung
+  (`test_key_with_ablation_takes_less_than_one_second_per_case`).
+- Neubeschriftungen gezählt (`collection.json`, `test_relabeled_cases_are_counted`).
+- Profile mit Herkunft und Zählwerten (`LabProfile`, `test_built_and_shipped_profiles_follow_the_full_format`).
+- Kein SynthEHR-Code oder -Programm im Repository (`test_no_synthehr_program_or_code_in_the_repository`).
+- Verteilung von Entscheidbarkeit, Warnzeichen und Diagnosen: oben.
 
 ### 09.11.2026 – U3 Fieber-Regelpaket und Migration
 **Entscheidung:** B10 entschieden als D-11 („A: Nachschlagewerke“). Neue Auslegungen A-59 bis A-65.

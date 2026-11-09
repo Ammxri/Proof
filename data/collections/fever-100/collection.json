@@ -1,0 +1,1284 @@
+{
+  "cases": [
+    {
+      "case_id": "FEV-000001",
+      "relabeled": false,
+      "seed": 1,
+      "sha256": "102ae1132a2f9d595cd02417590981e37a81aabe9c26d027a9fc20a3998c14c5",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000002",
+      "relabeled": false,
+      "seed": 2,
+      "sha256": "dccc703a746ab53e1339fbac35502b4825c5190d420f0b7d0af6e51dc99d276d",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000003",
+      "relabeled": false,
+      "seed": 3,
+      "sha256": "1ff2f9fd82cda2de401f41b177762b36dd52919c3a17763bd8369212333218ff",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000004",
+      "relabeled": false,
+      "seed": 4,
+      "sha256": "3e8a446ecc374ee9467bc8c8de348a5669997c76e2dd3e61d9cf4f0ffb54a867",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000005",
+      "relabeled": false,
+      "seed": 5,
+      "sha256": "25f405ee20c12909d062d8a32833c4bc31a05c9f64d9f0f2a59f69cae4d0013d",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000006",
+      "relabeled": false,
+      "seed": 6,
+      "sha256": "f50c408a849f64bf46cac9e4c68b979c73e1afdedb6f5b20bb79f879f638a7b3",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000007",
+      "relabeled": false,
+      "seed": 7,
+      "sha256": "dc67c708f7bbe835aeaf199157ad060ff55e4a097d9f467c6f9ae7f5572c12cc",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000008",
+      "relabeled": false,
+      "seed": 8,
+      "sha256": "dcea68634529019488cc1195f8adb28d2f0b2cc17cfeb89e25848b41f05f6c1b",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000009",
+      "relabeled": false,
+      "seed": 9,
+      "sha256": "64170b3f2519e040511c6845b1d7c86ddccb3c875065ac52a93b0f40ee7aa286",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000010",
+      "relabeled": false,
+      "seed": 10,
+      "sha256": "cb29cccda4c219056543cd42c34783ebce0d79e85720d7d6cd8edd359e638f3f",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000011",
+      "relabeled": false,
+      "seed": 11,
+      "sha256": "f60dbba39b54cbb41c125500d0ef4186719d8380eecb45d8ba311c0db104b6a5",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000012",
+      "relabeled": false,
+      "seed": 12,
+      "sha256": "31fbda2634be5b224e319aac936ac3455391c4196ce4a95fab90c60846281c0b",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000013",
+      "relabeled": false,
+      "seed": 13,
+      "sha256": "446cfc3743f0caa40a70f7cefc9d183d8eb36e639ccda3bb9e513e3b7819668f",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000014",
+      "relabeled": false,
+      "seed": 14,
+      "sha256": "4928aec8338f0a75b18c85404d3d8d0e025b61ed1065f74434490101c75d1ccc",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000015",
+      "relabeled": false,
+      "seed": 15,
+      "sha256": "f0414aee5cef01411d2ec97bdecf7d5c49bd64c56f4f0337889d9538ead346c0",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000016",
+      "relabeled": false,
+      "seed": 16,
+      "sha256": "e3d61aa093c23c4642f7f00cbc8d90e82e5a06e6f9028254ba3173d6c7dc48de",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000017",
+      "relabeled": false,
+      "seed": 17,
+      "sha256": "194a8f36f66ef24a4895c570ce4390dbe5e3ae325ae27ec395b5b3036b5b7614",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000018",
+      "relabeled": false,
+      "seed": 18,
+      "sha256": "538b4182901a7dcc44d6698871e0c21ebfd082da04ce14d0b41fe903132305c4",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000019",
+      "relabeled": false,
+      "seed": 19,
+      "sha256": "234c82e499ad54f88269993cc277b4db6c31c08cb8ee23b8d4e3f995cf961d7d",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000020",
+      "relabeled": false,
+      "seed": 20,
+      "sha256": "708f21dca29a84b2a187f275d98c21cd532c47cbacafd0876a3429573c03ecc4",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000021",
+      "relabeled": false,
+      "seed": 21,
+      "sha256": "f82d93e2d7b3450058ce8d1378157058d6634a351b9f44beaf7087ad9827bd57",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000022",
+      "relabeled": false,
+      "seed": 22,
+      "sha256": "2194bfc15b6b6d75c67d59546ce08fc45d998fb869dac6b689ca36ebbb02f1b9",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000023",
+      "relabeled": false,
+      "seed": 23,
+      "sha256": "a0c2d0c101bc9bd621d697589f1a23f6ea771c6c63fc222244a30802bd83d0e8",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000024",
+      "relabeled": false,
+      "seed": 24,
+      "sha256": "9197c1a9d4dde9a0213657786fb6225d908f6d06da3c87341012de2d2302af2c",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000025",
+      "relabeled": false,
+      "seed": 25,
+      "sha256": "2a14dde08adbcd3fc36530e84d25830cb4795720b8fecf1e85d81c8fd268725f",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000026",
+      "relabeled": false,
+      "seed": 26,
+      "sha256": "083056236e5fa6eee1481b22d457c4fd74257ddcbb1bd136a93d5564f2b9da82",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000027",
+      "relabeled": false,
+      "seed": 27,
+      "sha256": "7b3f3da3c52173657a5cda4734b3a6b6b48fff7b0513982bc161b148d9ca5de4",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000028",
+      "relabeled": false,
+      "seed": 28,
+      "sha256": "08c75b1001d29f87334b1b0b500c3170a98a6c7063801c2e1ac1e2ad7ef6ef90",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000029",
+      "relabeled": false,
+      "seed": 29,
+      "sha256": "d773f79001e26ad7b10c2bc7cfce820f611ecb51cdc06fb0cb1d0e5022cb0fb7",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000030",
+      "relabeled": false,
+      "seed": 30,
+      "sha256": "ede9231657e57825a32cb3e88259f49c2fc48507d440eba0339c7fb3d7ab26ec",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000031",
+      "relabeled": false,
+      "seed": 31,
+      "sha256": "b6717e20f3b31c1feb5a01a1381c5781b5ca01206f38604d6dabe024149fb5a1",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000032",
+      "relabeled": false,
+      "seed": 32,
+      "sha256": "23749e25d4f48623540728c582c03fd66624da42b9405d27b273dcaca74b2805",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000033",
+      "relabeled": false,
+      "seed": 33,
+      "sha256": "c39409937fd728d1a6cbab09cee13c8e381a015569f942f6f2617f439a917911",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000034",
+      "relabeled": false,
+      "seed": 34,
+      "sha256": "512d664461fc06733a1a161854a0d127ae42476ab02ede13e54d57e8476a4d80",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000035",
+      "relabeled": false,
+      "seed": 35,
+      "sha256": "02dd5cc3aabd3ce8ac040bc46448f091e2cf900039d52f2d9f27d073e0fbd420",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000036",
+      "relabeled": false,
+      "seed": 36,
+      "sha256": "52ff6ae84c7223455c5908dd817f24a27166a83664ca160dedbb6c373101ab9a",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000037",
+      "relabeled": false,
+      "seed": 37,
+      "sha256": "17c69884968020c69b11207f8f7992d9118aefce726eb1297dcc78d65387aa17",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000038",
+      "relabeled": false,
+      "seed": 38,
+      "sha256": "285be41677e2c4377ac0a3e228cc8e9bb0f4de273b3af6683925db9fecd5f868",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000039",
+      "relabeled": false,
+      "seed": 39,
+      "sha256": "4a34725060edac7475e0d35df56bafaa16d5cf6d80c815cb476a0213e427681f",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000040",
+      "relabeled": false,
+      "seed": 40,
+      "sha256": "99de1074d47c86e177d6637097ceb6327f52b1f1aae9ff511b718c0fdad85ada",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000041",
+      "relabeled": false,
+      "seed": 41,
+      "sha256": "7856e9adeace3ed4cf429c8d32a8848544b78a8b1ddbda69d109d52d33046a2f",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000042",
+      "relabeled": false,
+      "seed": 42,
+      "sha256": "6f5202bd737e0b48ba572f7b53d8c316bc6961feaee54cd43e37093a4b105023",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000043",
+      "relabeled": false,
+      "seed": 43,
+      "sha256": "5a037e786f714290082514d661a4c3b7c0a6ce8ee26fa1b589f2e4b9b60aad0d",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000044",
+      "relabeled": false,
+      "seed": 44,
+      "sha256": "5382f7c7c9199b1f8e8ad8e38f0c70a61cb976c4f4a8d23ea38a94a2a6a1e723",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000045",
+      "relabeled": false,
+      "seed": 45,
+      "sha256": "36a36aa8556b5c38ecf29d5507d71d6d3693531c96af3020b35607275c92a807",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000046",
+      "relabeled": false,
+      "seed": 46,
+      "sha256": "e6752ab0fed39b1e4581b2550bc56d0c144b0d7b2d25c9ebb95c7440c69641c1",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000047",
+      "relabeled": false,
+      "seed": 47,
+      "sha256": "99524154e7395ac9ef748e102e03d5e337f2e4d856497e7f68b7f743016e57b8",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000048",
+      "relabeled": false,
+      "seed": 48,
+      "sha256": "93da612dc73920da3898e9bb4973d2c9dd177bccfa4755dcb62af16be01b87ba",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000049",
+      "relabeled": false,
+      "seed": 49,
+      "sha256": "0cb84e7cf62909e49f130606b7cd489fa691726829cab9e6f90ed8d3e1bf8f59",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000050",
+      "relabeled": false,
+      "seed": 50,
+      "sha256": "32c32a29159854feedc90fd60c10fda9b25f81584dd68364f31fdba745747217",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000051",
+      "relabeled": false,
+      "seed": 51,
+      "sha256": "ea0fce8e289137fe04b1d821e06ef5bdde2e2e44dad3ab58b90d74dcf94fc545",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000052",
+      "relabeled": false,
+      "seed": 52,
+      "sha256": "3d609216faed8b2fd3d922dc5b4ca3b410f8cf26c6145066f0306ba0ef49d5bc",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000053",
+      "relabeled": false,
+      "seed": 53,
+      "sha256": "e2a78efe2cf42a869d53fbe580aee99bdc036ad5b6cae1a2249785882380da45",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000054",
+      "relabeled": false,
+      "seed": 54,
+      "sha256": "6814a9fdbc236c755b22920b5a13f0598952a7a693e504a260a74372bbb16279",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000055",
+      "relabeled": false,
+      "seed": 55,
+      "sha256": "03a3c510288c96521010b284dc68d54be7dd89773e5a5f05da03a29c605f2831",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000056",
+      "relabeled": false,
+      "seed": 56,
+      "sha256": "6878f697e24893f9ed56e128d4447691bd275d43c9a5b1293ee1ca206fb5e08d",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000057",
+      "relabeled": false,
+      "seed": 57,
+      "sha256": "851c7fab97b77beb4e94015757bd097267c202c33e1cdd512816b8f36ac1b413",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000058",
+      "relabeled": false,
+      "seed": 58,
+      "sha256": "3ffe55a7a18d7a3dd57093a884d34be8fc1610457e5148f96c5d31fd4e5b2ad2",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000059",
+      "relabeled": false,
+      "seed": 59,
+      "sha256": "c111a4f7c89e332097edecc716e166cde4f02ef09635f9a6573cd88a22e24d11",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000060",
+      "relabeled": false,
+      "seed": 60,
+      "sha256": "98d2c9c906579c32215c576a3960f5835217226550e8dc11c2d3dcb3b0f71b6a",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000061",
+      "relabeled": false,
+      "seed": 61,
+      "sha256": "f9a5cb05ad6e3f10d206f1181223ff3f1fbe30124d7e9460122b1ff61798d870",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000062",
+      "relabeled": false,
+      "seed": 62,
+      "sha256": "45efc585f953762a2ec15c3bd9e36349e7ec07f476b55052d75764bd37c14528",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000063",
+      "relabeled": false,
+      "seed": 63,
+      "sha256": "86daf95dbdb1b2194edc671a869de7d8f7b408145737da5e666a988f57d1247e",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000064",
+      "relabeled": false,
+      "seed": 64,
+      "sha256": "13955837e96758d9098d60b7a71ab1f9692d6f526453d266b01ba04aebba9b5e",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000065",
+      "relabeled": false,
+      "seed": 65,
+      "sha256": "53856f6c01a679eaf1cd9194a622875ac9fc98d35a4189e11eda29330213efe1",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000066",
+      "relabeled": false,
+      "seed": 66,
+      "sha256": "48cdf6b76f4db97b70852447400c4b9db04e9254029813fdd697728018e70612",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000067",
+      "relabeled": false,
+      "seed": 67,
+      "sha256": "ecc1be26b609d640da9f4fa8fc3c6dfc69eb3701746bfc16f29c6255a7adff76",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000068",
+      "relabeled": false,
+      "seed": 68,
+      "sha256": "ef2b184807e53c87565276595e6382d2ee42cab2782d1b34d8c00a3635555f61",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000069",
+      "relabeled": false,
+      "seed": 69,
+      "sha256": "6955844036656ec0182e398f2a69772beea058d7f20ef777f6d2d7cf4a0f58c6",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000070",
+      "relabeled": false,
+      "seed": 70,
+      "sha256": "bb57b9fcf3dad515a4f130d9b4d1ba2e76d0ef6480b5bb28a05a0f62c1bef699",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000071",
+      "relabeled": false,
+      "seed": 71,
+      "sha256": "dc64affc4ec03f7c131523e2ab8921c2552f7b3f08ee4ab0795fe5363616b625",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000072",
+      "relabeled": false,
+      "seed": 72,
+      "sha256": "d45127366cf3e4c30dbe1a27617bb42b835655df0f0094ab53c49c96368c4569",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000073",
+      "relabeled": false,
+      "seed": 73,
+      "sha256": "ffad88acab9b7cccc1e4ca488a86aa57aaa3b0dcde32951f0fd55ac179e53ec3",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000074",
+      "relabeled": false,
+      "seed": 74,
+      "sha256": "c8fae79619530deff3848df290ff42389151616ef2ba8d09fe9f0721180d08a6",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000075",
+      "relabeled": false,
+      "seed": 75,
+      "sha256": "b92a830aaf6aa20fbdc99f3cc13f96474aa944c75ac453e9fc35b75af9de1126",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000076",
+      "relabeled": false,
+      "seed": 76,
+      "sha256": "b0538033ecc8be6a91cb6c655adad674d232e5cd132fd5acf41fd87696c404d6",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000077",
+      "relabeled": false,
+      "seed": 77,
+      "sha256": "7fb0a85ed218de0e93f395cceaca380f8f7e9700f414b2d7cc2d8bb8f58b65a6",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000078",
+      "relabeled": false,
+      "seed": 78,
+      "sha256": "abc3ad1c8fb0498e961a5d16edf480a7efee0494db4f9e2d8e4ecb5fd7a01c96",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000079",
+      "relabeled": false,
+      "seed": 79,
+      "sha256": "14d254fea396bf7a51e6810dda6b48cc0e6b834bd4b5338b494fcf92c0227735",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000080",
+      "relabeled": false,
+      "seed": 80,
+      "sha256": "2e546bec2f221657e5b478b0a8da6e6f46fee9d9e1f53a19d1996d568f94d9fc",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000081",
+      "relabeled": false,
+      "seed": 81,
+      "sha256": "4c6d0cdb8cc6aaf674aa31fca5378409d69683683e8e229aee87f4e74dd5978e",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000082",
+      "relabeled": false,
+      "seed": 82,
+      "sha256": "8a29ef7b3d055f3ecc9d9568c1016ff446d6871c865084fb95f8f44e24a4c5da",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000083",
+      "relabeled": false,
+      "seed": 83,
+      "sha256": "9e59744f87f0321bc8a5ae3bacfcad095b3ed91382cb37954b7e549b877a638c",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000084",
+      "relabeled": false,
+      "seed": 84,
+      "sha256": "2c689cd62bbe5f2a00fbf402d8de6df52ea35c1816588b70c598a91ead43e0c8",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000085",
+      "relabeled": false,
+      "seed": 85,
+      "sha256": "a781fd0e2c7cc773a384260410af06709ae1641295acfd2670bb25739e0639f7",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000086",
+      "relabeled": false,
+      "seed": 86,
+      "sha256": "cfaef1c1f81c289d2b1f436ba4a5c71478005861d0dac109519f64b22ca9e22b",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000087",
+      "relabeled": false,
+      "seed": 87,
+      "sha256": "eaeeba52b61e0e204db03a656888af1b29e2f1382f877284849cb48e8e80789a",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000088",
+      "relabeled": false,
+      "seed": 88,
+      "sha256": "9c4f28426590b55beb34fe03a1bfd5541414c15719c0f7052598c5fc99019097",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000089",
+      "relabeled": false,
+      "seed": 89,
+      "sha256": "62d4670f5065babf1570402f924be667260b9365c472cb076a091f2ce972dc96",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000090",
+      "relabeled": false,
+      "seed": 90,
+      "sha256": "c474e2081703711bad75e7e7a4d1dfad10f619e13e35be5994dfc1bbdff419bc",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000091",
+      "relabeled": false,
+      "seed": 91,
+      "sha256": "3bb6e54cdc433447ccd26021592f11fba7ae620801855b696bf7eadb26cc400d",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000092",
+      "relabeled": false,
+      "seed": 92,
+      "sha256": "ed0be87fb35a6f1fb5b2c09ca1670dd0cf3e88cffe93b5722fd958fc8ed7b01b",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000093",
+      "relabeled": false,
+      "seed": 93,
+      "sha256": "1a3f2db44e904a2415cce7e6930ee387f74c25e271f613c07154129dacbbbf52",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000094",
+      "relabeled": false,
+      "seed": 94,
+      "sha256": "5fe4acd413903f7cfc314f29af0c024238116c9c0ffb641d19b87f77baca035b",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000095",
+      "relabeled": false,
+      "seed": 95,
+      "sha256": "6f41ebe3f84ddc039ed075a6bd31908865cf9ee6f97c54a8b9a60699dafa42ae",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000096",
+      "relabeled": false,
+      "seed": 96,
+      "sha256": "ab9957a52a3925c247b7dc04dd7977d01e3773b8503857ecc3cf50861053de32",
+      "target": {
+        "ddx": "ddx.pyelonephritis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000097",
+      "relabeled": false,
+      "seed": 97,
+      "sha256": "839c709d30300fce15dc9bec4a3e72ab23af752eecff61b41712ed5292eb3dd8",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000098",
+      "relabeled": false,
+      "seed": 98,
+      "sha256": "e83061ca919d16e849aabba8d57e2eaeb39c3ae142560d526487dea55a822817",
+      "target": {
+        "ddx": "ddx.bacterial_meningitis",
+        "red_flag": "absent"
+      }
+    },
+    {
+      "case_id": "FEV-000099",
+      "relabeled": false,
+      "seed": 99,
+      "sha256": "497a1887efac8b95b46dfbbd3dec91da0fe6ba241826719aba227977478637a3",
+      "target": {
+        "ddx": "ddx.sepsis",
+        "red_flag": "present"
+      }
+    },
+    {
+      "case_id": "FEV-000100",
+      "relabeled": false,
+      "seed": 100,
+      "sha256": "58112b7ab5e0ad957352e34430e04a484ee7a1dfbba4c07e60acdd85d3308c82",
+      "target": {
+        "ddx": "ddx.pneumonia",
+        "red_flag": "present"
+      }
+    }
+  ],
+  "cases_sha256": "5192269bce88e2ade73cfc48a0304068dd1cf0e001ff51c9ab41caed8dae8125",
+  "complaint": "fever",
+  "created_utc": "2026-11-09T05:47:13Z",
+  "domain": "fever",
+  "git": {
+    "commit": "3bc3f331119cb3db899eb223573c7e499beab32b",
+    "dirty": false
+  },
+  "inputs": {
+    "catalog_sha256": "099c263203032ab41092b16ec892151440513f175d3f6efcdc8527c77f2e5933",
+    "profiles_sha256": {
+      "lab.bilirubin_umol_l": "11388845dca0640b029d33312f95be25ff15fbb3094cb8b3801ad0fe7b41034d",
+      "lab.creatinine_umol_l": "21ff3713297079ed5b4ca1d6ab07593be0a85afa28a7262a68f013419242d3e9",
+      "lab.crp_mg_l": "0ce88cd910b1c6993bcc9b1c41eaca803b638ff9976922322ecf13add7a4aeae",
+      "lab.lactate_mmol_l": "aa250a79c661e5636cdd5b3c14ec8056d80397168d9712409474a13c529d0787"
+    },
+    "rules_sha256": "f0c00e20e2d48b8befde52015f8dacc31dc6206066b97ecfc45dd3b02bfe8cd6",
+    "sampler_sha256": "04b2b3ea9db790f2771129c55f115424302491f9966bdb5bbd4d52fb1d42c4f6",
+    "schema_sha256": "a43e2eb52c5dbf3b7de49332fc768b5782499f8d2656ad2023b32019ca680905",
+    "sources_sha256": "ed346674b8f5e91c5f80a10533cdeff2e05aeb8fec60d78eb099bfe22e3dd324",
+    "vocabulary_sha256": "59c192fb259c3bdf91e35ad55f811a1c76e104a82816fd399160e388d7123f51"
+  },
+  "kind": "collection",
+  "manifest_version": 1,
+  "n": 100,
+  "name": "fever-100",
+  "plan": [
+    {
+      "ddx": "ddx.sepsis",
+      "red_flag": "present"
+    },
+    {
+      "ddx": "ddx.pneumonia",
+      "red_flag": "present"
+    },
+    {
+      "ddx": "ddx.pneumonia",
+      "red_flag": "absent"
+    },
+    {
+      "ddx": "ddx.pyelonephritis",
+      "red_flag": "present"
+    },
+    {
+      "ddx": "ddx.pyelonephritis",
+      "red_flag": "absent"
+    },
+    {
+      "ddx": "ddx.bacterial_meningitis",
+      "red_flag": "present"
+    },
+    {
+      "ddx": "ddx.bacterial_meningitis",
+      "red_flag": "absent"
+    }
+  ],
+  "platform": {
+    "implementation": "CPython",
+    "machine": "AMD64",
+    "python": "3.12.15",
+    "system": "Windows"
+  },
+  "proof_version": "0.1.0.dev0",
+  "rules_version": "0.1.0.dev0",
+  "seed_start": 1,
+  "summary": {
+    "age": {
+      "max": 90,
+      "min": 20
+    },
+    "cases": 100,
+    "critical_fields": {
+      "exam.cva_tenderness": 39,
+      "exam.focal_chest_signs": 2,
+      "exam.neck_stiffness": 29,
+      "hx.cough": 46,
+      "hx.dyspnea": 4,
+      "hx.flank_pain": 31,
+      "hx.headache": 29,
+      "hx.onset_days": 2,
+      "lab.bilirubin_umol_l": 62,
+      "lab.creatinine_umol_l": 69,
+      "lab.crp_mg_l": 73,
+      "lab.lactate_mmol_l": 68,
+      "vital.heart_rate": 4,
+      "vital.mental_status": 67,
+      "vital.resp_rate": 29,
+      "vital.sbp": 27,
+      "vital.temp_c": 77
+    },
+    "critical_fields_per_case": [
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        4,
+        14
+      ],
+      [
+        5,
+        12
+      ],
+      [
+        6,
+        14
+      ],
+      [
+        7,
+        12
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        9,
+        9
+      ],
+      [
+        10,
+        16
+      ],
+      [
+        11,
+        2
+      ],
+      [
+        12,
+        1
+      ]
+    ],
+    "ddx": {
+      "ddx.active_inflammatory_disease": 54,
+      "ddx.aki": 25,
+      "ddx.bacterial_infection": 54,
+      "ddx.bacterial_meningitis": 65,
+      "ddx.cholestasis": 33,
+      "ddx.ckd": 25,
+      "ddx.gilbert_syndrome": 33,
+      "ddx.hemolysis": 33,
+      "ddx.lactic_acidosis_type_a": 44,
+      "ddx.liver_disease": 33,
+      "ddx.liver_failure": 44,
+      "ddx.liver_parenchymal_disease": 33,
+      "ddx.low_muscle_mass": 25,
+      "ddx.metformin_lactic_acidosis": 44,
+      "ddx.nephrotoxic_drugs": 25,
+      "ddx.pneumonia": 31,
+      "ddx.pyelonephritis": 37,
+      "ddx.sepsis": 50,
+      "ddx.sepsis_aki": 13,
+      "ddx.systemic_inflammation": 54,
+      "ddx.tissue_injury": 54
+    },
+    "ddx_per_case": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        8
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        5,
+        7
+      ],
+      [
+        6,
+        10
+      ],
+      [
+        7,
+        13
+      ],
+      [
+        8,
+        7
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        10,
+        8
+      ],
+      [
+        11,
+        5
+      ],
+      [
+        12,
+        6
+      ],
+      [
+        13,
+        4
+      ],
+      [
+        14,
+        6
+      ],
+      [
+        15,
+        2
+      ],
+      [
+        16,
+        1
+      ],
+      [
+        18,
+        1
+      ],
+      [
+        19,
+        1
+      ]
+    ],
+    "determinability": {
+      "answer": 42,
+      "refer_urgent": 58
+    },
+    "red_flags": {
+      "rf.qsofa_ge2": 58
+    },
+    "relabeled": 0,
+    "sex": {
+      "f": 47,
+      "m": 53
+    },
+    "targets": {
+      "ddx.bacterial_meningitis/absent": {
+        "cases": 14,
+        "relabeled": 0
+      },
+      "ddx.bacterial_meningitis/present": {
+        "cases": 14,
+        "relabeled": 0
+      },
+      "ddx.pneumonia/absent": {
+        "cases": 14,
+        "relabeled": 0
+      },
+      "ddx.pneumonia/present": {
+        "cases": 15,
+        "relabeled": 0
+      },
+      "ddx.pyelonephritis/absent": {
+        "cases": 14,
+        "relabeled": 0
+      },
+      "ddx.pyelonephritis/present": {
+        "cases": 14,
+        "relabeled": 0
+      },
+      "ddx.sepsis/present": {
+        "cases": 15,
+        "relabeled": 0
+      }
+    }
+  }
+}
