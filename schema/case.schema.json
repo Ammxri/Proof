@@ -1,0 +1,137 @@
+{
+  "$defs": {
+    "Key": {
+      "additionalProperties": false,
+      "description": "Key of a case as in the PRD (§5): determinability, red flags, critical fields, differential diagnoses.",
+      "properties": {
+        "critical_fields": {
+          "items": {
+            "pattern": "^(hx|exam|vital|lab)\\.[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "title": "Critical Fields",
+          "type": "array"
+        },
+        "ddx": {
+          "items": {
+            "pattern": "^ddx\\.[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "title": "Ddx",
+          "type": "array"
+        },
+        "determinability": {
+          "enum": [
+            "answer",
+            "ask",
+            "refer_urgent"
+          ],
+          "title": "Determinability",
+          "type": "string"
+        },
+        "red_flags": {
+          "items": {
+            "pattern": "^rf\\.[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "title": "Red Flags",
+          "type": "array"
+        }
+      },
+      "required": [
+        "determinability",
+        "red_flags",
+        "critical_fields",
+        "ddx"
+      ],
+      "title": "Key",
+      "type": "object"
+    },
+    "Patient": {
+      "additionalProperties": false,
+      "description": "Age in years and sex of the synthetic patient.",
+      "properties": {
+        "age": {
+          "minimum": 0,
+          "title": "Age",
+          "type": "integer"
+        },
+        "sex": {
+          "enum": [
+            "f",
+            "m"
+          ],
+          "title": "Sex",
+          "type": "string"
+        }
+      },
+      "required": [
+        "age",
+        "sex"
+      ],
+      "title": "Patient",
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "A synthetic base case of Proof: coded facts and the key computed by the rule set. Evaluation tool and open dataset, not a medical device.",
+  "properties": {
+    "case_id": {
+      "pattern": "^[A-Z]{3}-[0-9]{6}$",
+      "title": "Case Id",
+      "type": "string"
+    },
+    "complaint": {
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "title": "Complaint",
+      "type": "string"
+    },
+    "facts": {
+      "additionalProperties": false,
+      "minProperties": 1,
+      "patternProperties": {
+        "^(hx|exam|vital|lab)\\.[a-z][a-z0-9_]*$": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "title": "Facts",
+      "type": "object"
+    },
+    "key": {
+      "$ref": "#/$defs/Key"
+    },
+    "patient": {
+      "$ref": "#/$defs/Patient"
+    },
+    "seed": {
+      "maximum": 999999,
+      "minimum": 0,
+      "title": "Seed",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "case_id",
+    "seed",
+    "patient",
+    "complaint",
+    "facts",
+    "key"
+  ],
+  "title": "Proof case",
+  "type": "object"
+}

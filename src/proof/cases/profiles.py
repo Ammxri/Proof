@@ -15,6 +15,8 @@ that names its SynthEHR test codes it writes one profile ``profiles/<name>.json`
 - Per status the profile stores 21 quantiles (0 %, 5 %, ..., 100 %, linear interpolation) for the sampler.
 
 The output is canonical JSON, so the same CSV and catalog always give the same bytes on every platform.
+:class:`LabProfile` is the full profile format (A-56 left it to U4); the rule engine reads only its fact code, unit and
+reference range.
 """
 
 from __future__ import annotations
@@ -27,11 +29,14 @@ from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
-from typing import Any
+from typing import Annotated, Any, Literal
+
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StringConstraints, ValidationError, model_validator
 
 from proof.core import canonical
 from proof.core.hashing import sha256_file
-from proof_rules.model import Catalog, FieldDef
+from proof_rules.model import Catalog, FieldCode, FieldDef, RefRange, SourceId, SynthehrCode, Text
+from proof_rules.model import Number as FiniteNumber
 
 REQUIRED_COLUMNS = (
     "chi",
@@ -318,3 +323,126 @@ def write_profiles(profiles: Mapping[str, dict[str, Any]], directory: Path) -> l
         path.write_bytes(canonical.dumps_bytes(profiles[code]) + b"\n")
         written.append(path)
     return written
+
+
+# --- Full profile format ---------------------------------------------------------------------------------------------
+
+Status = Literal["low", "normal", "high"]
+Count = Annotated[StrictInt, Field(ge=0)]
+Quantiles = Annotated[tuple[FiniteNumber, ...], Field(min_length=QUANTILE_STEPS + 1, max_length=QUANTILE_STEPS + 1)]
+
+
+class _Model(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+
+class ProfileBounds(_Model):
+    lower: FiniteNumber
+    upper: FiniteNumber | None
+    source: SourceId
+    locator: Text
+
+
+class ProfileSynthehr(_Model):
+    codes: Annotated[tuple[SynthehrCode, ...], Field(min_length=1)]
+    unit: Text
+
+
+class ProfileCounts(_Model):
+    rows: Count
+    rows_other_unit: Count
+    rows_no_value: Count
+    rows_censored_kept: Count
+    rows_outside_bounds: Count
+    rows_other_reference: Count
+    rows_used: Count
+    patients: Count
+    patients_by_status: dict[Status, Count]
+
+    @model_validator(mode="after")
+    def _consistent(self) -> ProfileCounts:
+        if set(self.patients_by_status) != set(STATUSES):
+            raise ValueError(f"patients_by_status needs exactly {', '.join(STATUSES)}")
+        if sum(self.patients_by_status.values()) != self.patients:
+            raise ValueError("patients_by_status does not add up to patients")
+        discarded = self.rows_other_unit + self.rows_no_value + self.rows_outside_bounds + self.rows_other_reference
+        if self.rows_used + discarded != self.rows:
+            raise ValueError("used and discarded rows do not add up to rows")
+        return self
+
+
+class ProfileQuantiles(_Model):
+    probabilities: Quantiles
+    low: Quantiles | None
+    normal: Quantiles | None
+    high: Quantiles | None
+
+    @model_validator(mode="after")
+    def _ascending(self) -> ProfileQuantiles:
+        if list(self.probabilities) != list(PROBABILITIES):
+            raise ValueError("probabilities must be 0, 0.05, ..., 1")
+        for status in STATUSES:
+            values = getattr(self, status)
+            if values is not None and list(values) != sorted(values):
+                raise ValueError(f"quantiles of {status} must not decrease")
+        return self
+
+
+class ProfileProvenance(_Model):
+    generator: Text
+    command: Text
+    seed: StrictInt
+    generated_on: date
+    csv_sha256: Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
+    csv_rows: Count
+
+
+class LabProfile(_Model):
+    """A lab profile as written by :func:`build_profiles`; checked for internal consistency."""
+
+    fact_code: FieldCode
+    unit: Text
+    reference: RefRange
+    bounds: ProfileBounds
+    synthehr: ProfileSynthehr
+    method: Text
+    counts: ProfileCounts
+    quantiles: ProfileQuantiles
+    provenance: ProfileProvenance
+
+    @model_validator(mode="after")
+    def _consistent(self) -> LabProfile:
+        reference = (self.reference.lower, self.reference.upper)
+        for status in STATUSES:
+            values = getattr(self.quantiles, status)
+            patients = self.counts.patients_by_status[status]
+            if (values is None) != (patients == 0):
+                raise ValueError(f"{status}: quantiles exist exactly when the status has patients")
+            if values is None:
+                continue
+            for value in values:
+                if status_of(value, reference) != status:
+                    raise ValueError(f"{status}: quantile {value} lies outside the status range")
+                if value < self.bounds.lower or (self.bounds.upper is not None and value > self.bounds.upper):
+                    raise ValueError(f"{status}: quantile {value} lies outside the physiological bounds")
+        return self
+
+    def status_quantiles(self, status: str) -> tuple[FiniteNumber, ...] | None:
+        return getattr(self.quantiles, status)
+
+
+def read_profile(path: Path) -> LabProfile:
+    """Read and check one profile file; raises :class:`ProfileError` with every problem found."""
+    try:
+        data = canonical.loads(path.read_bytes())
+    except (ValueError, UnicodeDecodeError) as exc:
+        raise ProfileError([f"{path}: {exc}"]) from exc
+    try:
+        return LabProfile.model_validate(data)
+    except ValidationError as exc:
+        problems = []
+        for error in exc.errors(include_url=False):
+            location = ".".join(str(part) for part in error["loc"])
+            message = error["msg"].removeprefix("Value error, ")
+            problems.append(f"{path}: {location}: {message}" if location else f"{path}: {message}")
+        raise ProfileError(problems) from exc

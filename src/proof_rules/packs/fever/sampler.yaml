@@ -1,0 +1,87 @@
+# Sampler profile of the fever domain (A-35, A-66 to A-68).
+#
+# These are generation parameters, not an epidemiological statement: how often a finding appears in the background says
+# nothing about how often it occurs in patients. The sampler reaches the target of a case through the rules alone; the
+# background only fills the facts the target leaves free. Thresholds that split a range into statuses carry a source.
+# Sampling limits are generation parameters within the physiological bounds of the catalog.
+
+patient:
+  age:
+    # The sources of the fever rules address adults; Proof reads "adult" as 18 years and older. The upper limit is a
+    # generation parameter.
+    lower: 18
+    upper: 90
+    sources:
+      - {ref: SRC-0003, locator: "Title ('adult lower respiratory tract infections')"}
+      - {ref: SRC-0005, locator: "Title ('acute bacterial meningitis in adults')"}
+  sex: {f: 1, m: 1}
+
+# Target plan: seed s gets entry (s - 1) mod 7. Sepsis requires qSOFA >= 2 (FEV-DDX-001), so it has no 'absent' entry.
+plan:
+  - {ddx: ddx.sepsis, red_flag: present}
+  - {ddx: ddx.pneumonia, red_flag: present}
+  - {ddx: ddx.pneumonia, red_flag: absent}
+  - {ddx: ddx.pyelonephritis, red_flag: present}
+  - {ddx: ddx.pyelonephritis, red_flag: absent}
+  - {ddx: ddx.bacterial_meningitis, red_flag: present}
+  - {ddx: ddx.bacterial_meningitis, red_flag: absent}
+
+facts:
+  # Yes/no findings and the mental status: present in the background with 1 in 10.
+  exam.cva_tenderness: {kind: bool, p_true: [1, 10]}
+  exam.focal_chest_signs: {kind: bool, p_true: [1, 10]}
+  exam.neck_stiffness: {kind: bool, p_true: [1, 10]}
+  hx.cough: {kind: bool, p_true: [1, 10]}
+  hx.dyspnea: {kind: bool, p_true: [1, 10]}
+  hx.flank_pain: {kind: bool, p_true: [1, 10]}
+  hx.headache: {kind: bool, p_true: [1, 10]}
+  vital.mental_status: {kind: enum, weights: {normal: 9, altered: 1}}
+
+  # Numeric facts without SynthEHR data: own reference ranges with source (D-03), uniform within the band of a status.
+  hx.onset_days:
+    kind: range
+    sample: {lower: 0, upper: 20}
+    reference:
+      upper: 4
+      source:
+        ref: SRC-0003
+        locator: >-
+          Management Outside Hospital > Diagnosis > How to differentiate between pneumonia and other respiratory tract
+          infections, recommendation [B1] (fever for more than 4 days)
+    status_weights: {normal: 3, high: 1}
+  vital.temp_c:
+    kind: range
+    sample: {lower: 35.0, upper: 41.0}
+    reference: {lower: 36.0, upper: 38.0, source: {ref: SRC-0001, locator: "Box 1 (SIRS: temperature > 38 °C or < 36 °C)"}}
+    status_weights: {low: 1, normal: 3, high: 6}
+  vital.heart_rate:
+    kind: range
+    sample: {lower: 50, upper: 140}
+    reference: {upper: 90, source: {ref: SRC-0001, locator: "Box 1 (SIRS: heart rate > 90/min)"}}
+    status_weights: {normal: 2, high: 1}
+  vital.resp_rate:
+    kind: range
+    sample: {lower: 10, upper: 36}
+    reference: {upper: 20, source: {ref: SRC-0001, locator: "Box 1 (SIRS: respiratory rate > 20/min)"}}
+    status_weights: {normal: 3, high: 1}
+  vital.sbp:
+    kind: range
+    sample: {lower: 70, upper: 180}
+    # qSOFA counts a systolic pressure of 100 mmHg or less; Proof calls that range 'low'.
+    reference: {lower: 101, source: {ref: SRC-0001, locator: "Box 4 (qSOFA: systolic blood pressure ≤ 100 mmHg)"}}
+    status_weights: {low: 1, normal: 4}
+  lab.wbc_g_l:
+    kind: range
+    sample: {lower: 1.0, upper: 30.0}
+    reference:
+      lower: 4.0
+      upper: 12.0
+      source: {ref: SRC-0001, locator: "Box 1 (SIRS: white blood cell count > 12 000/mm³ or < 4000/mm³)"}
+    status_weights: {low: 1, normal: 2, high: 2}
+
+  # Lab facts with SynthEHR profiles: the status is drawn by weight, the value from the quantiles of that status.
+  # Lactate 'low' has 9 patients, fewer than the 21 quantiles, and is not drawn (RK-02); no active rule needs it.
+  lab.crp_mg_l: {kind: profile, status_weights: {normal: 1, high: 1}}
+  lab.creatinine_umol_l: {kind: profile, status_weights: {low: 1, normal: 2, high: 1}}
+  lab.bilirubin_umol_l: {kind: profile, status_weights: {normal: 2, high: 1}}
+  lab.lactate_mmol_l: {kind: profile, status_weights: {low: 0, normal: 2, high: 1}}

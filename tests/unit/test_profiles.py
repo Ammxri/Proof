@@ -243,3 +243,53 @@ def test_open_upper_bound_and_missing_bounds():
     without["bounds"] = None
     with pytest.raises(profiles.ProfileError, match="no physiological bounds"):
         profiles.build_profiles(MINI_CSV, Catalog(fields=(FieldDef.model_validate(without),)), PROVENANCE)
+
+
+# --- Full profile format (U4) ----------------------------------------------------------------------------------------
+
+
+def test_built_and_shipped_profiles_follow_the_full_format(catalog):
+    for code, data in profiles.build_profiles(MINI_CSV, catalog, PROVENANCE).items():
+        assert profiles.LabProfile.model_validate(data).fact_code == code
+    shipped = sorted((loader.PACKS_ROOT / "fever" / loader.PROFILES_DIR).glob("*.json"))
+    assert len(shipped) == 4
+    for path in shipped:
+        profile = profiles.read_profile(path)
+        assert profile.provenance.generator == "SynthEHR 2.0.1"
+        assert profile.counts.patients == sum(profile.counts.patients_by_status.values())
+
+
+def _profile_data() -> dict:
+    path = loader.PACKS_ROOT / "fever" / loader.PROFILES_DIR / "lactate_mmol_l.json"
+    return canonical.loads(path.read_bytes())
+
+
+@pytest.mark.parametrize(
+    ("change", "message"),
+    [
+        (lambda d: d["counts"].update({"patients": 1}), "does not add up to patients"),
+        (lambda d: d["counts"].update({"rows_used": 1}), "do not add up to rows"),
+        (lambda d: d["counts"]["patients_by_status"].pop("low"), "needs exactly low, normal, high"),
+        (lambda d: d["quantiles"].update({"probabilities": [0.0] * 21}), "must be 0, 0.05, ..., 1"),
+        (lambda d: d["quantiles"].update({"normal": list(reversed(d["quantiles"]["normal"]))}), "must not decrease"),
+        (lambda d: d["quantiles"].update({"low": None}), "quantiles exist exactly when the status has patients"),
+        (lambda d: d["quantiles"]["high"].__setitem__(0, 1.0), "outside the status range"),
+        (lambda d: d["quantiles"]["high"].__setitem__(20, 60.0), "outside the physiological bounds"),
+        (lambda d: d.update({"extra": 1}), "Extra inputs are not permitted"),
+    ],
+)
+def test_inconsistent_profiles_are_rejected(tmp_path, change, message):
+    data = _profile_data()
+    change(data)
+    path = tmp_path / "profile.json"
+    path.write_bytes(canonical.dumps_bytes(data))
+    with pytest.raises(profiles.ProfileError) as caught:
+        profiles.read_profile(path)
+    assert message in "\n".join(caught.value.problems)
+
+
+def test_unreadable_profiles_are_rejected(tmp_path):
+    path = tmp_path / "profile.json"
+    path.write_text("{", encoding="utf-8")
+    with pytest.raises(profiles.ProfileError, match=r"profile\.json"):
+        profiles.read_profile(path)

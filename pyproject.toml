@@ -30,6 +30,7 @@ proof = "proof.cli:main"
 
 [dependency-groups]
 dev = [
+    "jsonschema>=4.25",
     "pip-audit>=2.10.1",
     "pip-licenses>=5.5.5",
     "pytest>=9.2.0",

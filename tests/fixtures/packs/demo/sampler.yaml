@@ -1,0 +1,34 @@
+# Sampler profile of the test domain demo: invented test data without clinical meaning.
+patient:
+  age: {lower: 18, upper: 30, sources: [{ref: SRC-9001, locator: fixture age range}]}
+  sex: {f: 1, m: 1}
+plan:
+  - {ddx: ddx.alpha, red_flag: present}
+  - {ddx: ddx.alpha, red_flag: absent}
+  - {ddx: ddx.beta, red_flag: absent}
+facts:
+  exam.rash: {kind: bool, p_true: [1, 2]}
+  hx.cough: {kind: bool, p_true: [1, 4]}
+  hx.onset_days: {kind: range, sample: {lower: 0, upper: 10}}
+  lab.crp_mg_l: {kind: profile, status_weights: {normal: 1, high: 1}}
+  lab.wbc_g_l:
+    kind: range
+    sample: {lower: 2.0, upper: 20.0}
+    reference: {lower: 4.0, upper: 11.0, source: {ref: SRC-9002, locator: fixture range}}
+    status_weights: {low: 1, normal: 2, high: 1}
+  vital.mental_status: {kind: enum, weights: {normal: 3, altered: 1}}
+  vital.resp_rate:
+    kind: range
+    sample: {lower: 8, upper: 40}
+    reference: {upper: 20, source: {ref: SRC-9001, locator: fixture range}}
+    status_weights: {normal: 3, high: 1}
+  vital.sbp:
+    kind: range
+    sample: {lower: 70, upper: 180}
+    reference: {lower: 101, source: {ref: SRC-9001, locator: fixture range}}
+    status_weights: {low: 1, normal: 3}
+  vital.temp_c:
+    kind: range
+    sample: {lower: 35.0, upper: 41.0}
+    reference: {lower: 36.0, upper: 38.0, source: {ref: SRC-9001, locator: fixture range}}
+    status_weights: {low: 1, normal: 2, high: 3}

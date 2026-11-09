@@ -14,7 +14,7 @@ import typer
 
 import proof
 import proof_rules
-from proof.cases import profiles
+from proof.cases import collection, profiles
 from proof.core import canonical, disclaimer
 from proof_rules import loader
 from proof_rules.explain import explain
@@ -201,6 +201,65 @@ def labs_build(
             f"{profile['fact_code']}: reference {_format_reference(profile['reference'])} {profile['unit']}, "
             f"{counts['rows_used']} of {counts['rows']} rows, {counts['patients']} patients ({by_status}) -> {path}"
         )
+
+
+# --- proof cases -----------------------------------------------------------------------------------------------------
+
+cases_app = typer.Typer(
+    name="cases",
+    help="Build and validate case collections (facts from the sampler, keys from the rule set).",
+    epilog=EPILOG,
+    no_args_is_help=True,
+    add_completion=False,
+    rich_markup_mode=None,
+)
+app.add_typer(cases_app, name="cases")
+
+
+@cases_app.command("build", epilog=EPILOG)
+def cases_build(
+    n: Annotated[int, typer.Option("--n", help="Number of base cases.")],
+    seed_start: Annotated[int, typer.Option("--seed-start", help="Seed of the first case; seeds are consecutive.")],
+    domain: DomainOption = "fever",
+    out: Annotated[
+        Path | None,
+        typer.Option("--out", file_okay=False, help="Target directory (default: data/collections/<domain>-<n>)."),
+    ] = None,
+    packs: PacksOption = loader.PACKS_ROOT,
+) -> None:
+    """Sample base cases, compute their keys and write cases.jsonl and collection.json."""
+    target = out if out is not None else collection.DEFAULT_ROOT / f"{domain}-{n}"
+    try:
+        built = collection.build(domain, n, seed_start, name=target.name, root=packs)
+    except collection.CollectionError as exc:
+        _fail(exc.problems)
+    cases_path, manifest_path = collection.write(built, target)
+    summary = built.manifest.summary
+    typer.echo(f"{built.manifest.name}: {n} cases, seeds {seed_start}-{seed_start + n - 1}")
+    typer.echo(f"  {cases_path}")
+    typer.echo(f"  {manifest_path}")
+    typer.echo(f"relabeled: {summary.relabeled} of {summary.cases}")
+    typer.echo(f"determinability: {collection.counts_line(summary.determinability)}")
+    typer.echo(f"red flags: {collection.counts_line(summary.red_flags)}")
+    typer.echo(f"diagnoses per case (number: cases): {collection.pairs_line(summary.ddx_per_case)}")
+    typer.echo(f"critical fields per case (number: cases): {collection.pairs_line(summary.critical_fields_per_case)}")
+    typer.echo(f"slowest case (sampling, key with ablation): {built.max_seconds * 1000:.1f} ms")
+
+
+@cases_app.command("validate", epilog=EPILOG)
+def cases_validate(
+    path: Annotated[Path, typer.Argument(exists=True, help="Collection directory or a cases JSONL file.")],
+    packs: PacksOption = loader.PACKS_ROOT,
+) -> None:
+    """Check schema, facts, keys (recomputed), reproduction from the seed and the manifest of a collection."""
+    report = collection.validate(path, packs)
+    if not report.ok:
+        typer.echo(f"{len(report.problems)} problem(s) in {path}", err=True)
+        _fail(report.problems or [f"{path}: no cases"])
+    typer.echo(
+        f"{path}: {report.cases} cases valid, {report.relabeled} relabeled; slowest key with ablation "
+        f"{report.max_key_seconds * 1000:.1f} ms"
+    )
 
 
 def _ensure_utf8_streams() -> None:

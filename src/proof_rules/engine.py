@@ -17,7 +17,7 @@ from typing import Annotated, Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from proof_rules.logic import Truth, evaluate, t_or
-from proof_rules.model import Domain, FieldCode, Rule, TermCode
+from proof_rules.model import DdxCode, Domain, FieldCode, RedFlagCode, Rule
 
 Determinability = Literal["answer", "ask", "refer_urgent"]
 
@@ -83,9 +83,9 @@ class Key(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     determinability: Determinability
-    red_flags: tuple[TermCode, ...]
+    red_flags: tuple[RedFlagCode, ...]
     critical_fields: tuple[FieldCode, ...]
-    ddx: tuple[TermCode, ...]
+    ddx: tuple[DdxCode, ...]
 
     @model_validator(mode="after")
     def _canonical_lists(self) -> Key:

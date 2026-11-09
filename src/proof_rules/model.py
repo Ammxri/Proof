@@ -64,6 +64,8 @@ def _finite(value: float) -> float:
 Text = Annotated[StrictStr, AfterValidator(_text)]
 FieldCode = Annotated[StrictStr, StringConstraints(pattern=FIELD_CODE_PATTERN)]
 TermCode = Annotated[StrictStr, StringConstraints(pattern=TERM_CODE_PATTERN)]
+DdxCode = Annotated[StrictStr, StringConstraints(pattern=r"^ddx\.[a-z][a-z0-9_]*$")]
+RedFlagCode = Annotated[StrictStr, StringConstraints(pattern=r"^rf\.[a-z][a-z0-9_]*$")]
 ValueCode = Annotated[StrictStr, StringConstraints(pattern=VALUE_CODE_PATTERN)]
 SourceId = Annotated[StrictStr, StringConstraints(pattern=SOURCE_ID_PATTERN)]
 RuleId = Annotated[StrictStr, StringConstraints(pattern=RULE_ID_PATTERN)]

@@ -469,6 +469,61 @@ inaktiv. Leukozyten stehen als Kontextfakt im Katalog (PRD-Beispiel); keine Rege
   Bibliotheksregeln nutzen (z. B. TSH, Lipide, Eisen, PSA), fand sich keine offen lizenzierte Quelle. Sie bleiben ohne
   Grenzen, bis eine Domäne sie braucht.
 
+### Annahmen aus U4
+
+**A-66 Sampler: Ziel über die Regeln.** Präzisiert PR-K03, PR-K04 und KONZEPT 4.4.
+- Ziel eines Falls ist eine Diagnose aus den Regeln der Domäne und ein Warnzeichen-Status (`present` / `absent`).
+- Der Zielplan steht im Sampler-Profil (`packs/<domäne>/sampler.yaml`). Seed *s* bekommt Eintrag (*s* − 1) mod Länge.
+  Ein Fall hängt damit nur von seinem Seed ab, nicht von der Größe der Sammlung.
+- Der Sampler erreicht das Ziel über die Regeln selbst:
+  - Die Regeln der Zieldiagnose müssen wahr sein. Bei `present` muss eine Warnzeichen-Regel wahr sein, bei `absent`
+    müssen alle falsch sein.
+  - Diese Bedingungen werden in ihre Alternativen zerlegt (disjunktive Normalform). Eine Alternative, die in die
+    Ziehbereiche passt, wird gleichverteilt gewählt.
+  - Die übrigen Fakten kommen aus der Hintergrundverteilung (A-67), eingeschränkt auf die erlaubten Werte.
+  - Der Sampler bringt kein eigenes klinisches Wissen mit; jede Verbindung von Fakt und Diagnose stammt aus einer Regel
+    mit Quelle.
+- Neubeschriftung (PR-K04): Der Schlüssel kommt immer aus dem Regelwerk. Enthält er die Zieldiagnose nicht oder
+  weicht der Warnzeichen-Status ab, gilt der Fall als neu beschriftet und wird gezählt. Fakten werden nie korrigiert.
+- Ein Zieleintrag, den keine Alternative erreicht, wird beim Laden abgewiesen (z. B. Sepsis ohne Warnzeichen).
+
+**A-67 Hintergrundverteilungen.** Präzisiert A-35 und D-03.
+- Ja/Nein- und Auswahlfakten: Wahrscheinlichkeit bzw. Gewichte je Wert.
+- Zahlenfakten haben die Status niedrig / normal / hoch mit Gewichten. Die Gewichte sind Erzeugungsparameter.
+- Laborfakten mit SynthEHR-Profil: Innerhalb eines Status teilen die 21 Quantile den Bereich in 20 Teile zu je 5 %;
+  innerhalb eines Teils ist der Wert gleichverteilt.
+- Ein Status wird nur gezogen, wenn er mindestens 21 Patienten hat, so viele wie das Profil Quantile speichert
+  (Haltepunkt RK-02). Mit weniger Patienten wiederholen benachbarte Quantile nur Werte. Ein zu dünner Status mit
+  Gewicht wird beim Laden abgewiesen, nicht aufgefüllt.
+- Vitalwerte und Leukozyten: eigener Referenzbereich mit Quelle; innerhalb eines Status gleichverteilt auf dem Raster
+  des Fakts.
+  - Temperatur 36,0–38,0 °C, Herzfrequenz bis 90/min, Atemfrequenz bis 20/min, Leukozyten 4,0–12,0 G/L: SIRS-Kriterien
+    in Sepsis-3, Box 1. Sie dienen nur als Referenzbereiche zum Ziehen; als Sepsis-Definition nutzt Proof sie nicht.
+  - Systolischer Blutdruck: „niedrig“ heißt höchstens 100 mmHg (qSOFA, Sepsis-3, Box 4).
+  - Tage seit Beginn: „hoch“ heißt mehr als 4 Tage (ERS/ESCMID-Leitlinie, wie Regel FEV-DDX-003).
+- Die äußeren Ziehgrenzen (z. B. Herzfrequenz 50–140/min) sind Erzeugungsparameter innerhalb der physiologischen
+  Grenzen des Katalogs; der Lader prüft das.
+- Die Werte für die Fieberdomäne stehen in `packs/fever/sampler.yaml` und in `docs/methodik.md`, Abschnitt 5.3.
+
+**A-68 Patient.** Alter gleichverteilt von 18 bis 90 Jahren, Geschlecht `f` oder `m` mit gleichem Gewicht.
+- Die Quellen der Fieberregeln gelten für Erwachsene (Titel der ERS/ESCMID-Leitlinie und der deutschen
+  Meningitis-Leitlinie). Proof liest „erwachsen“ als 18 Jahre und älter.
+- Die Obergrenze 90 ist ein Erzeugungsparameter.
+- Alter und Geschlecht gehen in keine Regel ein.
+
+**A-69 Sammlungen.** Präzisiert KONZEPT 4.6 und A-46.
+- Ordner `data/collections/<name>/` mit `cases.jsonl` (kanonisches JSON, eine Zeile je Fall, nach Seed sortiert) und
+  `collection.json`.
+- `collection.json` enthält Versionen, Git-Stand, Hashes aller Eingaben (Schema, aktive Regeln, Katalog, Wortschatz,
+  Quellen, Sampler-Profil, Laborprofile), Seed-Bereich, Zielplan, Hash und Ziel je Fall, Neubeschriftungen und die
+  Verteilung.
+- Eine Sammlung wird aus einem committeten Stand gebaut; ein Test prüft, dass `collection.json` keinen geänderten
+  Arbeitsbaum meldet.
+- `proof cases validate` prüft: Schema, kanonische Form, vollständige und gültige Fakten, den neu berechneten
+  Schlüssel, den aus dem Seed neu gezogenen Fall und das Manifest gegen Fälle und aktuelle Eingaben.
+- Die JSON-Schema-Prüfung mit `jsonschema` läuft in den Tests (Entwicklungsabhängigkeit, KONZEPT §2). Das Programm
+  selbst prüft mit Pydantic.
+
 ## Entscheidungen des Projektverantwortlichen
 
 **D-01 Projekte sind voneinander unabhängig (08.11.2026).** Deine Vorgabe: „nichts abändern. Das heißt, nichts von

@@ -1,0 +1,12 @@
+{
+  "_about": "SHA-256 of the canonical JSON of fever cases drawn by proof.cases.sampler. They must be identical on Windows and Linux (PR-F03, A-06). They change only when the fever or labs pack or the sampler changes on purpose; then data/collections/fever-100 is rebuilt as well.",
+  "domain": "fever",
+  "cases": {
+    "0": "2d5ffea5492f70dcd3089744c27f86c504eba266c332e6d6024d841f13376b8e",
+    "1": "102ae1132a2f9d595cd02417590981e37a81aabe9c26d027a9fc20a3998c14c5",
+    "2": "dccc703a746ab53e1339fbac35502b4825c5190d420f0b7d0af6e51dc99d276d",
+    "7": "dc67c708f7bbe835aeaf199157ad060ff55e4a097d9f467c6f9ae7f5572c12cc",
+    "123": "a5e9aeaa2707b5b739afddf71e9d902054a3042def300c6c9a2b4bec6d8bf50b",
+    "999999": "28d8a52b8c0d4fd4200db61db085cccb62903e2a88c38d424108dfda8bdd231a"
+  }
+}

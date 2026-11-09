@@ -1,8 +1,8 @@
 # Proof methodology
 
-How Proof computes the expected answer (the *key*) of a case, where the rules come from, and how the example case of
-the product requirements (PRD §5) comes out under the shipped rules. The rules themselves are listed in
-[regeln.md](regeln.md), which is generated from the rule packs.
+How Proof computes the expected answer (the *key*) of a case, where the rules come from, how cases are drawn, and how
+the example case of the product requirements (PRD §5) comes out under the shipped rules. The rules themselves are
+listed in [regeln.md](regeln.md), which is generated from the rule packs.
 
 > zh: Proof 是评测工具和开放数据集，不是医疗器械，不用于患者诊疗。Proof 衡量的是与公开参考标准的一致性，而非临床真实情况。
 > en: Proof is an evaluation tool and open dataset, not a medical device, and not intended for patient care. Proof
@@ -136,7 +136,110 @@ once and writes one profile per lab fact of a domain (`proof labs build`). The m
 5. **Profile contents.** Per status, 21 quantiles describe the distribution. Provenance (generator, command, seed,
    date, SHA-256 of the CSV) is stored in every profile.
 
-## 5 The PRD example, recalculated
+## 5 Case sampler and collections
+
+### 5.1 What a case is
+
+A case has exactly the fields of the PRD example: `case_id`, `seed`, `patient` (`age`, `sex`), `complaint`, `facts`
+and `key` (decision A-34). It holds codes and values only, no text (PR-K01). The JSON Schema is generated from the
+Pydantic model: [`schema/case.schema.json`](../schema/case.schema.json). A base case contains every fact of its domain,
+so it is never `ask` (decision A-07); `ask` arises only in variants with missing facts.
+
+### 5.2 How the sampler reaches a target
+
+Every case has a target: a diagnosis and whether a red flag is present (PR-K03). The sampler profile of the domain
+(`packs/fever/sampler.yaml`) lists the targets in a plan; seed *s* gets entry (*s* − 1) mod length, so a case depends
+on its seed only (decision A-66).
+
+The sampler reaches the target through the rules themselves and adds no clinical knowledge of its own:
+
+1. The rules of the target diagnosis must be true. For "present" one red-flag rule must be true, for "absent" every
+   red-flag rule must be false.
+2. These conditions are expanded into their alternatives. For example, qSOFA ≥ 2 becomes three alternatives: two of the
+   three criteria are met, the third is free. One alternative that fits the sampling ranges is chosen at random.
+3. Every fact is drawn from its background distribution (5.3), restricted to the values that alternative allows.
+4. The rule set computes the key. If the key missed the target, the case would be relabeled, never corrected
+   (PR-K04); the collection counts such cases.
+
+Because the alternatives come from the rules, a case drawn this way always reaches its target. In Fever-100 no case is
+relabeled.
+
+The fever plan has seven entries: sepsis with red flag; pneumonia, acute pyelonephritis and bacterial meningitis each
+with and without red flag. Sepsis without red flag cannot be drawn, because the sepsis rule needs qSOFA ≥ 2.
+
+### 5.3 Background distributions
+
+The background fills the facts the target leaves free. Its parameters are generation parameters, not an
+epidemiological statement (decision A-35): how often a finding appears in the background says nothing about how often
+it occurs in patients. Where a threshold splits a range into statuses, it has a source (decision A-67).
+
+| Fact | Background | Thresholds and source | Sampling range |
+|---|---|---|---|
+| Yes/no findings, mental status | present (`altered`) in 1 of 10 | – | – |
+| Temperature | low : normal : high = 1 : 3 : 6 | normal 36.0–38.0 °C (SIRS, Sepsis-3 Box 1) | 35.0–41.0 °C |
+| Heart rate | normal : high = 2 : 1 | high above 90/min (SIRS, Sepsis-3 Box 1) | 50–140/min |
+| Respiratory rate | normal : high = 3 : 1 | high above 20/min (SIRS, Sepsis-3 Box 1) | 10–36/min |
+| Systolic pressure | low : normal = 1 : 4 | low at 100 mmHg or less (qSOFA, Sepsis-3 Box 4) | 70–180 mmHg |
+| White cells | low : normal : high = 1 : 2 : 2 | normal 4.0–12.0 G/L (SIRS, Sepsis-3 Box 1) | 1.0–30.0 G/L |
+| Days since onset | up to 4 : more = 3 : 1 | more than 4 days (ERS/ESCMID guideline) | 0–20 days |
+| CRP | normal : high = 1 : 1 | reference range of the lab profile | SynthEHR quantiles |
+| Creatinine | low : normal : high = 1 : 2 : 1 | reference range of the lab profile | SynthEHR quantiles |
+| Bilirubin | normal : high = 2 : 1 | reference range of the lab profile | SynthEHR quantiles |
+| Lactate | normal : high = 2 : 1 | reference range of the lab profile | SynthEHR quantiles |
+
+- Within a status, vital signs and white cells are uniform on the grid of the fact.
+- Lab values come from the SynthEHR profile of the status: the 21 quantiles split it into 20 parts of 5 % each, and a
+  value is uniform within its part (PR-W01). A status is drawn only if it has at least 21 patients, as many as the
+  profile stores quantiles; lactate "low" (9 patients) is therefore never drawn (risk RK-02).
+- The SIRS criteria serve only as reference ranges for drawing values. Sepsis-3 does not use them to define sepsis, and
+  Proof does not either.
+- Age is uniform from 18 to 90 years, sex is female or male with equal weight (decision A-68). The fever sources address
+  adults; Proof reads "adult" as 18 years and older. The upper limit is a generation parameter.
+- All sampling ranges lie within the physiological bounds of the catalog.
+
+All randomness comes from Proof's own random stream with one sub-stream per fact (decision A-06). The same seed gives
+the same bytes on Windows and Linux; a test compares fixed hashes.
+
+### 5.4 Collections
+
+A collection is a directory with two files (decision A-69):
+
+- `cases.jsonl`: one case per line in canonical JSON, ordered by seed;
+- `collection.json`: versions, hashes of all inputs (schema, active rules, catalog, vocabulary, sources, sampler
+  profile, lab profiles), seed range, plan, the hash and target of every case, the relabeled cases and the
+  distribution.
+
+```bash
+uv run proof cases build --domain fever --n 100 --seed-start 1
+uv run proof cases validate data/collections/fever-100
+```
+
+`validate` checks the schema, the canonical form, complete and valid facts, the key recomputed by the rule set, the
+case drawn again from its seed, and the manifest against the cases and the current inputs.
+
+**Fever-100** (`data/collections/fever-100/`, seeds 1–100):
+
+| Measure | Value |
+|---|---|
+| Targets | 14 or 15 cases per plan entry, none relabeled |
+| Determinability | `answer` 42, `refer_urgent` 58 |
+| Red flag `rf.qsofa_ge2` | 58 cases |
+| Fever diagnoses | bacterial meningitis 65, sepsis 50, acute pyelonephritis 37, pneumonia 31 |
+| Diagnoses per case | 1 to 19, median 8 |
+| Critical fields per case | 1 to 12, median 6; every case has at least one |
+| Slowest key with ablation | about 10 ms per case (limit 1 s, PR-F04) |
+
+Two properties of the rules shape these numbers:
+
+- **Bacterial meningitis is frequent.** The rule needs two of four cardinal symptoms, and fever is one of them. In a
+  fever case, any one of headache, neck stiffness or altered mental status is therefore enough. Altered mental status
+  is also a qSOFA criterion, so many cases with a red flag have the diagnosis too.
+- **Lab rules add many diagnoses.** A high CRP adds four diagnoses, a high bilirubin five, a high lactate three. Most
+  cases therefore have several diagnoses.
+
+Both follow from the draft rules (sections 2 and 3) and are open for the physician review.
+
+## 6 The PRD example, recalculated
 
 PRD §5 shows case `FEV-000123` with facts temperature 39.2 °C, respiratory rate 24/min, systolic pressure 96 mmHg,
 altered mental status, onset 2 days ago, cough, CRP 180 mg/L and white cells 15.2 G/L. Under the shipped rules
@@ -166,8 +269,9 @@ unknown. Because a red flag is true, the example still is `refer_urgent`.
 
 A test (`tests/unit/test_packs.py`) recomputes this key on every run.
 
-## 6 Limits
+## 7 Limits
 
 - Rules are drafts until a physician per language has reviewed them; the dataset card names the review.
 - Keys reflect the cited sources and the readings above, not clinical truth.
 - The lab distributions are synthetic (SynthEHR) and describe no real population.
+- The sampler's background frequencies and sampling ranges are generation parameters, not epidemiological statements.

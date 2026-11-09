@@ -125,3 +125,45 @@ def test_ci_runs_on_windows_and_linux_with_pinned_actions(repo_root):
     assert uses
     for action in uses:
         assert re.fullmatch(r"[\w.-]+/[\w.-]+@[0-9a-f]{40}", action), action
+
+
+# Directories that are never versioned (.gitignore) or that tools create; they are not part of the repository.
+UNVERSIONED = {".git", ".venv", ".local", ".proof", ".pytest_cache", ".ruff_cache", "__pycache__", "dist", "build",
+               "fresh", "htmlcov", "site"}  # fmt: skip
+PROGRAM_SUFFIXES = {".exe", ".dll", ".so", ".dylib", ".cs", ".csproj", ".sln", ".nupkg", ".deps.json", ".pdb"}
+# The only files that may name SynthEHR in their path: the test CSV and the documentation of the run.
+SYNTHEHR_PATHS = {"tests/fixtures/synthehr/mini.csv", "docs/daten/synthehr.md"}
+
+
+def _repository_files(root: Path):
+    for path in sorted(root.rglob("*")):
+        parts = path.relative_to(root).parts
+        if path.is_file() and not (set(parts[:-1]) & UNVERSIONED) and not parts[-1].startswith(".coverage"):
+            yield path
+
+
+def test_no_synthehr_program_or_code_in_the_repository(repo_root):
+    """PR-C02: Proof reads only the CSV output of SynthEHR; no program, library or source of it is in the repository."""
+    files = list(_repository_files(repo_root))
+    assert files
+    for path in files:
+        relative = path.relative_to(repo_root).as_posix()
+        assert not any(relative.lower().endswith(suffix) for suffix in PROGRAM_SUFFIXES), relative
+        if "synthehr" in relative.lower():
+            assert relative in SYNTHEHR_PATHS, relative
+
+
+def test_proof_never_starts_another_program_except_git(repo_root):
+    """PR-C02: the only subprocess in the package is git for the manifest; SynthEHR is never run by Proof."""
+    for path in _python_files(repo_root / "src"):
+        if "subprocess" in _imports(path):
+            assert path == repo_root / "src/proof/core/manifest.py", path
+        text = path.read_text(encoding="utf-8")
+        assert "SynthEHR.exe" not in text and "os.system" not in text, path
+
+
+def test_collections_and_schemas_are_versioned(repo_root):
+    """A-46: the public collections and the JSON Schemas live in the repository."""
+    assert (repo_root / "schema/case.schema.json").is_file()
+    for name in ("cases.jsonl", "collection.json"):
+        assert (repo_root / "data/collections/fever-100" / name).is_file()

@@ -43,6 +43,18 @@ uv run proof rules check
 uv run proof rules explain tests/fixtures/cases/prd_example.json
 ```
 
+## Cases
+
+Cases are sets of coded facts with a key computed by the rule set; the sampler draws them from a seed. The open
+collection Fever-100 lies in [`data/collections/fever-100/`](data/collections/fever-100/), its JSON Schema in
+[`schema/case.schema.json`](schema/case.schema.json). How cases are drawn: [`docs/methodik.md`](docs/methodik.md),
+section 5; where the lab distributions come from: [`docs/daten/synthehr.md`](docs/daten/synthehr.md).
+
+```bash
+uv run proof cases build --domain fever --n 100 --seed-start 1
+uv run proof cases validate data/collections/fever-100
+```
+
 ## Licences
 
 - Code: Apache License 2.0 ([`LICENSE`](LICENSE))
