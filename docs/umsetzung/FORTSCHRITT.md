@@ -5,8 +5,7 @@
 **09.11.2026 – Phase 3, U8 abgeschlossen.**
 - U1 bis U8 sind auf dem Zweig `dev` committet, zuletzt die Bewertung S1–S7 mit Profil und Vergleich zweier Läufe.
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U7 mit Nachtrag D-12 unter Windows und Linux grün (Lauf 42587297027 auf `644b151`); der Beleg für U8
-  folgt nach dem Push.
+- Die CI ist für U8 unter Windows und Linux grün (Lauf 42590841767 auf `a6a7b3d`).
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
@@ -58,7 +57,10 @@ Aussage über das Modell):
 
 **Nicht lokal ausgeführt:** `pip-audit`; die Prüfung läuft in der CI. Keine neue Abhängigkeit.
 
-**Abnahme U8 (DoD aus KONZEPT.md):** erfüllt, der CI-Beleg folgt.
+**CI:** Lauf 42590841767 (ci #16) auf `a6a7b3d`, beide Jobs erfolgreich, alle Schritte grün:
+`test (ubuntu-latest)` in 2:17 min, `test (windows-latest)` in 2:18 min (laut Actions-API).
+
+**Abnahme U8 (DoD aus KONZEPT.md):** erfüllt.
 - Handbeispiele je Kennzahl, auch ungültiges JSON, Markdown-Codeblock, unbekannte Codes und leere Nenner als „n/a“
   (`tests/unit/test_scoring.py`).
 - Profil ohne Gesamtfeld (`test_the_profile_has_no_value_that_combines_metrics`).
