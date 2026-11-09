@@ -6,8 +6,7 @@
 - U1 bis U7 sind auf dem Zweig `dev` committet, zuletzt der Testlauf mit Qwen-Probelauf. B11 ist als D-12
   entschieden (Ollamas eigene API für lokale Modelle).
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U7 unter Windows und Linux grün (Lauf 42584216435 auf `1aaee9a`); der Beleg für den Nachtrag D-12
-  folgt nach dem Push.
+- Die CI ist für U7 mit Nachtrag D-12 unter Windows und Linux grün (Lauf 42587297027 auf `644b151`).
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
@@ -45,6 +44,9 @@
 **Geprüft** (lokal, Windows 11, Python 3.12.15):
 - `uv run pytest --cov`: 762 Tests grün, Abdeckung 98,72 % (4:41 min).
 - `ruff check` und `ruff format --check`: sauber.
+
+**CI:** Lauf 42587297027 (ci #14) auf `644b151`, beide Jobs erfolgreich, alle Schritte grün:
+`test (ubuntu-latest)` in 2:11 min, `test (windows-latest)` in 2:09 min (laut Actions-API).
 
 **Abnahme U7 (DoD aus KONZEPT.md):** erfüllt; der Qwen-Probelauf ist mit Manifest belegt (oben).
 
