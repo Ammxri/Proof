@@ -6,8 +6,7 @@
 - U1 bis U6 sind auf dem Zweig `dev` committet: Grundgerüst, Regelmotor, Fieber-Regelpaket mit Migration, Fallschema
   mit Sampler und Fever-100, Darstellung mit Prompt, Antwortschema und Prüfvermerken, Varianten MR1, MR3 und MR5.
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U5 unter Windows und Linux grün (Lauf 42574043812 auf `3407f79`); der Beleg für U6 folgt nach dem
-  Push.
+- Die CI ist für U6 unter Windows und Linux grün (Lauf 42580257122 auf `0a62a5b`).
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
@@ -54,7 +53,13 @@ dem Probelauf prüfe ich, dass kein NeuroGrid-Lauf rechnet (A-30).
 
 **Nicht lokal ausgeführt:** `pip-audit`; die Prüfung läuft in der CI. Keine neue Abhängigkeit.
 
-**Abnahme U6 (DoD aus KONZEPT.md):** erfüllt, der CI-Beleg folgt.
+**CI:** Lauf 42580257122 (ci #10) auf `0a62a5b`, beide Jobs mit allen 12 Schritten erfolgreich:
+- `test (ubuntu-latest)` in 1:56 min: 710 Tests grün, Abdeckung 99,18 %;
+- `test (windows-latest)` in 3:06 min, Python 3.12.10: 710 Tests grün, Abdeckung 99,18 %.
+- Golden-Hashes und bytegleicher Neubau von Fever-100 und Variantensatz gelten damit unter beiden Systemen und
+  über die Python-Versionen 3.12.10 und 3.12.15.
+
+**Abnahme U6 (DoD aus KONZEPT.md):** erfüllt.
 - Jede Variante besteht das Schema und trägt ihre Erwartung
   (`test_every_variant_passes_the_schema_and_carries_its_expectation`, `test_variant_model.py`).
 - MR1-Erwartung gleich dem Motor auf den Variantenfakten (`ask`, außer bei anderem sichtbarem Warnzeichen), das Feld
