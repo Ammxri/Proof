@@ -404,5 +404,7 @@ def test_card_and_release_commands(repo, packs, tmp_path, monkeypatch):
     result = runner.invoke(app, ["release", "--set", str(COLLECTION), "--packs", str(packs), "--draft"])
     assert result.exit_code == 0, result.output
     assert "DRAFT, not a release and not meant for upload" in result.output
+    package = next(iter((tmp_path / "home" / "releases").iterdir()))
+    assert str(tmp_path) not in (package / "release.json").read_text("utf-8"), "no local path in the package"
     assert "draft: " in result.output
     assert next(iter((tmp_path / "home" / "releases").iterdir())).name.endswith("-DRAFT")

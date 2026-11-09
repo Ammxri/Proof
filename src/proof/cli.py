@@ -596,7 +596,8 @@ DraftOption = Annotated[
 
 def _prepare(collection_dir: Path, draft: bool, packs: Path) -> releases.Prepared:
     try:
-        return releases.prepare(collection_dir, repo=Path.cwd(), root=packs, draft=draft)
+        # The repository is the working directory, named relatively so no local path enters card or package.
+        return releases.prepare(collection_dir, repo=Path(), root=packs, draft=draft)
     except (releases.ReleaseError, review.ReviewError) as exc:
         _fail(exc.problems)
 
