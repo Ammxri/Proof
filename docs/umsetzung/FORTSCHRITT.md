@@ -6,8 +6,7 @@
 - U1 bis U5 sind auf dem Zweig `dev` committet: Grundgerüst, Regelmotor, Fieber-Regelpaket mit Migration, Fallschema
   mit Sampler und Fever-100, Darstellung mit Prompt, Antwortschema und Prüfvermerken.
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U4 unter Windows und Linux grün (Lauf 42569793312 auf `90aaa3c`); der Beleg für U5 folgt nach dem
-  Push.
+- Die CI ist für U5 unter Windows und Linux grün (Lauf 42574043812 auf `3407f79`).
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
@@ -62,12 +61,16 @@
 
 **Nicht lokal ausgeführt:** `pip-audit`; die Prüfung läuft in der CI.
 
+**CI:** Lauf 42574043812 (ci #8) auf `3407f79`, beide Jobs erfolgreich: `test (ubuntu-latest)` in 49 s,
+`test (windows-latest)` in 2:01 min. Alle Schritte grün: Lint, Tests mit Abdeckung, Lizenzprüfung, `pip-audit`, Wheel
+in frischer Umgebung. Gelesen wurde der Status je Schritt; die Protokolle zeigt GitHub nur angemeldet.
+
 **Offen (manuell, bei dir):**
 - Ärztliche Prüfung je Sprache, für zh mit Klinikpraxis in China. Das Prüfpaket erzeugt
   `proof review packet --lang <sprache> --collection data/collections/fever-100`.
 - Die zh-Texte (Vorlagen und Bezeichnungen) stammen von mir; ihre Natürlichkeit prüft die zh-Prüfung (RK-10).
 
-**Abnahme U5 (DoD aus KONZEPT.md):** erfüllt, der CI-Beleg folgt.
+**Abnahme U5 (DoD aus KONZEPT.md):** erfüllt.
 - Jeder Fall von Fever-100 wird in zh, en und de dargestellt, jeder Fakt hat seine Textstelle
   (`test_every_fact_of_every_case_appears_in_every_language`).
 - Kein Diagnose-, Warnzeichen- oder Einschätzungstext im Fall (`test_texts_hold_no_assessment_diagnosis_or_red_flag`).
