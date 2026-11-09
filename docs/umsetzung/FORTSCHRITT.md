@@ -7,8 +7,7 @@
 - Der Qwen-Probelauf wartet auf B11: Qwen3 8B lässt sich über Ollamas OpenAI-Schnittstelle nicht ohne Denkmodus
   betreiben (ENTSCHEIDUNGEN.md).
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U6 unter Windows und Linux grün (Lauf 42580257122 auf `0a62a5b`); der Beleg für U7 folgt nach dem
-  Push.
+- Die CI ist für U7 unter Windows und Linux grün (Lauf 42584216435 auf `1aaee9a`).
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
@@ -63,6 +62,10 @@
 - Lizenzprüfung: 59 Pakete, 0 abgebrochen, 0 gemeldet.
 
 **Nicht lokal ausgeführt:** `pip-audit`; die Prüfung läuft in der CI.
+
+**CI:** Lauf 42584216435 (ci #12) auf `1aaee9a`, beide Jobs erfolgreich, alle Schritte grün: `test (ubuntu-latest)`
+in 1:21 min, `test (windows-latest)` in 3:25 min (laut Actions-API). Die Integrationstests mit dem Stub-Server laufen
+damit auf beiden Systemen.
 
 **Abnahme U7 (DoD aus KONZEPT.md):** erfüllt bis auf den Qwen-Probelauf.
 - Temperatur 0 in jeder Anfrage (`test_a_run_sends_every_unit_once_with_temperature_zero`).
