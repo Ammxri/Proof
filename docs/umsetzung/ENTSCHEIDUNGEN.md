@@ -562,6 +562,33 @@ inaktiv. Leukozyten stehen als Kontextfakt im Katalog (PRD-Beispiel); keine Rege
 - Doppelte Schlüssel und nicht endliche Zahlen machen die Antwort ungültig.
 - Ein Code, der in einer Liste zweimal steht, ist trotzdem ein erlaubter Code; die Bewertung arbeitet mit Mengen.
 
+### Annahmen aus U6
+
+**A-74 Varianten sind sprachunabhängig.** Präzisiert A-17 und A-37.
+- Eine Variante legt Fakten, Änderung, Schlüssel und Erwartung ohne Sprache fest und wird in zh, en und de
+  dargestellt. Je Basisfall und Sprache gibt es damit je eine Variante, in allen drei Sprachen mit gleichem Inhalt.
+- Grund: S6 vergleicht S1 und S3 über die Sprachen. Mit unterschiedlichen Varianten je Sprache wäre der
+  Sprachunterschied mit dem Unterschied der Varianten vermischt.
+- MR5 ist je Basisfall ein Eintrag für jedes der drei Sprachpaare (zh–en, zh–de, en–de). Er braucht keine eigene
+  Anfrage; verglichen werden die Antworten auf den Basisfall in beiden Sprachen.
+- Die Darstellung einer Variante nutzt Patient und Beschwerde des Basisfalls.
+
+**A-75 Variantensätze und Varianten-Seed.** Präzisiert KONZEPT 4.7 und A-46.
+- Ein Variantensatz gehört zu einer Sammlung und einem Varianten-Seed: `<sammlung>/variants/<seed>/` mit
+  `variants.jsonl` und `variants.json` (Sammlung mit Inhalts-Hash, Seed, Relationen, Hashes aller Eingaben, Hash je
+  Variante, Zusammenfassung, Git-Stand wie bei Sammlungen).
+- Feld (MR1) und Reihenfolge (MR3) kommen aus einem Zufallsstrom über Domäne, Fall-Seed, Varianten-Seed und Relation.
+  Mehrere Varianten je Relation und Fall ziehen ohne Wiederholung; die Anzahl ist einstellbar (`--per-case`).
+- IDs: `<case_id>-MR1-<n>`, `<case_id>-MR3-<n>`, `<case_id>-MR5-<sprache>-<sprache>`.
+- Im Repository liegt der Satz mit Varianten-Seed 1 zu Fever-100.
+
+**A-76 MR1.** Präzisiert PRD §6 und A-54.
+- MR1 entfernt nur ein Feld, das im Basisfall kritisch ist. Ein Fall ohne kritisches Feld bekommt keine MR1-Variante;
+  der Satz zählt das (in Fever-100 kommt es nicht vor).
+- Die Erwartung ist die Entscheidung, die das Regelwerk auf den Variantenfakten berechnet: `ask`, oder `refer_urgent`,
+  wenn ein anderes Warnzeichen sichtbar bleibt. Dazu steht das entfernte Feld in `questions_include`; es ist zugleich
+  die einzige Pflichtfrage der Variante.
+
 ## Entscheidungen des Projektverantwortlichen
 
 **D-01 Projekte sind voneinander unabhängig (08.11.2026).** Deine Vorgabe: „nichts abändern. Das heißt, nichts von

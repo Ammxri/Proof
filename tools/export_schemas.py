@@ -14,6 +14,7 @@ from pathlib import Path
 
 from proof.cases.model import case_json_schema, schema_text
 from proof.scoring.response import response_json_schema
+from proof.variants.model import variant_json_schema
 
 OUTPUT = Path(__file__).resolve().parent.parent / "schema"
 
@@ -23,6 +24,7 @@ def render() -> dict[str, str]:
     return {
         "case.schema.json": schema_text(case_json_schema()),
         "response.schema.json": schema_text(response_json_schema()),
+        "variant.schema.json": schema_text(variant_json_schema()),
     }
 
 

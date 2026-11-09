@@ -239,6 +239,39 @@ Two properties of the rules shape these numbers:
 
 Both follow from the draft rules (sections 2 and 3) and are open for the physician review.
 
+### 5.5 Variants
+
+A variant changes a base case in one defined way and carries what the answer must do (PRD §6, PR-M00). Its key is
+recomputed by the rule set; its expectation is machine-readable (A-14):
+
+| Relation | Change | Expectation |
+|---|---|---|
+| MR1 | one critical field of the base case is left out | absolute: the decision the rules give on the variant (`ask`, or `refer_urgent` if another red flag stays visible) and the removed field among the questions |
+| MR3 | the four sections appear in another order | invariant: decision, diagnoses, red flags and questions as in the answer to the base case |
+| MR5 | the base case in two languages (zh–en, zh–de, en–de) | invariant: the two answers to the base case agree |
+
+- A variant does not depend on the language: it is rendered in zh, en and de with the same facts and order, so the
+  three languages see identical items (decision A-74). MR5 needs no request of its own; it compares the answers to the
+  base case (A-37).
+- Which field MR1 removes and which order MR3 shows is drawn from a stream of the case's seed and the *variant seed*.
+  The same variant seed gives the same variants; a new seed gives new ones, "new variants at the push of a button"
+  (PR-D02, decision A-75). Several variants per relation and case draw without repetition.
+- MR1 only removes fields that are critical in the base case; every case of Fever-100 has at least one.
+
+A variant set lies in `<collection>/variants/<variant seed>/` with `variants.jsonl` and `variants.json` (decision
+A-75). For Fever-100 and variant seed 1: 100 MR1, 100 MR3 and 300 MR5 variants; MR1 expects `ask` 57 times and
+`refer_urgent` 43 times. Per language a model answers 300 units: 100 base cases, 100 MR1 and 100 MR3 variants.
+
+```bash
+uv run proof variants build --collection data/collections/fever-100 --variant-seed 1
+uv run proof variants validate data/collections/fever-100/variants/1
+uv run proof render data/collections/fever-100 --variants data/collections/fever-100/variants/1 \
+  --variant-id FEV-000001-MR3-1 --lang de
+```
+
+`validate` checks every variant against its base case (change, facts, recomputed key, expectation) and rebuilds the
+whole set from its seed.
+
 ## 6 Case text, system prompt and answer
 
 ### 6.1 Case text

@@ -63,6 +63,15 @@ code ([`docs/methodik.md`](docs/methodik.md), section 6; answer schema in
 uv run proof render data/collections/fever-100 --case-id FEV-000001 --lang zh --system-prompt
 ```
 
+Variants change a case in one defined way and carry their expectation (MR1, MR3, MR5 so far). A new variant seed gives
+new variants ([`docs/methodik.md`](docs/methodik.md), section 5.5; schema in
+[`schema/variant.schema.json`](schema/variant.schema.json)).
+
+```bash
+uv run proof variants build --collection data/collections/fever-100 --variant-seed 1
+uv run proof variants validate data/collections/fever-100/variants/1
+```
+
 ## Physician review
 
 Each language needs a physician review of its templates and a sample of the cases (PRD §10). The records are in

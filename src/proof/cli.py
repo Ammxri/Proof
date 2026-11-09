@@ -20,6 +20,9 @@ from proof.core import canonical, disclaimer, i18n
 from proof.core.paths import proof_home
 from proof.render.case_text import RenderError, render_case
 from proof.render.prompt import system_prompt
+from proof.variants import sets as variant_sets
+from proof.variants.generator import BUILT_MRS
+from proof.variants.render import render_variant
 from proof_rules import loader
 from proof_rules.explain import explain
 from proof_rules.keys import FactError
@@ -266,6 +269,75 @@ def cases_validate(
     )
 
 
+# --- proof variants --------------------------------------------------------------------------------------------------
+
+variants_app = typer.Typer(
+    name="variants",
+    help="Build and validate variants of a collection (metamorphic relations with expectations).",
+    epilog=EPILOG,
+    no_args_is_help=True,
+    add_completion=False,
+    rich_markup_mode=None,
+)
+app.add_typer(variants_app, name="variants")
+
+
+@variants_app.command("build", epilog=EPILOG)
+def variants_build(
+    collection_dir: Annotated[
+        Path, typer.Option("--collection", exists=True, file_okay=False, help="Collection directory.")
+    ],
+    variant_seed: Annotated[
+        int, typer.Option("--variant-seed", help="Seed of the variants; a new seed, new variants.")
+    ],
+    per_case: Annotated[int, typer.Option("--per-case", help="Variants per relation and case (MR5: all pairs).")] = 1,
+    mr: Annotated[
+        list[str] | None, typer.Option("--mr", help="Relation to build; repeat for several (default: all built).")
+    ] = None,
+    out: Annotated[
+        Path | None,
+        typer.Option("--out", file_okay=False, help="Target directory (default: <collection>/variants/<seed>)."),
+    ] = None,
+    packs: PacksOption = loader.PACKS_ROOT,
+) -> None:
+    """Build new variants of every case of a collection (PR-D02): same seed, same variants."""
+    try:
+        built = variant_sets.build(
+            collection_dir, variant_seed, per_case=per_case, mrs=tuple(mr) if mr else BUILT_MRS, root=packs
+        )
+    except variant_sets.VariantSetError as exc:
+        _fail(exc.problems)
+    target = out if out is not None else variant_sets.default_directory(collection_dir, variant_seed)
+    variants_path, manifest_path = variant_sets.write(built, target)
+    summary = built.manifest.summary
+    typer.echo(f"{built.manifest.collection}, variant seed {variant_seed}: {len(built.variants)} variants")
+    typer.echo(f"  {variants_path}")
+    typer.echo(f"  {manifest_path}")
+    typer.echo(f"variants: {collection.counts_line(summary.variants)}")
+    if any(summary.missing.values()):
+        typer.echo(f"fewer than asked: {collection.counts_line(summary.missing)}")
+    typer.echo(f"MR1 expected decisions: {collection.counts_line(summary.mr1_decisions)}")
+    typer.echo(f"units per language (base cases and variants with a request): {summary.units_per_language}")
+
+
+@variants_app.command("validate", epilog=EPILOG)
+def variants_validate(
+    path: Annotated[Path, typer.Argument(exists=True, file_okay=False, help="Variant set directory.")],
+    collection_dir: Annotated[
+        Path | None,
+        typer.Option("--collection", exists=True, file_okay=False, help="Collection (default: two levels up)."),
+    ] = None,
+    packs: PacksOption = loader.PACKS_ROOT,
+) -> None:
+    """Check every variant against its base case and rebuild the set from its seed."""
+    report = variant_sets.validate(path, collection_dir, packs)
+    if not report.ok:
+        typer.echo(f"{len(report.problems)} problem(s) in {path}", err=True)
+        _fail(report.problems or [f"{path}: no variants"])
+    by_mr = ", ".join(f"{mr} {count}" for mr, count in sorted(report.by_mr.items()))
+    typer.echo(f"{path}: {report.variants} variants valid ({by_mr})")
+
+
 # --- proof render ----------------------------------------------------------------------------------------------------
 
 LangOption = Annotated[str, typer.Option("--lang", help="Language: zh, en or de.")]
@@ -305,22 +377,38 @@ def render(
     ],
     lang: LangOption,
     case_id: Annotated[str | None, typer.Option("--case-id", help="Case to show from a JSONL file.")] = None,
+    variants: Annotated[
+        Path | None,
+        typer.Option("--variants", exists=True, file_okay=False, help="Variant set directory, with --variant-id."),
+    ] = None,
+    variant_id: Annotated[str | None, typer.Option("--variant-id", help="Variant to show instead of the case.")] = None,
     with_prompt: Annotated[
         bool, typer.Option("--system-prompt", help="Show the system prompt of the domain before the case text.")
     ] = False,
     packs: PacksOption = loader.PACKS_ROOT,
 ) -> None:
-    """Show the text of a case in one language, as a model receives it."""
+    """Show the text of a case or variant in one language, as a model receives it."""
     _check_lang(lang)
+    variant = None
+    if (variants is None) != (variant_id is None):
+        _fail(["--variants and --variant-id go together"])
+    if variants is not None:
+        problems: list[str] = []
+        path = variants / variant_sets.VARIANTS_FILE
+        found = [v for _, v in variant_sets.read_variants(path, problems) if v.variant_id == variant_id]
+        if not found:
+            _fail(problems or [f"{path}: no variant {variant_id}"])
+        variant = found[0]
+        case_id = variant.case_id
     case = _load_case(source, case_id)
     name = loader.domain_for_complaint(case.complaint, packs)
     if name is None:
         _fail([f"{case.case_id}: no domain pack for complaint {case.complaint!r}"])
     domain = _domain(name, packs)
     try:
-        rendering = render_case(case, domain, lang)
+        rendering = render_case(case, domain, lang) if variant is None else render_variant(variant, case, domain, lang)
     except RenderError as exc:
-        _fail([f"{case.case_id}: {problem}" for problem in exc.problems])
+        _fail([f"{variant_id or case.case_id}: {problem}" for problem in exc.problems])
     if with_prompt:
         typer.echo(system_prompt(domain, lang))
         typer.echo("-" * 40)

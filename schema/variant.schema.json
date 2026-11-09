@@ -1,0 +1,425 @@
+{
+  "$defs": {
+    "AbsoluteExpectation": {
+      "additionalProperties": false,
+      "description": "Target values the answer must meet.",
+      "properties": {
+        "decision": {
+          "enum": [
+            "answer",
+            "ask",
+            "refer_urgent"
+          ],
+          "title": "Decision",
+          "type": "string"
+        },
+        "kind": {
+          "const": "absolute",
+          "title": "Kind",
+          "type": "string"
+        },
+        "questions_include": {
+          "default": [],
+          "items": {
+            "pattern": "^(hx|exam|vital|lab)\\.[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "title": "Questions Include",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "decision"
+      ],
+      "title": "AbsoluteExpectation",
+      "type": "object"
+    },
+    "InvariantExpectation": {
+      "additionalProperties": false,
+      "description": "The answer must equal the reference answer in these fields (sets for the lists).",
+      "properties": {
+        "compare": {
+          "items": {
+            "enum": [
+              "decision",
+              "ddx",
+              "red_flags",
+              "questions"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Compare",
+          "type": "array"
+        },
+        "kind": {
+          "const": "invariant",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "compare"
+      ],
+      "title": "InvariantExpectation",
+      "type": "object"
+    },
+    "LanguagePair": {
+      "additionalProperties": false,
+      "description": "MR5: the base case in two languages; no new request, the two base answers are compared (A-37).",
+      "properties": {
+        "kind": {
+          "const": "language_pair",
+          "title": "Kind",
+          "type": "string"
+        },
+        "langs": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "enum": [
+                "zh",
+                "en",
+                "de"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "zh",
+                "en",
+                "de"
+              ],
+              "type": "string"
+            }
+          ],
+          "title": "Langs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "langs"
+      ],
+      "title": "LanguagePair",
+      "type": "object"
+    },
+    "PermuteSections": {
+      "additionalProperties": false,
+      "description": "MR3: the four sections appear in another order; the facts stay the same.",
+      "properties": {
+        "kind": {
+          "const": "permute_sections",
+          "title": "Kind",
+          "type": "string"
+        },
+        "order": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "enum": [
+                "hx",
+                "exam",
+                "vital",
+                "lab"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "hx",
+                "exam",
+                "vital",
+                "lab"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "hx",
+                "exam",
+                "vital",
+                "lab"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "hx",
+                "exam",
+                "vital",
+                "lab"
+              ],
+              "type": "string"
+            }
+          ],
+          "title": "Order",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "order"
+      ],
+      "title": "PermuteSections",
+      "type": "object"
+    },
+    "RemoveField": {
+      "additionalProperties": false,
+      "description": "MR1 and MR2: one fact of the base case is left out.",
+      "properties": {
+        "field": {
+          "pattern": "^(hx|exam|vital|lab)\\.[a-z][a-z0-9_]*$",
+          "title": "Field",
+          "type": "string"
+        },
+        "kind": {
+          "const": "remove_field",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "field"
+      ],
+      "title": "RemoveField",
+      "type": "object"
+    },
+    "RenderOptions": {
+      "additionalProperties": false,
+      "description": "How the variant is rendered in every language: the order of the sections.",
+      "properties": {
+        "order": {
+          "default": [
+            "hx",
+            "exam",
+            "vital",
+            "lab"
+          ],
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "enum": [
+                "hx",
+                "exam",
+                "vital",
+                "lab"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "hx",
+                "exam",
+                "vital",
+                "lab"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "hx",
+                "exam",
+                "vital",
+                "lab"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "hx",
+                "exam",
+                "vital",
+                "lab"
+              ],
+              "type": "string"
+            }
+          ],
+          "title": "Order",
+          "type": "array"
+        }
+      },
+      "title": "RenderOptions",
+      "type": "object"
+    },
+    "VariantKey": {
+      "additionalProperties": false,
+      "description": "Key of a variant: the recomputed key plus the required questions (PR-K09).",
+      "properties": {
+        "critical_fields": {
+          "items": {
+            "pattern": "^(hx|exam|vital|lab)\\.[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "title": "Critical Fields",
+          "type": "array"
+        },
+        "ddx": {
+          "items": {
+            "pattern": "^ddx\\.[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "title": "Ddx",
+          "type": "array"
+        },
+        "determinability": {
+          "enum": [
+            "answer",
+            "ask",
+            "refer_urgent"
+          ],
+          "title": "Determinability",
+          "type": "string"
+        },
+        "red_flags": {
+          "items": {
+            "pattern": "^rf\\.[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "title": "Red Flags",
+          "type": "array"
+        },
+        "required_questions": {
+          "items": {
+            "pattern": "^(hx|exam|vital|lab)\\.[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "title": "Required Questions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "determinability",
+        "red_flags",
+        "critical_fields",
+        "ddx",
+        "required_questions"
+      ],
+      "title": "VariantKey",
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "A variant of a Proof base case (metamorphic relation) with its recomputed key and machine-readable expectation. Evaluation tool and open dataset, not a medical device.",
+  "properties": {
+    "case_id": {
+      "pattern": "^[A-Z]{3}-[0-9]{6}$",
+      "title": "Case Id",
+      "type": "string"
+    },
+    "change": {
+      "discriminator": {
+        "mapping": {
+          "language_pair": "#/$defs/LanguagePair",
+          "permute_sections": "#/$defs/PermuteSections",
+          "remove_field": "#/$defs/RemoveField"
+        },
+        "propertyName": "kind"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/RemoveField"
+        },
+        {
+          "$ref": "#/$defs/PermuteSections"
+        },
+        {
+          "$ref": "#/$defs/LanguagePair"
+        }
+      ],
+      "title": "Change"
+    },
+    "expectation": {
+      "discriminator": {
+        "mapping": {
+          "absolute": "#/$defs/AbsoluteExpectation",
+          "invariant": "#/$defs/InvariantExpectation"
+        },
+        "propertyName": "kind"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/AbsoluteExpectation"
+        },
+        {
+          "$ref": "#/$defs/InvariantExpectation"
+        }
+      ],
+      "title": "Expectation"
+    },
+    "facts": {
+      "additionalProperties": false,
+      "minProperties": 1,
+      "patternProperties": {
+        "^(hx|exam|vital|lab)\\.[a-z][a-z0-9_]*$": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "title": "Facts",
+      "type": "object"
+    },
+    "key": {
+      "$ref": "#/$defs/VariantKey"
+    },
+    "mr": {
+      "enum": [
+        "MR1",
+        "MR2",
+        "MR3",
+        "MR4",
+        "MR5",
+        "MR6",
+        "MR7",
+        "MR8"
+      ],
+      "title": "Mr",
+      "type": "string"
+    },
+    "render": {
+      "$ref": "#/$defs/RenderOptions"
+    },
+    "variant_id": {
+      "pattern": "^[A-Z]{3}-[0-9]{6}-MR[1-8]-[0-9a-z-]+$",
+      "title": "Variant Id",
+      "type": "string"
+    },
+    "variant_seed": {
+      "minimum": 0,
+      "title": "Variant Seed",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "variant_id",
+    "case_id",
+    "mr",
+    "variant_seed",
+    "change",
+    "facts",
+    "render",
+    "key",
+    "expectation"
+  ],
+  "title": "Proof variant",
+  "type": "object"
+}

@@ -2,7 +2,7 @@
 
 Quelle: „PRD 2 – Proof: deterministischer Robustheitstest für klinische Sprachmodelle“ vom 10.10.2026 (@AYS),
 12 Seiten. Lokale Kopie unversioniert in `.local/prd/` (PDF, Textauszug, Abbildung S. 4).
-Fundstellen: `§Abschnitt S.Seite`. Stand der Matrix: 09.11.2026, nach U5; D-01 bis D-11 und die Phasen aus
+Fundstellen: `§Abschnitt S.Seite`. Stand der Matrix: 09.11.2026, nach U6; D-01 bis D-11 und die Phasen aus
 [KONZEPT.md](KONZEPT.md) eingearbeitet.
 
 **Spalten.** *Version* = Priorität laut PRD (0.1 / 0.5 / 1.0; „–“ = PRD nennt keine). *Art*: **SW** = Software,
@@ -22,7 +22,7 @@ Konzept zu. Annahmen und Entscheidungen:
 | PR-F03 | Fall-Sampler mit Seed | §8 S.7 | 0.1 | Gleicher Seed ergibt identischen Fall | SW | erfüllt | U4 | U4: `src/proof/cases/sampler.py` mit eigenem Zufallsstrom (A-06), je Fakt ein Teilstrom. Gleicher Seed, gleiche Bytes: Golden-Hashes (`tests/golden/cases_v1.json`, `test_golden_case_hashes`); Fever-100 wird bytegleich neu gebaut (`test_fever_100_is_rebuilt_byte_for_byte`); beides in der CI unter Windows und Linux |
 | PR-F04 | Schlüsselberechnung inkl. Ablation der kritischen Felder | §8 S.7 | 0.1 | Kritische Felder reproduzierbar; unter 1 s je Fall | SW | erfüllt | U2, U4 | U2: Motor und Ablation (`engine.py`, `ablation.py`, `keys.compute_key`); Reihenfolge der Fakten egal (Test), Testpaket weit unter 1 s je Fall. U4: über Fever-100 langsamster Schlüssel mit Ablation etwa 10 ms je Fall (`test_key_with_ablation_takes_less_than_one_second_per_case`, lokal unter Windows und in der CI unter Windows und Linux) |
 | PR-F05 | Darstellung de (vorhanden), zh und en über Vorlagen | §8 S.8 | 0.1 | Ärztliche Prüfung der Vorlagen je Sprache dokumentiert | SW + M | teilweise | U5, manuell | U5: Vorlagen de, en, zh (`src/proof/render/templates/`), Falltext für jeden Fall von Fever-100 in allen drei Sprachen (`test_every_fact_of_every_case_appears_in_every_language`); Prüfvermerk-Format, Prüfpaket und `proof review verify` (A-72). Offen (manuell): ärztliche Prüfung je Sprache; `review/*.yaml` sind Platzhalter |
-| PR-F06 | Varianten-Generator MR1–MR7 | §8 S.8 | 0.1 (MR1, 3, 5), 0.5 (alle) | Jede Variante trägt ihre Erwartung maschinenlesbar | SW | offen | U6, U10, U12 | |
+| PR-F06 | Varianten-Generator MR1–MR7 | §8 S.8 | 0.1 (MR1, 3, 5), 0.5 (alle) | Jede Variante trägt ihre Erwartung maschinenlesbar | SW | teilweise | U6, U10, U12 | U6: Generator für MR1, MR3, MR5 (`src/proof/variants/`), jede Variante mit maschinenlesbarer Erwartung; Satz zu Fever-100 mit Varianten-Seed 1 (500 Varianten, `test_every_variant_passes_the_schema_and_carries_its_expectation`). Offen: MR2, MR4, MR6, MR7 (U10) |
 | PR-F07 | Testlauf gegen OpenAI-kompatible Schnittstellen und lokale Modelle (vLLM/Ollama) | §8 S.8 | 0.1 | Konfiguration je Anbieter in YAML, Schlüssel aus Umgebungsvariablen, Zwischenspeicher nach Hash | SW | offen | U7 | |
 | PR-F08 | Bewertung S1–S7 | §8 S.8 | 0.1 | Berechnung rein deterministisch; Einheitentests mit Handbeispielen | SW | offen | U8 | |
 | PR-F09 | Bericht HTML/PDF und statische Rangliste (GitHub Pages) | §8 S.8 | 0.5 | Keine Live-Abfrage von Modellen auf der Seite | SW (+ M: Veröffentlichung) | offen | U11, manuell | |
@@ -57,18 +57,18 @@ Konzept zu. Annahmen und Entscheidungen:
 | PR-K06 | Entscheidbarkeit: sichtbares Warnzeichen → `refer_urgent`; fehlt ein kritisches Feld, das ein Warnzeichen ausschließen oder die führenden Diagnosen trennen würde → `ask`; sonst `answer` | §5 S.5 | 0.1 | Handbeispiele für alle drei Ausgänge | SW | erfüllt | U2 | U2: Handbeispiele `test_answer_when_nothing_is_open`, `test_ask_when_a_missing_fact_would_decide_a_red_flag`, `test_ask_when_a_missing_fact_would_decide_a_diagnosis`, `test_refer_urgent_for_the_prd_example`; Ebene der Ziele (A-53) |
 | PR-K07 | Warnzeichen qSOFA ≥ 2 (Atemfrequenz ≥ 22/min, veränderter Bewusstseinszustand, systolischer Blutdruck ≤ 100 mmHg) | §5 S.5 | 0.1 | Regel `rf.qsofa_ge2` mit Grenzwerttests | SW | erfüllt | U3 | U3: FEV-RF-001 (Sepsis-3 Box 4, Seymour 2016) mit 12 Testvektoren; `test_qsofa_boundaries` (21/22 /min, 100/101 mmHg, Bewusstsein) |
 | PR-K08 | Jede Regel braucht einen Verweis auf ihre Leitlinienquelle | §5 S.5, §10 S.9 | 0.1 | Schema erzwingt Quelle; Test über alle Regeln. Quellenregel D-04: Nutzungsbedingungen je Quelle geprüft und vermerkt, keine NICE-Grundlage | SW (+ M: ärztliche Prüfung) | teilweise | U2, U3, manuell | U2: Schema erzwingt Quelle und Register, NICE wird abgewiesen. U3: alle 190 Regeln mit registrierter Quelle und Fundstelle; 61 Quellen mit geprüften Bedingungen, Fieberregeln nur Originalpublikation oder Leitlinie (D-04), Laborregeln Nachschlagewerk (D-11); Tests `test_fever_rules_cite_only_publications_and_guidelines`, `test_migrated_rules_cite_reference_works`. Offen: ärztliche Prüfung (manuell) |
-| PR-K09 | Schlüssel enthält Entscheidbarkeit, Diagnosen, Warnzeichen und Pflichtfragen | Abb. S.4 | 0.1 | Pflichtfragen = fehlende kritische Felder je Variante | SW | erfüllt | U2 | U2: `VariantKey` mit `required_questions`; Pflichtfragen = fehlende kritische Felder der Variante (A-54), Tests `test_required_questions_*`; Varianten nutzen das ab U6 |
+| PR-K09 | Schlüssel enthält Entscheidbarkeit, Diagnosen, Warnzeichen und Pflichtfragen | Abb. S.4 | 0.1 | Pflichtfragen = fehlende kritische Felder je Variante | SW | erfüllt | U2, U6 | U2: `VariantKey` mit `required_questions`; Pflichtfragen = fehlende kritische Felder der Variante (A-54), Tests `test_required_questions_*`. U6: jede Variante trägt `required_questions` im Schlüssel; bei MR1 ist es genau das entfernte Feld |
 
 ## 4 Metamorphe Relationen (§6)
 
 | ID | Veränderung | Erwartung laut PRD | Fundstelle | Version | Art | Status | Phase | Nachweis |
 |---|---|---|---|---|---|---|---|---|
-| PR-M00 | Jede Variante eines Falls trägt eine maschinenlesbare Erwartung: Antwort bleibt gleich oder ändert sich auf bestimmte Weise | – | §6 S.5, Abb. S.4 | 0.1 | SW | offen | U6 | |
-| PR-MR1 | Ein kritisches Feld weglassen | Entscheidung wird `ask` (außer bei anderem sichtbaren Warnzeichen), und das Feld steht in den Fragen | §6 S.6 | 0.1 | SW | offen | U6 | |
+| PR-M00 | Jede Variante eines Falls trägt eine maschinenlesbare Erwartung: Antwort bleibt gleich oder ändert sich auf bestimmte Weise | – | §6 S.5, Abb. S.4 | 0.1 | SW | erfüllt | U6 | U6: Variante nach KONZEPT 4.7 mit Erwartung `absolute` oder `invariant` (`src/proof/variants/model.py`, JSON Schema `schema/variant.schema.json`, `test_variant_model.py`) |
+| PR-MR1 | Ein kritisches Feld weglassen | Entscheidung wird `ask` (außer bei anderem sichtbaren Warnzeichen), und das Feld steht in den Fragen | §6 S.6 | 0.1 | SW | erfüllt | U6 | U6: entfernt ein kritisches Feld; Erwartung = Entscheidung des Motors auf den Variantenfakten (`ask`, sonst `refer_urgent` bei anderem sichtbarem Warnzeichen) und das Feld in `questions_include` (A-76, `test_mr1_expects_what_the_engine_gives_on_the_variant`); Fever-100: 57 `ask`, 43 `refer_urgent` |
 | PR-MR2 | Ein unkritisches Feld weglassen | Entscheidung und Diagnosen bleiben gleich | §6 S.6 | 0.5 | SW | offen | U10 | |
-| PR-MR3 | Abschnitte permutieren (Anamnese, Befund, Vitalwerte, Labor) | unverändert | §6 S.6, §4 S.3 | 0.1 | SW | offen | U6 | |
+| PR-MR3 | Abschnitte permutieren (Anamnese, Befund, Vitalwerte, Labor) | unverändert | §6 S.6, §4 S.3 | 0.1 | SW | erfüllt | U6 | U6: Abschnittsreihenfolge ungleich der Standardreihenfolge, Fakten und Schlüssel unverändert, Erwartung invariant (`test_mr3_changes_only_the_order`) |
 | PR-MR4 | Irrelevante Fakten hinzufügen (z. B. alte Appendektomie) | unverändert | §6 S.6 | 0.5 | SW | offen | U10 | |
-| PR-MR5 | Sprache wechseln zh ↔ en ↔ de | unverändert | §6 S.6 | 0.1 | SW | offen | U6 | |
+| PR-MR5 | Sprache wechseln zh ↔ en ↔ de | unverändert | §6 S.6 | 0.1 | SW | erfüllt | U6 | U6: je Basisfall die drei Sprachpaare zh–en, zh–de, en–de mit Erwartung invariant, ohne eigene Anfrage (A-37, A-74; `test_mr5_pairs_the_three_languages`). Die Wertung folgt mit S5 (U8) |
 | PR-MR6 | Einheiten und Schreibweisen ändern (mg/L ↔ mg/dL, °C ↔ °F, Abkürzungen) | unverändert | §6 S.6 | 0.5 | SW | offen | U10 | |
 | PR-MR7 | Widerspruch einfügen („afebril“ bei 39,2 °C) | Widerspruch wird gemeldet | §6 S.6 | 0.5 | SW | offen | U10 | |
 | PR-MR8 | Information in zwei Schritten | Entscheidung wird nach Schritt 2 korrekt aktualisiert | §6 S.6 | 1.0 („ab v1.0“) | SW | offen | U13 | |
@@ -116,7 +116,7 @@ Bestand gesichtet am 08.11.2026: `C:\Users\ammar\Desktop\Uni\Diagohelp\SynthEHR-
 | ID | Anforderung | Fundstelle | Version | Abnahmekriterium | Art | Status | Phase | Nachweis |
 |---|---|---|---|---|---|---|---|---|
 | PR-D01 | Derselbe Fall parallel auf zh, en und de; daraus ein messbarer Sprachunterschied bei identischem Inhalt | §2 S.1, §4 S.3 | 0.1 | Ein Fall, drei Darstellungen, S6 | SW | teilweise | U5, U8 | U5: ein Fall, drei Darstellungen mit denselben Fakten und Zahlen (`test_the_same_case_has_the_same_content_in_three_languages`). Offen: S6 (U8) |
-| PR-D02 | Neue Varianten jedes Falls auf Knopfdruck; Regressionstests von Version zu Version | §1 S.1, §4 S.3 | 0.1 | Ein Befehl erzeugt neue Varianten; Vergleich zweier Läufe | SW | offen | U6, U8 | |
+| PR-D02 | Neue Varianten jedes Falls auf Knopfdruck; Regressionstests von Version zu Version | §1 S.1, §4 S.3 | 0.1 | Ein Befehl erzeugt neue Varianten; Vergleich zweier Läufe | SW | teilweise | U6, U8 | U6: `proof variants build --variant-seed <n>` erzeugt neue Varianten; gleicher Seed, gleiche Varianten (`test_same_seed_same_variants_new_seed_new_variants`). Offen: Vergleich zweier Läufe (U8) |
 | PR-D03 | Kategorie: Evaluationswerkzeug und offener Datensatz; kein Medizinprodukt, keine Patientenversorgung | §2 S.2 | 0.1 | Fester Hinweis in CLI-Hilfe, Bericht, Rangliste, Datensatzkarte | SW | teilweise | U1, U9, U11 | U1: CLI-Hilfe zh/en/de, Test `test_every_command_help_contains_all_notices`. Offen: Bericht, Rangliste (U11), Datensatzkarte (U9) |
 | PR-D04 | Synthetic Patient Commons als Motor: offene Fallsammlung plus Erzeugung neuer Varianten | §1 S.1 | 0.1 | Offene Fallsammlung im Release; Generator im Code | SW | teilweise | U4, U9 | U4: Generator `proof cases build`, offene Sammlung `data/collections/fever-100/`. Offen: Release-Paket (U9) |
 | PR-D05 | Geschäftsmodell: offene Fälle und offener Code + bezahlte private Regressionssuiten, Fachpakete, Prüfberichte | §2 S.2, §12 S.10 | 1.0 | Software kann private Suiten (PR-F11), Fachpakete (PR-F12) und Prüfberichte (PR-F09) erzeugen; Verkauf ist nicht Teil der Software | SW + O | offen | U11, U13, U14 | |
@@ -168,11 +168,11 @@ Die PRD nennt keine ausdrücklichen User Flows. Abgeleitet aus Abb. S.4, §4, §
 
 | ID | Ablauf | Quelle | Abgedeckt durch | Status |
 |---|---|---|---|---|
-| UF-01 | Fallsammlung erzeugen: Sampler (Seed) → Regelwerk + Ablation → Schlüssel → Darstellung zh/en/de → Varianten mit Erwartung | Abb. S.4, §5, §6 | PR-F01–F06 | teilweise (U4: Sampler, Regelwerk, Ablation, Schlüssel; U5: Darstellung zh/en/de; offen: Varianten U6) |
+| UF-01 | Fallsammlung erzeugen: Sampler (Seed) → Regelwerk + Ablation → Schlüssel → Darstellung zh/en/de → Varianten mit Erwartung | Abb. S.4, §5, §6 | PR-F01–F06 | erfüllt für v0.1 (U4: Sampler, Regelwerk, Ablation, Schlüssel; U5: Darstellung zh/en/de; U6: Varianten MR1, MR3, MR5 mit Erwartung); MR2, MR4, MR6, MR7 folgen in U10 |
 | UF-02 | Testlauf: Anbieter-Konfiguration → Anfragen (Temperatur 0, Zwischenspeicher) → Antworten → Bewertung S1–S7 → Profil, Manifest mit Kosten | Abb. S.4, §7, §8 | PR-F07, PR-F08, PR-N01, PR-N02 | offen |
 | UF-03 | Bericht HTML/PDF und statische Rangliste aus Ergebnissen bauen | §8 | PR-F09 | offen |
 | UF-04 | Release: Fälle, Regeln, Datensatzkarte, Prüfvermerke; Paket für Hugging Face | §8, §10, §11 | PR-F10, PR-A02, PR-A06, PR-L04 | offen |
-| UF-05 | Neue Varianten auf Knopfdruck; Regression zwischen zwei Modellversionen | §1, §4 | PR-D02 | offen |
+| UF-05 | Neue Varianten auf Knopfdruck; Regression zwischen zwei Modellversionen | §1, §4 | PR-D02 | teilweise (U6: neue Varianten je Varianten-Seed; offen: Vergleich zweier Läufe U8) |
 | UF-06 | Private Regressionssuite mit geheimem Seed, ohne Überschneidung mit der öffentlichen Menge | §8, §12 | PR-F11 | offen |
 | UF-07 | Freitext-Spur: freie Antwort → Extraktionsmodell → JSON → Bewertung, gekennzeichnet als nicht deterministisch | §7 | PR-P03 | offen |
 
