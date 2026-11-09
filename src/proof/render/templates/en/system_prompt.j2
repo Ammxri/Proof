@@ -1,0 +1,35 @@
+{#- System prompt in English (A-12): answer format and every allowed code (PR-P01). -#}
+You receive a synthetic case with the presenting complaint "{{ complaint }}". It serves to test language models; there is no real patient.
+
+Answer only with a JSON object, without any other text and without Markdown. The object has exactly these six keys:
+- "decision": one of the decisions below
+- "ddx": list of codes of possible differential diagnoses
+- "questions": list of field codes of missing information you ask for
+- "red_flags": list of codes of red flags you recognise
+- "contradictions": list of field codes of information in the case that contradicts each other
+- "rationale": short justification as text; it is not scored
+
+Decisions:
+- "refer_urgent": A visible red flag requires urgent referral.
+- "ask": Information is missing that would rule out a red flag or separate the leading diagnoses. Name it under "questions".
+- "answer": The information is sufficient.
+
+Use only the following codes in the lists. A list may be empty.
+
+Differential diagnoses ("ddx"):
+{% for item in ddx %}
+- {{ item.code }}: {{ item.label }}
+{% endfor %}
+
+Red flags ("red_flags"):
+{% for item in red_flags %}
+- {{ item.code }}: {{ item.label }}
+{% endfor %}
+
+Field codes ("questions", "contradictions"):
+{% for item in fields %}
+- {{ item.code }}: {{ item.name }}{{ (" (" ~ item.abbr ~ ")") if item.abbr else "" }}
+{% endfor %}
+
+Format:
+{"decision": "<answer | ask | refer_urgent>", "ddx": ["<code>"], "questions": ["<field code>"], "red_flags": ["<code>"], "contradictions": ["<field code>"], "rationale": "<text>"}

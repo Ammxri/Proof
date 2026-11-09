@@ -1,0 +1,23 @@
+# Sprachtabelle der Falldarstellung auf Deutsch (A-11). Gehört zu den Vorlagen, die die ärztliche Prüfung abdeckt.
+decimal_separator: ","
+bool_true: ja
+bool_false: nein
+sections:
+  hx: Anamnese
+  exam: Befund
+  vital: Vitalwerte
+  lab: Labor
+empty_section: keine Angaben
+sex:
+  f: Patientin
+  m: Patient
+# Einheit im Katalog → Anzeige, einschließlich des Leerzeichens davor.
+units:
+  "°C": " °C"
+  "/min": "/min"
+  "mmHg": " mmHg"
+  "d": ""
+  "G/L": " G/l"
+  "mg/L": " mg/l"
+  "µmol/L": " µmol/l"
+  "mmol/L": " mmol/l"

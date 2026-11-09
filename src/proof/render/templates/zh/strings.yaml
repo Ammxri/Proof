@@ -1,0 +1,23 @@
+# 病例文本的中文语言表（简体中文，A-11、A-43）。属于医师审核所涵盖的模板。
+decimal_separator: "."
+bool_true: 有
+bool_false: 无
+sections:
+  hx: 病史
+  exam: 体格检查
+  vital: 生命体征
+  lab: 实验室检查
+empty_section: 未记录
+sex:
+  f: 女性患者
+  m: 男性患者
+# 目录中的单位 → 显示形式（含前置空格）。
+units:
+  "°C": "℃"
+  "/min": "次/分"
+  "mmHg": " mmHg"
+  "d": ""
+  "G/L": "×10⁹/L"
+  "mg/L": " mg/L"
+  "µmol/L": " μmol/L"
+  "mmol/L": " mmol/L"

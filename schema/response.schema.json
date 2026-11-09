@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "The answer a model gives to a Proof case: decision, codes and a free-text rationale that is not scored. Which codes are allowed depends on the domain; the system prompt lists them.",
+  "properties": {
+    "contradictions": {
+      "items": {
+        "pattern": "^(hx|exam|vital|lab)\\.[a-z][a-z0-9_]*$",
+        "type": "string"
+      },
+      "title": "Contradictions",
+      "type": "array"
+    },
+    "ddx": {
+      "items": {
+        "pattern": "^ddx\\.[a-z][a-z0-9_]*$",
+        "type": "string"
+      },
+      "title": "Ddx",
+      "type": "array"
+    },
+    "decision": {
+      "enum": [
+        "answer",
+        "ask",
+        "refer_urgent"
+      ],
+      "title": "Decision",
+      "type": "string"
+    },
+    "questions": {
+      "items": {
+        "pattern": "^(hx|exam|vital|lab)\\.[a-z][a-z0-9_]*$",
+        "type": "string"
+      },
+      "title": "Questions",
+      "type": "array"
+    },
+    "rationale": {
+      "title": "Rationale",
+      "type": "string"
+    },
+    "red_flags": {
+      "items": {
+        "pattern": "^rf\\.[a-z][a-z0-9_]*$",
+        "type": "string"
+      },
+      "title": "Red Flags",
+      "type": "array"
+    }
+  },
+  "required": [
+    "decision",
+    "ddx",
+    "questions",
+    "red_flags",
+    "contradictions",
+    "rationale"
+  ],
+  "title": "Proof answer",
+  "type": "object"
+}

@@ -14,8 +14,12 @@ import typer
 
 import proof
 import proof_rules
-from proof.cases import collection, profiles
-from proof.core import canonical, disclaimer
+from proof.cases import collection, profiles, review
+from proof.cases.model import Case
+from proof.core import canonical, disclaimer, i18n
+from proof.core.paths import proof_home
+from proof.render.case_text import RenderError, render_case
+from proof.render.prompt import system_prompt
 from proof_rules import loader
 from proof_rules.explain import explain
 from proof_rules.keys import FactError
@@ -260,6 +264,147 @@ def cases_validate(
         f"{path}: {report.cases} cases valid, {report.relabeled} relabeled; slowest key with ablation "
         f"{report.max_key_seconds * 1000:.1f} ms"
     )
+
+
+# --- proof render ----------------------------------------------------------------------------------------------------
+
+LangOption = Annotated[str, typer.Option("--lang", help="Language: zh, en or de.")]
+
+
+def _check_lang(lang: str) -> None:
+    if lang not in i18n.LANGUAGES:
+        _fail([f"--lang: expected one of {', '.join(i18n.LANGUAGES)}, got {lang!r}"])
+
+
+def _load_case(source: Path, case_id: str | None) -> Case:
+    if source.is_dir() or source.suffix == ".jsonl":
+        path = source / collection.CASES_FILE if source.is_dir() else source
+        problems: list[str] = []
+        cases = [case for _, case in collection.read_cases(path, problems)] if path.is_file() else []
+        if problems or not cases:
+            _fail(problems or [f"{path}: no cases"])
+        if case_id is None and len(cases) > 1:
+            _fail([f"{path} holds {len(cases)} cases; choose one with --case-id"])
+        chosen = [case for case in cases if case_id is None or case.case_id == case_id]
+        if not chosen:
+            _fail([f"{path}: no case {case_id}"])
+        return chosen[0]
+    try:
+        case = Case.model_validate(canonical.loads(source.read_bytes()))
+    except (ValueError, UnicodeDecodeError) as exc:
+        _fail([f"{source}: {exc}"])
+    if case_id is not None and case.case_id != case_id:
+        _fail([f"{source}: holds {case.case_id}, not {case_id}"])
+    return case
+
+
+@app.command("render", epilog=EPILOG)
+def render(
+    source: Annotated[
+        Path, typer.Argument(exists=True, help="Case JSON file, cases JSONL file or collection directory.")
+    ],
+    lang: LangOption,
+    case_id: Annotated[str | None, typer.Option("--case-id", help="Case to show from a JSONL file.")] = None,
+    with_prompt: Annotated[
+        bool, typer.Option("--system-prompt", help="Show the system prompt of the domain before the case text.")
+    ] = False,
+    packs: PacksOption = loader.PACKS_ROOT,
+) -> None:
+    """Show the text of a case in one language, as a model receives it."""
+    _check_lang(lang)
+    case = _load_case(source, case_id)
+    name = loader.domain_for_complaint(case.complaint, packs)
+    if name is None:
+        _fail([f"{case.case_id}: no domain pack for complaint {case.complaint!r}"])
+    domain = _domain(name, packs)
+    try:
+        rendering = render_case(case, domain, lang)
+    except RenderError as exc:
+        _fail([f"{case.case_id}: {problem}" for problem in exc.problems])
+    if with_prompt:
+        typer.echo(system_prompt(domain, lang))
+        typer.echo("-" * 40)
+    typer.echo(rendering.text, nl=False)
+
+
+# --- proof review ----------------------------------------------------------------------------------------------------
+
+review_app = typer.Typer(
+    name="review",
+    help="Physician review per language: sample of cases, review packet and check of the review record (PR-A02).",
+    epilog=EPILOG,
+    no_args_is_help=True,
+    add_completion=False,
+    rich_markup_mode=None,
+)
+app.add_typer(review_app, name="review")
+
+CollectionOption = Annotated[
+    Path, typer.Option("--collection", exists=True, file_okay=False, help="Collection directory with collection.json.")
+]
+
+
+@review_app.command("sample", epilog=EPILOG)
+def review_sample(lang: LangOption, collection_dir: CollectionOption) -> None:
+    """List the cases a reviewer of one language checks: at least 10 %, at least one per target, deterministic."""
+    _check_lang(lang)
+    try:
+        manifest = review.read_manifest(collection_dir)
+    except review.ReviewError as exc:
+        _fail(exc.problems)
+    chosen = review.sample(manifest, lang)
+    typer.echo(f"{manifest.name}, {lang}: {len(chosen)} of {len(manifest.cases)} cases")
+    for case_id in chosen:
+        typer.echo(case_id)
+
+
+@review_app.command("packet", epilog=EPILOG)
+def review_packet(
+    lang: LangOption,
+    collection_dir: CollectionOption,
+    out: Annotated[
+        Path | None,
+        typer.Option(
+            "--out", file_okay=False, help="Target directory (default: $PROOF_HOME/review/<collection>/<lang>)."
+        ),
+    ] = None,
+    packs: PacksOption = loader.PACKS_ROOT,
+) -> None:
+    """Write the review packet: document with prompt and sample cases, record template, templates and labels."""
+    _check_lang(lang)
+    try:
+        manifest = review.read_manifest(collection_dir)
+        target = out if out is not None else proof_home() / "review" / manifest.name / lang
+        written = review.packet(lang, collection_dir, target, packs)
+    except review.ReviewError as exc:
+        _fail(exc.problems)
+    for path in written:
+        typer.echo(str(path))
+
+
+@review_app.command("verify", epilog=EPILOG)
+def review_verify(
+    lang: LangOption,
+    record: Annotated[
+        Path | None, typer.Option("--record", dir_okay=False, help="Review record (default: review/<lang>.yaml).")
+    ] = None,
+    collection_dir: Annotated[
+        Path | None,
+        typer.Option("--collection", exists=True, file_okay=False, help="Also require the sample of this collection."),
+    ] = None,
+    packs: PacksOption = loader.PACKS_ROOT,
+) -> None:
+    """Check a review record: filled in, by a physician, covering the current templates (and the sample)."""
+    _check_lang(lang)
+    path = record if record is not None else Path("review") / f"{lang}.yaml"
+    try:
+        report = review.verify(path, lang, collection_dir=collection_dir, root=packs)
+    except review.ReviewError as exc:
+        _fail(exc.problems)
+    if not report.ok:
+        typer.echo(f"{len(report.problems)} problem(s) in {path}", err=True)
+        _fail(report.problems)
+    typer.echo(f"{path}: valid; {report.physicians} physician review(s), {report.pre_reviewers} pre-review(s)")
 
 
 def _ensure_utf8_streams() -> None:

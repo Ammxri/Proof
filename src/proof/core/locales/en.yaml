@@ -2,3 +2,30 @@
 disclaimer:
   category: Proof is an evaluation tool and open dataset, not a medical device, and not intended for patient care.
   reference: Proof measures agreement with a disclosed reference, not clinical truth.
+review:
+  title: Review packet for the physician review
+  intro: >-
+    This packet holds the templates of the case text, the system prompt and a sample of at least 10 % of the collection
+    {collection} with their keys. All cases are synthetic. The rules are drafts; docs/regeln.md names their sources.
+  templates_heading: Templates and labels
+  templates_task: >-
+    Please check whether terms, labels, units and wording in the case texts and the system prompt are clinically
+    correct and natural. The template files are in the folder templates/, all labels in the JSON file labels_*. The
+    review applies to exactly the files with the following hashes.
+  prompt_heading: System prompt
+  cases_heading: Sample of cases
+  cases_task: >-
+    Please check for each case whether the text is plausible and whether determinability, red flags and diagnoses
+    follow from the disclosed rules. Note any objection; keys are never changed by hand, only through the rules.
+  target: Target of the sampler
+  red_flag: red-flag status
+  determinability: Determinability
+  red_flags: Red flags
+  ddx: Diagnoses
+  critical_fields: Critical fields
+  none: none
+  record_heading: Review record
+  record_task: >-
+    Please fill in the file review_{lang}.yaml: name, role, clinic or practice, country, date and scope. Hashes and case
+    ids are already filled in. Saved as review/{lang}.yaml, the record is checked by "proof review verify". A pre-review
+    by a student is entered with the role pre_reviewer and does not replace the physician review.

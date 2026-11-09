@@ -13,13 +13,17 @@ import sys
 from pathlib import Path
 
 from proof.cases.model import case_json_schema, schema_text
+from proof.scoring.response import response_json_schema
 
 OUTPUT = Path(__file__).resolve().parent.parent / "schema"
 
 
 def render() -> dict[str, str]:
     """File name → text of every schema."""
-    return {"case.schema.json": schema_text(case_json_schema())}
+    return {
+        "case.schema.json": schema_text(case_json_schema()),
+        "response.schema.json": schema_text(response_json_schema()),
+    }
 
 
 def main(argv: list[str]) -> int:

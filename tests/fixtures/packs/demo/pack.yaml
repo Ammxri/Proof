@@ -3,6 +3,7 @@ kind: domain
 domain:
   case_prefix: DEM
   complaint: fever
+  complaint_labels: {zh: 发热, en: Fever, de: Fieber}
   uses: [labx]
   activate:
     labx: [LABX-DDX-001]

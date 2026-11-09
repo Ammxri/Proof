@@ -611,10 +611,11 @@ class MigrationTable(_Model):
 
 
 class DomainSettings(_Model):
-    """Settings of a domain pack: case id prefix, complaint and the rules it activates from library packs (A-08)."""
+    """Settings of a domain pack: case id prefix, complaint with its labels, and the rules it activates (A-08)."""
 
     case_prefix: Annotated[StrictStr, StringConstraints(pattern=r"^[A-Z]{3}$")]
     complaint: ValueCode
+    complaint_labels: TermLabels
     uses: tuple[PackName, ...] = ()
     activate: dict[PackName, Literal["all"] | Annotated[tuple[RuleId, ...], Field(min_length=1)]] = Field(
         default_factory=dict
@@ -666,6 +667,7 @@ class Domain:
     name: str
     case_prefix: str
     complaint: str
+    complaint_labels: TermLabels
     catalog: Catalog
     vocabulary: Vocabulary
     sources: SourceRegister

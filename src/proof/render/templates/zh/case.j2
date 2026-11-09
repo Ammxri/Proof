@@ -1,0 +1,12 @@
+{#- 中文病例文本：沿用原型长格式的结构，不含评估、鉴别诊断和下一步建议（A-11）。begin()/end() 标记每个事实在文本中的位置。 -#}
+{{ t.sex[patient.sex] }}，{{ patient.age }}岁
+主诉：{{ complaint }}
+{% for section in sections %}
+
+### {{ loop.index }}. {{ section.heading }}
+{% for f in section.facts %}
+  • {{ begin(f.code) }}{{ f.name }}{% if f.abbr %}（{{ f.abbr }}）{% endif %}：{{ f.value }}{% if f.reference %}（参考范围：{{ f.reference }}）{% endif %}{{ end() }}
+{% else %}
+  • {{ t.empty_section }}
+{% endfor %}
+{% endfor %}

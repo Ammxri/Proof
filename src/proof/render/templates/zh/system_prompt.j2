@@ -1,0 +1,35 @@
+{#- 中文系统提示（A-12）：答复格式及全部允许的代码（PR-P01）。 -#}
+你将收到一份主诉为“{{ complaint }}”的合成病例。该病例用于测试语言模型，并无真实患者。
+
+请只用一个 JSON 对象作答，不要附加任何其他文字，也不要使用 Markdown。该对象恰好包含以下六个键：
+- "decision"：下列决策之一
+- "ddx"：可能的鉴别诊断的代码列表
+- "questions"：你要追问的缺失信息的字段代码列表
+- "red_flags"：你识别出的危险信号的代码列表
+- "contradictions"：病例中相互矛盾的信息的字段代码列表
+- "rationale"：简短的文字理由，不计分
+
+决策：
+- "refer_urgent"：存在可见的危险信号，需要紧急转诊。
+- "ask"：缺少可排除危险信号或区分主要诊断的信息。请在 "questions" 中列出。
+- "answer"：现有信息已足够。
+
+列表中只能使用以下代码。列表可以为空。
+
+鉴别诊断（"ddx"）：
+{% for item in ddx %}
+- {{ item.code }}：{{ item.label }}
+{% endfor %}
+
+危险信号（"red_flags"）：
+{% for item in red_flags %}
+- {{ item.code }}：{{ item.label }}
+{% endfor %}
+
+字段代码（"questions"、"contradictions"）：
+{% for item in fields %}
+- {{ item.code }}：{{ item.name }}{{ ("（" ~ item.abbr ~ "）") if item.abbr else "" }}
+{% endfor %}
+
+格式：
+{"decision": "<answer | ask | refer_urgent>", "ddx": ["<代码>"], "questions": ["<字段代码>"], "red_flags": ["<代码>"], "contradictions": ["<字段代码>"], "rationale": "<文字>"}

@@ -479,6 +479,7 @@ def _build_domain(
         name=pack.name,
         case_prefix=settings.case_prefix,
         complaint=settings.complaint,
+        complaint_labels=settings.complaint_labels,
         catalog=catalog,
         vocabulary=Vocabulary(ddx=tuple(ddx), red_flags=tuple(red_flags)),
         sources=SourceRegister(sources=tuple(sources)),

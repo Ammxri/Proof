@@ -2,3 +2,24 @@
 disclaimer:
   category: Proof 是评测工具和开放数据集，不是医疗器械，不用于患者诊疗。
   reference: Proof 衡量的是与公开参考标准的一致性，而非临床真实情况。
+review:
+  title: 医师审核材料包
+  intro: >-
+    本材料包包含病例文本模板、系统提示，以及病例集 {collection} 中至少 10% 病例的抽样及其答案键。所有病例均为合成病例。规则均为草案，其来源见 docs/regeln.md。
+  templates_heading: 模板与术语
+  templates_task: >-
+    请检查病例文本和系统提示中的专业术语、名称、单位和措辞在临床上是否准确、自然。模板文件位于 templates/ 文件夹，所有术语见 labels_* JSON 文件。本次审核仅适用于下列哈希值对应的文件。
+  prompt_heading: 系统提示
+  cases_heading: 病例抽样
+  cases_task: >-
+    请逐例检查病例文本是否合理，以及可判定性、危险信号和诊断能否依据公开的规则得出。请记录您的意见；答案键不会手工修改，只能通过修改规则调整。
+  target: 抽样目标
+  red_flag: 危险信号状态
+  determinability: 可判定性
+  red_flags: 危险信号
+  ddx: 诊断
+  critical_fields: 关键字段
+  none: 无
+  record_heading: 审核记录
+  record_task: >-
+    请填写文件 review_{lang}.yaml：姓名、角色、医院或诊所、国家、日期和审核范围。哈希值和病例编号已预先填好。保存为 review/{lang}.yaml 后，可用“proof review verify”检查该记录。医学生的预审以角色 pre_reviewer 记录，不能替代医师审核。

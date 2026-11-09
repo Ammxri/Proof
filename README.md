@@ -55,6 +55,24 @@ uv run proof cases build --domain fever --n 100 --seed-start 1
 uv run proof cases validate data/collections/fever-100
 ```
 
+Each case is rendered in Chinese, English and German; the system prompt names the answer format and every allowed
+code ([`docs/methodik.md`](docs/methodik.md), section 6; answer schema in
+[`schema/response.schema.json`](schema/response.schema.json)).
+
+```bash
+uv run proof render data/collections/fever-100 --case-id FEV-000001 --lang zh --system-prompt
+```
+
+## Physician review
+
+Each language needs a physician review of its templates and a sample of the cases (PRD §10). The records are in
+[`review/`](review/); until a review is delivered they hold placeholders.
+
+```bash
+uv run proof review packet --lang zh --collection data/collections/fever-100
+uv run proof review verify --lang zh --collection data/collections/fever-100
+```
+
 ## Licences
 
 - Code: Apache License 2.0 ([`LICENSE`](LICENSE))

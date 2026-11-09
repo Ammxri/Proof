@@ -3,6 +3,7 @@ kind: domain
 domain:
   case_prefix: FEV
   complaint: fever
+  complaint_labels: {zh: 发热, en: Fever, de: Fieber}
   uses: [labs]
   activate:
     # Lab rules whose fields all belong to the fever lab panel: CRP, creatinine, bilirubin, lactate (A-64).

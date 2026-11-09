@@ -86,3 +86,19 @@ def load_file(path: str | Path, *, max_bytes: int = DEFAULT_MAX_BYTES) -> Any:
     except UnicodeDecodeError as exc:
         raise YamlError(f"{path}: not valid UTF-8 ({exc})") from None
     return load_text(text, source=str(path))
+
+
+class _PlainDumper(yaml.SafeDumper):
+    """Writes every object in full; the strict loader rejects aliases."""
+
+    def ignore_aliases(self, data: Any) -> bool:
+        return True
+
+
+def dump_text(data: Any, *, comment: str | None = None) -> str:
+    """YAML text of ``data`` with keys in the given order, Unicode as is, and an optional comment block on top."""
+    body = yaml.dump(data, Dumper=_PlainDumper, allow_unicode=True, sort_keys=False, width=120)
+    if comment is None:
+        return body
+    header = "".join(f"# {line}".rstrip() + "\n" for line in comment.split("\n"))
+    return header + body

@@ -1,0 +1,35 @@
+{#- Systemprompt auf Deutsch (A-12): Antwortformat und alle erlaubten Codes (PR-P01). -#}
+Du erhältst einen synthetischen Fall mit dem Vorstellungsgrund „{{ complaint }}“. Er dient der Prüfung von Sprachmodellen; es gibt keinen echten Patienten.
+
+Antworte ausschließlich mit einem JSON-Objekt, ohne weiteren Text und ohne Markdown. Das Objekt hat genau diese sechs Schlüssel:
+- "decision": eine der Entscheidungen unten
+- "ddx": Liste der Codes möglicher Differenzialdiagnosen
+- "questions": Liste der Feldcodes fehlender Angaben, nach denen du fragst
+- "red_flags": Liste der Codes erkannter Warnzeichen
+- "contradictions": Liste der Feldcodes von Angaben im Fall, die einander widersprechen
+- "rationale": kurze Begründung als Text; sie wird nicht bewertet
+
+Entscheidungen:
+- "refer_urgent": Ein sichtbares Warnzeichen erfordert die dringende Weiterleitung.
+- "ask": Es fehlt eine Angabe, die ein Warnzeichen ausschließen oder die führenden Diagnosen trennen würde. Nenne sie unter "questions".
+- "answer": Die Angaben reichen aus.
+
+Verwende in den Listen nur die folgenden Codes. Eine Liste darf leer sein.
+
+Differenzialdiagnosen ("ddx"):
+{% for item in ddx %}
+- {{ item.code }}: {{ item.label }}
+{% endfor %}
+
+Warnzeichen ("red_flags"):
+{% for item in red_flags %}
+- {{ item.code }}: {{ item.label }}
+{% endfor %}
+
+Feldcodes ("questions", "contradictions"):
+{% for item in fields %}
+- {{ item.code }}: {{ item.name }}{{ (" (" ~ item.abbr ~ ")") if item.abbr else "" }}
+{% endfor %}
+
+Format:
+{"decision": "<answer | ask | refer_urgent>", "ddx": ["<Code>"], "questions": ["<Feldcode>"], "red_flags": ["<Code>"], "contradictions": ["<Feldcode>"], "rationale": "<Text>"}

@@ -1,8 +1,8 @@
 # Proof methodology
 
-How Proof computes the expected answer (the *key*) of a case, where the rules come from, how cases are drawn, and how
-the example case of the product requirements (PRD §5) comes out under the shipped rules. The rules themselves are
-listed in [regeln.md](regeln.md), which is generated from the rule packs.
+How Proof computes the expected answer (the *key*) of a case, where the rules come from, how cases are drawn and
+rendered, how they are reviewed, and how the example case of the product requirements (PRD §5) comes out under the
+shipped rules. The rules themselves are listed in [regeln.md](regeln.md), which is generated from the rule packs.
 
 > zh: Proof 是评测工具和开放数据集，不是医疗器械，不用于患者诊疗。Proof 衡量的是与公开参考标准的一致性，而非临床真实情况。
 > en: Proof is an evaluation tool and open dataset, not a medical device, and not intended for patient care. Proof
@@ -239,7 +239,77 @@ Two properties of the rules shape these numbers:
 
 Both follow from the draft rules (sections 2 and 3) and are open for the physician review.
 
-## 6 The PRD example, recalculated
+## 6 Case text, system prompt and answer
+
+### 6.1 Case text
+
+A case is rendered in Chinese (simplified), English and German from one template per language (A-11, A-43). The
+structure follows the long form of the fever prototype: a header with patient and complaint, then four numbered
+sections, one line per fact:
+
+```
+Patientin, 48 Jahre
+Vorstellungsgrund: Fieber
+
+### 1. Anamnese
+  • Tage seit Beginn: 0
+  • Husten: nein
+...
+### 4. Labor
+  • C-reaktives Protein (CRP): 52,4 mg/l (Referenzbereich 0–10 mg/l)
+```
+
+- The assessment, differential diagnoses and next steps of the prototype's long form are left out; they would be the
+  solution. A test checks that no diagnosis, red-flag label or assessment word appears in any text.
+- Numbers keep the decimals of the fact, with the decimal separator of the language. Units are shown in the usual form
+  of each language, e.g. `次/分` and `×10⁹/L` in Chinese, `G/l` in German.
+- Lab facts with a lab profile show its reference range, as a lab report does; the text gives no flag such as
+  "elevated" (decision A-70). White cells have no lab profile and therefore no range.
+- A section without facts says so ("keine Angaben"); this happens only in variants with missing facts.
+- The order of the four sections is a parameter; the variants of MR3 (U6) permute it.
+- Every rendering records where each fact appears. A test checks for all cases of Fever-100 in all three languages
+  that each fact appears with its label and value, and that the three texts hold the same facts and numbers (PR-D01).
+
+```bash
+uv run proof render data/collections/fever-100 --case-id FEV-000001 --lang zh --system-prompt
+```
+
+### 6.2 System prompt
+
+One fixed system prompt per language and domain (A-12). It states that the case is synthetic, asks for exactly one
+JSON object with six keys, defines the three decisions with the words of PRD §5, and lists every allowed code with its
+label: the diagnoses and red flags of the domain and the field codes for questions and contradictions. It names no
+criterion or threshold of the rules. The case text is the user message. Proof uses no JSON mode of a provider (A-38).
+
+### 6.3 Answer
+
+An answer is valid only if the whole text, without whitespace at its edges, is one JSON object with exactly
+`decision`, `ddx`, `questions`, `red_flags`, `contradictions` and `rationale`, and every list holds only codes the
+domain allows (A-13). A Markdown code block, text around the object, a duplicate key or an unknown code make it
+invalid; nothing is repaired. A code named twice is still an allowed code (decision A-73). The JSON Schema is in
+[`schema/response.schema.json`](../schema/response.schema.json).
+
+## 7 Physician review
+
+Each language needs a physician review of its templates and of a sample of at least 10 % of the cases; for Chinese,
+by a physician with clinical practice in China (PRD §10). A medical student may pre-review; that does not replace the
+physician review.
+
+- **Sample** (decision A-71): at least 10 % of a collection, rounded up, with at least one case per target of the plan.
+  It is drawn from the collection's content hash and the language, so it is fixed for a collection and differs between
+  languages.
+- **Packet:** `proof review packet` writes a document in the reviewer's language with the system prompt, the hashes of
+  the reviewed files and every sample case with its text and key, plus the template files, all labels and a record
+  template.
+- **Record** (`review/<lang>.yaml`, decision A-72): reviewer, role, practice and its country, date, scope, the hashes of
+  the templates and labels reviewed, and the reviewed case ids. Missing details stay marked placeholders.
+- **Check:** `proof review verify` accepts a record only if it has no placeholder, a physician (for zh with practice
+  in China) reviewed exactly the current templates and labels, no date lies in the future and, for a collection,
+  every sample case was reviewed. Any change to a template or label needs a new review (PR-A06).
+
+The shipped records are placeholders until the reviews are delivered; `proof review verify` rejects them.
+
+## 8 The PRD example, recalculated
 
 PRD §5 shows case `FEV-000123` with facts temperature 39.2 °C, respiratory rate 24/min, systolic pressure 96 mmHg,
 altered mental status, onset 2 days ago, cough, CRP 180 mg/L and white cells 15.2 G/L. Under the shipped rules
@@ -269,7 +339,7 @@ unknown. Because a red flag is true, the example still is `refer_urgent`.
 
 A test (`tests/unit/test_packs.py`) recomputes this key on every run.
 
-## 7 Limits
+## 9 Limits
 
 - Rules are drafts until a physician per language has reviewed them; the dataset card names the review.
 - Keys reflect the cited sources and the readings above, not clinical truth.

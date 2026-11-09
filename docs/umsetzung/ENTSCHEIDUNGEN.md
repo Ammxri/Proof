@@ -524,6 +524,44 @@ inaktiv. Leukozyten stehen als Kontextfakt im Katalog (PRD-Beispiel); keine Rege
 - Die JSON-Schema-Prüfung mit `jsonschema` läuft in den Tests (Entwicklungsabhängigkeit, KONZEPT §2). Das Programm
   selbst prüft mit Pydantic.
 
+### Annahmen aus U5
+
+**A-70 Falltext.** Präzisiert A-05 und A-11.
+- Je Sprache drei Dateien unter `src/proof/render/templates/<sprache>/`: Falltext (`case.j2`), Systemprompt
+  (`system_prompt.j2`) und Sprachtabelle (`strings.yaml` mit Abschnittsnamen, ja/nein, Geschlecht,
+  Dezimaltrennzeichen und Anzeige jeder Einheit). Gerendert wird in der Jinja2-Sandbox mit `StrictUndefined`.
+- Aufbau wie die Langform des Prototyps: Kopfzeile mit Patient (Geschlecht, Alter) und Vorstellungsgrund, dann die
+  vier nummerierten Abschnitte mit einer Zeile je Fakt.
+- Laborfakten mit Laborprofil zeigen dessen Referenzbereich, wie ein Laborbefund. Ein Statuszeichen („erhöht“, ↑)
+  steht nicht im Text; es wäre eine Einschätzung des Renderers. Leukozyten haben kein Laborprofil und daher keinen
+  Bereich.
+- Einheiten erscheinen in der in der Sprache üblichen Form (z. B. `次/分`, `×10⁹/L`, `G/l`). Fehlt einer Einheit die
+  Anzeige, bricht das Rendern ab.
+- Ein Abschnitt ohne Fakten zeigt „keine Angaben“ bzw. „not documented“ bzw. „未记录“; das kommt nur in Varianten vor.
+- Die Bezeichnung der Beschwerde je Sprache steht im Domänenpaket (`complaint_labels` in `pack.yaml`).
+- Jede Darstellung hält fest, wo jeder Fakt im Text steht (Zuordnung Fakt → Textstelle).
+
+**A-71 Stichprobe für die ärztliche Prüfung.** Präzisiert A-23.
+- Größe: mindestens 10 % der Sammlung, aufgerundet, mindestens ein Fall.
+- Zuerst ein Fall je Ziel des Zielplans, dann weitere Fälle; die Reihenfolge kommt aus einem Zufallsstrom über Name
+  und Inhalts-Hash der Sammlung und die Sprache.
+- Jede Sprache hat damit ihre eigene Stichprobe; zusammen prüfen die drei Sprachen mehr Schlüssel.
+
+**A-72 Prüfvermerk.** Präzisiert A-23 und KONZEPT 4.11.
+- `review/<sprache>.yaml` enthält eine Liste von Prüfungen: Name, Rolle (`physician` oder `pre_reviewer`), Klinik oder
+  Praxis, deren Land (ISO 3166-1), Datum, Umfang, die Hashes der geprüften Vorlagen und Bezeichnungen, Sammlung mit
+  Inhalts-Hash und die geprüften Fall-IDs.
+- Die Hashes decken die drei Vorlagendateien der Sprache und die Bezeichnungen jeder Domäne in dieser Sprache ab
+  (Fakten, Werte, Codes, Beschwerde).
+- „Chinesische Klinikpraxis“ heißt: Land der Praxis `CN`.
+- Fehlende Angaben stehen als `<PLATZHALTER: …>`; `proof review verify` weist jeden Platzhalter ab.
+- Eine Vorprüfung wird mit der Rolle `pre_reviewer` eingetragen und zählt nie als ärztliche Prüfung.
+
+**A-73 Antwortprüfung.** Präzisiert A-13.
+- Leerraum am Rand der Antwort zählt nicht; alles andere vor oder nach dem Objekt macht sie ungültig.
+- Doppelte Schlüssel und nicht endliche Zahlen machen die Antwort ungültig.
+- Ein Code, der in einer Liste zweimal steht, ist trotzdem ein erlaubter Code; die Bewertung arbeitet mit Mengen.
+
 ## Entscheidungen des Projektverantwortlichen
 
 **D-01 Projekte sind voneinander unabhängig (08.11.2026).** Deine Vorgabe: „nichts abändern. Das heißt, nichts von

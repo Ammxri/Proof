@@ -2,3 +2,32 @@
 disclaimer:
   category: Proof ist ein Evaluationswerkzeug und offener Datensatz, kein Medizinprodukt und nicht für die Patientenversorgung bestimmt.
   reference: Proof misst Übereinstimmung mit einer offengelegten Referenz, nicht klinische Wahrheit.
+review:
+  title: Prüfpaket für die ärztliche Prüfung
+  intro: >-
+    Dieses Paket enthält die Vorlagen der Falldarstellung, den Systemprompt und eine Stichprobe von mindestens 10 % der
+    Sammlung {collection} mit ihren Schlüsseln. Alle Fälle sind synthetisch. Die Regeln sind Entwürfe; ihre Quellen nennt
+    docs/regeln.md.
+  templates_heading: Vorlagen und Bezeichnungen
+  templates_task: >-
+    Bitte prüfen Sie, ob Fachbegriffe, Bezeichnungen, Einheiten und Formulierungen in Falltexten und Systemprompt
+    klinisch korrekt und natürlich sind. Die Vorlagendateien liegen im Ordner templates/, alle Bezeichnungen in der
+    JSON-Datei labels_*. Die Prüfung gilt für genau die Dateien mit den folgenden Hashes.
+  prompt_heading: Systemprompt
+  cases_heading: Stichprobe der Fälle
+  cases_task: >-
+    Bitte prüfen Sie je Fall, ob der Text plausibel ist und ob Entscheidbarkeit, Warnzeichen und Diagnosen nach den
+    offengelegten Regeln nachvollziehbar sind. Halten Sie Einwände fest; Schlüssel werden nicht von Hand geändert,
+    sondern über die Regeln.
+  target: Ziel des Samplers
+  red_flag: Warnzeichen-Status
+  determinability: Entscheidbarkeit
+  red_flags: Warnzeichen
+  ddx: Diagnosen
+  critical_fields: Kritische Felder
+  none: keine
+  record_heading: Prüfvermerk
+  record_task: >-
+    Bitte füllen Sie die Datei review_{lang}.yaml aus: Name, Rolle, Klinik oder Praxis, Land, Datum und Umfang. Hashes
+    und Fall-IDs sind bereits eingetragen. Gespeichert als review/{lang}.yaml prüft „proof review verify“ den Vermerk.
+    Eine Vorprüfung durch Studierende wird mit der Rolle pre_reviewer eingetragen und ersetzt die ärztliche Prüfung nicht.

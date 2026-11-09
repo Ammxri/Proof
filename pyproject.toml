@@ -20,6 +20,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Medical Science Apps.",
 ]
 dependencies = [
+    "jinja2>=3.1.6",
     "pydantic>=2.14.3",
     "pyyaml>=6.0.3",
     "typer>=0.28.0",
@@ -54,8 +55,8 @@ src = ["src", "tests", "tools"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF"]
-# Chinese punctuation in zh texts is intended.
-allowed-confusables = ["，", "：", "；", "（", "）"]
+# Chinese punctuation in zh texts, the en dash of ranges such as 0–10 and the sign of ×10⁹/L are intended.
+allowed-confusables = ["，", "：", "；", "（", "）", "–", "×"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101"]

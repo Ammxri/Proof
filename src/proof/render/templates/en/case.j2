@@ -1,0 +1,13 @@
+{#- Case text in English: structure of the prototype's long form, without assessment, differential diagnoses and next
+    steps (A-11). begin()/end() mark where each fact appears. -#}
+{{ t.sex[patient.sex] }}, {{ patient.age }} years
+Presenting complaint: {{ complaint }}
+{% for section in sections %}
+
+### {{ loop.index }}. {{ section.heading }}
+{% for f in section.facts %}
+  • {{ begin(f.code) }}{{ f.name }}{% if f.abbr %} ({{ f.abbr }}){% endif %}: {{ f.value }}{% if f.reference %} (reference range {{ f.reference }}){% endif %}{{ end() }}
+{% else %}
+  • {{ t.empty_section }}
+{% endfor %}
+{% endfor %}

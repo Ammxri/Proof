@@ -285,7 +285,13 @@ def test_catalog_and_vocabulary_uniqueness():
 
 
 def test_pack_configuration():
-    settings = {"case_prefix": "FEV", "complaint": "fever", "uses": ["labs"], "activate": {"labs": ["LAB-DDX-001"]}}
+    settings = {
+        "case_prefix": "FEV",
+        "complaint": "fever",
+        "complaint_labels": {"zh": "发热", "en": "Fever", "de": "Fieber"},
+        "uses": ["labs"],
+        "activate": {"labs": ["LAB-DDX-001"]},
+    }
     assert PackConfig.model_validate({"pack": "fever", "kind": "domain", "domain": settings}).domain is not None
     with pytest.raises(ValidationError, match="domain packs need domain settings"):
         PackConfig.model_validate({"pack": "fever", "kind": "domain"})
@@ -300,3 +306,6 @@ def test_pack_configuration():
     with pytest.raises(ValidationError, match="case_prefix"):
         DomainSettings.model_validate({**settings, "case_prefix": "FEVER"})
     assert DomainSettings.model_validate({**settings, "activate": {"labs": "all"}}).activate["labs"] == "all"
+    without_labels = {key: value for key, value in settings.items() if key != "complaint_labels"}
+    with pytest.raises(ValidationError, match="complaint_labels"):
+        DomainSettings.model_validate(without_labels)

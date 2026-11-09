@@ -1,0 +1,23 @@
+# Language table of the case text in English (A-11). Part of the templates the physician review covers.
+decimal_separator: "."
+bool_true: "yes"
+bool_false: "no"
+sections:
+  hx: History
+  exam: Examination
+  vital: Vital signs
+  lab: Laboratory
+empty_section: not documented
+sex:
+  f: Female patient
+  m: Male patient
+# Catalog unit → display, including the space before it.
+units:
+  "°C": " °C"
+  "/min": "/min"
+  "mmHg": " mmHg"
+  "d": ""
+  "G/L": " ×10⁹/L"
+  "mg/L": " mg/L"
+  "µmol/L": " µmol/L"
+  "mmol/L": " mmol/L"

@@ -2,19 +2,81 @@
 
 ## Stand
 
-**09.11.2026 – Phase 3, U4 abgeschlossen.**
-- U1 (Grundgerüst), U2 (Regelmotor), U3 (Fieber-Regelpaket und Migration) und U4 (Fallschema, Sampler, Fever-100)
-  sind auf dem Zweig `dev` committet.
+**09.11.2026 – Phase 3, U5 abgeschlossen.**
+- U1 bis U5 sind auf dem Zweig `dev` committet: Grundgerüst, Regelmotor, Fieber-Regelpaket mit Migration, Fallschema
+  mit Sampler und Fever-100, Darstellung mit Prompt, Antwortschema und Prüfvermerken.
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U4 unter Windows und Linux grün (Lauf 42569793312 auf `90aaa3c`).
+- Die CI ist für U4 unter Windows und Linux grün (Lauf 42569793312 auf `90aaa3c`); der Beleg für U5 folgt nach dem
+  Push.
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
 - **Plan:** U1–U14 aus [KONZEPT.md](KONZEPT.md); v0.1 = U1–U9, v0.5 = U10–U12, v1.0 = U13–U14; GO-1 vor U13.
 
-**Nächster Schritt:** U5 (Darstellung zh/en/de, Prompt, Antwortschema, Prüfvermerke).
+**Nächster Schritt:** U6 (Variantenmodell, MR1, MR3, MR5, Varianten-Seed).
 
 ## Verlauf
+
+### 09.11.2026 – U5 Darstellung, Prompt, Antwortschema, Prüfvermerke
+**Neue Auslegungen:** A-70 bis A-73 (Falltext, Stichprobe, Prüfvermerk, Antwortprüfung).
+
+**Umgesetzt:**
+- **Vorlagen** (`src/proof/render/templates/{zh,en,de}/`): je Sprache Falltext, Systemprompt und Sprachtabelle,
+  gerendert in der Jinja2-Sandbox mit `StrictUndefined` (KONZEPT §7).
+- **Falltext** (`src/proof/render/case_text.py`, A-70):
+  - Aufbau der Langform des Prototyps: Kopfzeile mit Patient und Vorstellungsgrund, dann Anamnese, Befund,
+    Vitalwerte, Labor; Einschätzung, DDx und nächste Schritte entfallen.
+  - Zahlen mit den Nachkommastellen des Fakts und dem Dezimaltrennzeichen der Sprache, Einheiten in der üblichen Form
+    der Sprache; Laborfakten mit Laborprofil zeigen ihren Referenzbereich, aber kein Statuszeichen.
+  - Jede Darstellung hält fest, wo jeder Fakt steht. Die Reihenfolge der Abschnitte ist ein Parameter für MR3.
+  - Die Beschwerde hat Bezeichnungen je Sprache im Domänenpaket (`complaint_labels`).
+- **Systemprompt** (`src/proof/render/prompt.py`, A-12): synthetischer Fall, genau ein JSON-Objekt mit sechs
+  Schlüsseln, die drei Entscheidungen mit den Worten aus PRD §5, alle erlaubten Codes mit Bezeichnung; keine Schwelle
+  einer Regel.
+- **Antwortschema** (`src/proof/scoring/response.py`): Modell `Response`, JSON Schema `schema/response.schema.json`,
+  strenge Prüfung ohne Reparatur (A-13, A-73).
+- **Ärztliche Prüfung** (`src/proof/cases/review.py`):
+  - Stichprobe: mindestens 10 %, ein Fall je Ziel, deterministisch je Sammlung und Sprache (A-71). Für Fever-100 sind
+    es je Sprache 10 Fälle, die alle sieben Ziele abdecken.
+  - Prüfpaket in der Sprache des Prüfers: Systemprompt, Hashes, Stichprobe mit Text und Schlüssel, Vorlagendateien,
+    Bezeichnungen und eine Vermerkvorlage.
+  - Prüfvermerk `review/<sprache>.yaml` (A-72) und Prüfung `proof review verify`.
+  - `review/zh.yaml`, `en.yaml`, `de.yaml` liegen als Platzhalter mit den aktuellen Hashes und der Stichprobe bereit.
+- **Befehle:** `proof render <fall> --lang …` (mit `--system-prompt`), `proof review sample | packet | verify`.
+- **Doku:** `docs/methodik.md` Abschnitte 6 und 7, `review/README.md`, README.
+- **Abhängigkeit:** Jinja2 3.1.6 (BSD-3, KONZEPT §2) mit MarkupSafe 3.0.4 (BSD-3).
+
+**Beispiel** (`FEV-000001`, Auszug):
+- de: `Körpertemperatur (T): 40,4 °C`, `C-reaktives Protein (CRP): 52,4 mg/l (Referenzbereich 0–10 mg/l)`
+- en: `Body temperature (T): 40.4 °C`, `White blood cell count (WBC): 9.1 ×10⁹/L`
+- zh: `体温：40.4℃`, `心率（HR）：101次/分`, `C反应蛋白（CRP）：52.4 mg/L（参考范围：0–10 mg/L）`
+
+**Geprüft** (lokal, Windows 11, Python 3.12.15):
+- `uv run pytest --cov`: 662 Tests grün, Abdeckung 99,30 % (5:11 min). Danach kam ein Test für einseitige
+  Referenzbereiche hinzu, einzeln grün; die ganze Suite mit 663 Tests läuft in der CI.
+- `ruff check` und `ruff format --check`: sauber.
+- Schemata und `docs/regeln.md` aktuell (`--check`).
+- Lizenzprüfung: 55 Pakete, 0 abgebrochen, 0 gemeldet.
+- Wheel neu gebaut und frisch installiert: Es enthält alle Vorlagen; `proof render` läuft damit.
+- `proof review verify` weist die ausgelieferten Vermerke wegen der Platzhalter ab, wie vorgesehen.
+
+**Nicht lokal ausgeführt:** `pip-audit`; die Prüfung läuft in der CI.
+
+**Offen (manuell, bei dir):**
+- Ärztliche Prüfung je Sprache, für zh mit Klinikpraxis in China. Das Prüfpaket erzeugt
+  `proof review packet --lang <sprache> --collection data/collections/fever-100`.
+- Die zh-Texte (Vorlagen und Bezeichnungen) stammen von mir; ihre Natürlichkeit prüft die zh-Prüfung (RK-10).
+
+**Abnahme U5 (DoD aus KONZEPT.md):** erfüllt, der CI-Beleg folgt.
+- Jeder Fall von Fever-100 wird in zh, en und de dargestellt, jeder Fakt hat seine Textstelle
+  (`test_every_fact_of_every_case_appears_in_every_language`).
+- Kein Diagnose-, Warnzeichen- oder Einschätzungstext im Fall (`test_texts_hold_no_assessment_diagnosis_or_red_flag`).
+- Der Prompt nennt alle erlaubten Codes (`test_the_prompt_names_every_allowed_code_and_the_format`).
+- `review verify` weist fehlenden Vermerk, Platzhalter, reine Vorprüfung und abweichende Hashes ab
+  (`test_a_missing_record_is_rejected`, `test_shipped_records_are_placeholders_with_current_hashes`,
+  `test_a_pre_review_alone_is_rejected`, `test_changed_templates_invalidate_the_review`).
+- Stichprobe deterministisch und mindestens 10 % (`test_sample_size_is_at_least_ten_percent`,
+  `test_the_sample_is_deterministic_and_covers_every_target`).
 
 ### 09.11.2026 – U4 Fallschema, Sampler, Fever-100
 **Neue Auslegungen:** A-66 bis A-69 (Sampler über die Regeln, Hintergrundverteilungen, Patient, Sammlungen).
