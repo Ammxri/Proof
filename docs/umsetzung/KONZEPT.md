@@ -95,6 +95,9 @@ Jeder Fakt hat folgende Angaben:
 
 Daneben stehen zwei Listen: irrelevante Fakten für MR4 und Widerspruchsvorlagen für MR7, beide mit Anwendungsbedingung.
 
+Nachtrag U10 (A-86 bis A-88): Beide Listen stehen als `irrelevant` und `contradictions` im `catalog.yaml` des
+Domänenpakets. Alternative Einheiten (`alt_units`) gibt es nur für Umrechnungen aus Definitionen.
+
 ### 4.2 Wortschatz
 `ddx.*` und `rf.*` mit Bezeichnung je Sprache. Die erlaubten Codes einer Antwort sind:
 - `ddx` und `red_flags` aus diesem Wortschatz;
@@ -178,6 +181,10 @@ Herkunft und Zählwerte stehen in `collection.json`:
 Widerspruch, Gesprächsschritte), `facts`, `render`, `key` (neu berechnet, dazu `required_questions`) und `expectation`:
 - `kind: absolute`: Sollwerte, z. B. `decision: ask`, `questions_include: [vital.resp_rate]`;
 - `kind: invariant`: Vergleichsfelder gegen die Antwort auf den Basisfall (A-14).
+
+Nachtrag U10 (A-89): Änderungsarten `remove_field`, `permute_sections`, `add_facts`, `language_pair`,
+`change_notation`, `insert_contradiction`. Eine absolute Erwartung enthält nur die gesetzten Ziele, bei MR7
+`contradictions_include`.
 
 ### 4.8 Antwort (PR-P01)
 Genau sechs Schlüssel: `decision`, `ddx`, `questions`, `red_flags`, `contradictions`, `rationale`. Alle Listen enthalten

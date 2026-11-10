@@ -1,14 +1,14 @@
 {
   "collection": "fever-100",
   "collection_sha256": "5192269bce88e2ade73cfc48a0304068dd1cf0e001ff51c9ab41caed8dae8125",
-  "created_utc": "2026-11-09T07:28:41Z",
+  "created_utc": "2026-11-10T16:22:30Z",
   "domain": "fever",
   "git": {
-    "commit": "19af3699e32d4b3a832a3bab32efbf6a16468863",
+    "commit": "87ba92d7c3e81e3a71423973e286cb54877586e2",
     "dirty": false
   },
   "inputs": {
-    "catalog_sha256": "099c263203032ab41092b16ec892151440513f175d3f6efcdc8527c77f2e5933",
+    "catalog_sha256": "a7395f7f522199fc1a98c4933588713003d7da41193474f50bc066cca1c62abc",
     "profiles_sha256": {
       "lab.bilirubin_umol_l": "11388845dca0640b029d33312f95be25ff15fbb3094cb8b3801ad0fe7b41034d",
       "lab.creatinine_umol_l": "21ff3713297079ed5b4ca1d6ab07593be0a85afa28a7262a68f013419242d3e9",
@@ -19,7 +19,7 @@
     "sampler_sha256": "04b2b3ea9db790f2771129c55f115424302491f9966bdb5bbd4d52fb1d42c4f6",
     "schema_sha256": "a43e2eb52c5dbf3b7de49332fc768b5782499f8d2656ad2023b32019ca680905",
     "sources_sha256": "ed346674b8f5e91c5f80a10533cdeff2e05aeb8fec60d78eb099bfe22e3dd324",
-    "variant_schema_sha256": "4b11b77e4cb99a91ce1628f7cef82c701b7fdccf4bf5e70cfa651efe105bdf88",
+    "variant_schema_sha256": "7229b0b65e8805b2b207e5c5bfccd071b167f2ab655dea00dfd02181aab6ed03",
     "vocabulary_sha256": "59c192fb259c3bdf91e35ad55f811a1c76e104a82816fd399160e388d7123f51"
   },
   "kind": "variants",
@@ -39,6 +39,10 @@
   "proof_version": "0.1.0.dev0",
   "rules_version": "0.1.0.dev0",
   "summary": {
+    "discarded": {
+      "MR1": 0,
+      "MR3": 0
+    },
     "missing": {
       "MR1": 0,
       "MR3": 0

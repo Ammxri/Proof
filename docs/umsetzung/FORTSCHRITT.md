@@ -2,11 +2,12 @@
 
 ## Stand
 
-**10.11.2026 – Phase 3, U9 abgeschlossen; v0.1 (U1–U9) ist umgesetzt, manuelle Reste sind offen.**
-- U1 bis U9 sind auf dem Zweig `dev` committet.
+**10.11.2026 – Phase 3, U10 abgeschlossen; v0.1 (U1–U9) ist umgesetzt, manuelle Reste sind offen.**
+- U1 bis U10 sind auf dem Zweig `dev` committet.
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
 - Die CI ist für U9 unter Windows und Linux grün (Lauf 42628688836 auf `9cd4515`, Lauf 42800130023 auf `08a9137`).
 - Volllauf Qwen und Entwurfspaket Fever-100 sind belegt (Eintrag vom 10.11.2026).
+- U10: Varianten MR2, MR4, MR6, MR7 (Eintrag vom 10.11.2026). Die CI für U10 steht im Eintrag.
 - **Manuell offen für v0.1:** ärztliche Prüfung je Sprache (`review/*.yaml`), Stand der SynthEHR-Datenlizenz in
   `data/card.yaml`, Läufe westlicher Modelle von EU-Servern (PR-N03).
 
@@ -14,9 +15,75 @@
   Abhängigkeit zu NeuroGrid.
 - **Plan:** U1–U14 aus [KONZEPT.md](KONZEPT.md); v0.1 = U1–U9, v0.5 = U10–U12, v1.0 = U13–U14; GO-1 vor U13.
 
-**Nächster Schritt:** U10 (Varianten MR2, MR4, MR6, MR7).
+**Nächster Schritt:** U11 (Bericht, Rangliste, Freitext-Spur).
 
 ## Verlauf
+
+### 10.11.2026 – U10: Varianten MR2, MR4, MR6, MR7
+**Umgesetzt** (Commits `5c26d8b`, `87ba92d` und dieser Eintrag):
+- **MR2** lässt ein Feld weg, das im Basisfall nicht kritisch ist. Die Ausgabe des Regelwerks bleibt die des
+  Basisfalls, es gibt keine Pflichtfrage. Erwartet werden gleiche Entscheidung und gleiche Diagnosen wie in der Antwort
+  auf den Basisfall; in S3 zählt MR2 als unvollständig (A-85).
+- **MR4** fügt einen irrelevanten Fakt aus der neuen Katalogliste `irrelevant` hinzu, der zum Patienten passt
+  (A-86). Kein solcher Fakt ist Katalogfeld; keine Regel kann ihn nutzen.
+- **MR6** zeigt Fakten in °F, mg/dL oder 10³/µL und, oder, Bezeichnungen als Abkürzung (A-87). Gezeigte Werte und
+  Referenzgrenzen werden zurückgerechnet; ändert sich ein Regelwert, wird die Variante verworfen und gezählt (A-39).
+- **MR7** fügt eine Angabe aus der Katalogliste `contradictions` ein, deren Bedingung auf den Fakten gilt, und
+  erwartet den Feldcode unter `contradictions` (A-88).
+- Lauf und Bewertung behandeln alle sieben Relationen. Neue Module: `src/proof/render/units.py` (Umrechnung,
+  Rundung), `src/proof/variants/notation.py` (Rundtrip nach A-39).
+- `docs/methodik.md` (Abschnitte 5.5, 6.4, 6.5) und README beschreiben die Relationen. Die README nennt jetzt den
+  Befehl, der den eingecheckten Satz mit `--mr MR1 --mr MR3 --mr MR5` nachbaut; ohne `--mr` entstehen alle Relationen.
+
+**Inhalte für die ärztliche Prüfung (Entwurf):**
+- Drei irrelevante Fakten: Appendektomie vor 20 Jahren (ab 30 Jahren), Brille wegen Kurzsichtigkeit, folgenlos
+  verheilte Unterarmfraktur im Kindesalter.
+- Vier Widerspruchsvorlagen: „afebril“ bei mehr als 38 °C (SRC-0001, SIRS-Grenze), „wach und voll orientiert“ bei
+  verändertem Bewusstsein, „Nacken weich und frei beweglich“ bei Nackensteifigkeit, „hustet während der Untersuchung
+  wiederholt“ bei verneintem Husten.
+- Die Texte gehören zu den Labels der Domäne. Damit ändern sich die Hashes, die ein Prüfvermerk nennt; die
+  Platzhalter in `review/*.yaml` tragen die neuen Hashes.
+- Die neuen Einheitenanzeigen stehen in `strings.yaml` je Sprache und sind damit ebenfalls Teil der Prüfung.
+
+**Fever-100 mit allen Relationen, Varianten-Seed 1** (`.proof/variants/fever-100-all`, nicht versioniert):
+
+| Relation | Varianten | Anmerkung |
+|---|---|---|
+| MR1 | 100 | `ask` 57, `refer_urgent` 43 (wie in v0.1) |
+| MR2 | 100 | 18 verschiedene Felder; am häufigsten `hx.dyspnea` 14, `hx.onset_days` 13 |
+| MR3 | 100 | |
+| MR4 | 100 | Brille 40, Unterarmfraktur 33, Appendektomie 27 |
+| MR5 | 300 | drei Sprachpaare je Fall |
+| MR6 | 100 | 95 mit Einheitenwechsel, 49 mit Abkürzungen; 0 verworfen |
+| MR7 | 98 | „afebril“ 43, Husten 24, Bewusstsein 22, Nacken 9; 2 Fälle ohne passende Vorlage |
+
+- Je Sprache 698 Einheiten mit Anfrage: 100 Fälle und 598 Varianten.
+- `proof variants build` 6,8 s, `proof variants validate` 11,2 s (prüft jede Variante und baut den Satz neu).
+- MR6 verwirft auf Fever-100 nichts, weil alle Umrechnungen fein genug runden. Die Verwerfung selbst prüfen Tests mit
+  gröberer Rundung (ganze °F, ganze mg/dL), die Regel- und Referenzgrenzen kippen lassen.
+
+**Eingecheckter Satz und Volllauf U9:**
+- Die neuen Katalogangaben ändern den Katalog-Hash. `collection.json` und `variants/1/variants.json` sind deshalb aus
+  dem sauberen Stand neu verzeichnet. `cases.jsonl` und `variants.jsonl` sind bytegleich; `cases_sha256` bleibt
+  `5192269b…`.
+- Der Satz `variants/1` bleibt der v0.1-Satz mit MR1, MR3 und MR5 (A-89).
+- Der Volllauf Qwen aus U9 lässt sich damit unverändert neu bewerten. Eine Kopie von `.proof/runs/u9-fever100`, neu
+  bewertet, ergibt dieselben Kennzahlen; nur der Zeitstempel des Profils unterscheidet sich.
+
+**Geprüft:**
+- ruff check und ruff format sauber.
+- Neue Tests: `tests/unit/test_variant_relations.py` (22), dazu Modell-, Lader-, Darstellungs- und Bewertungstests.
+- Angepasst wurden Erwartungen, die vom Standard „alle Relationen“ abhängen: Einheitenzahlen der Stub-Läufe und
+  Fehlertexte für eine noch nicht gebaute Relation (jetzt MR8). Keine Prüfung entfiel. Der Test des eingecheckten
+  Satzes baut ihn mit seinen Relationen MR1, MR3, MR5 nach.
+- Das Testpaket `demo` hat dafür eine kleine MR4- und MR7-Liste mit Testtexten.
+
+**Abnahme U10 (KONZEPT §10):**
+- MR2 entfernt nur Felder, deren Ablation nichts ändert: erfüllt.
+- MR4-Fakten werden von keiner aktiven Regel genutzt und ändern die Ausgabe nicht: erfüllt.
+- MR6 erhält in der Rundung alle Regelwerte, sonst wird verworfen und gezählt (A-39); Umrechnungen getestet: erfüllt.
+- MR7 nur, wo die Vorlage passt, Erwartung enthält den Feldcode: erfüllt.
+- PR-F06, PR-MR2, PR-MR4, PR-MR6 und PR-MR7 sind in der Matrix erfüllt. Fever-500 mit MR1–MR7 folgt in U12.
 
 ### 10.11.2026 – U9 abgeschlossen: Volllauf Qwen, Entwurfspaket Fever-100, CI
 **Fehler gefunden und behoben:** Das Lauf-Manifest las den git-Stand erst beim Schreiben. Wurde während eines Laufs

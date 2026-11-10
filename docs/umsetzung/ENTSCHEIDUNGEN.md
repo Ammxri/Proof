@@ -735,6 +735,67 @@ inaktiv. Leukozyten stehen als Kontextfakt im Katalog (PRD-Beispiel); keine Rege
   - `SHA256SUMS` im Format von `sha256sum`.
 - Regelpakete und Schemas stehen unter Apache-2.0, Fälle, Varianten, Darstellungen und Prompts unter CC BY 4.0.
 
+### Annahmen aus U10
+
+**A-85 MR2.** Präzisiert PRD §6, A-14 und A-54.
+- MR2 entfernt ein Feld des Basisfalls, das dort nicht kritisch ist: Seine Ablation ändert die Ausgabe des Regelwerks
+  nicht. Die Ausgabe auf den Variantenfakten ist deshalb die des Basisfalls, und die Variante hat keine Pflichtfrage.
+- Die Erwartung ist invariant und vergleicht nur `decision` und `ddx` mit der Antwort auf den Basisfall derselben
+  Sprache (A-14).
+- In S3 zählt eine MR2-Einheit als unvollständig, weil ein Fakt des Basisfalls fehlt (A-13).
+- Ein Fall, dessen Felder alle kritisch sind, bekommt keine MR2-Variante; der Satz zählt das.
+
+**A-86 MR4.** Präzisiert PRD §6 und KONZEPT 4.1.
+- Die irrelevanten Fakten stehen als Liste `irrelevant` im `catalog.yaml` des Domänenpakets. Jeder Eintrag hat einen
+  Code in der Form eines Feldcodes, eine Bezeichnung und einen Text je Sprache und eine Anwendungsbedingung über den
+  Patienten (Geschlecht, Altersgrenzen).
+- Ein irrelevanter Fakt ist kein Katalogfeld. Damit kann keine Regel ihn nutzen; der Lader prüft das über alle Pakete,
+  die die Domäne nutzt. Er gehört auch nicht zu den erlaubten Codes einer Antwort.
+- Eine MR4-Variante fügt genau einen passenden Fakt hinzu, als letzte Zeile seines Abschnitts. Fakten und Schlüssel
+  bleiben die des Basisfalls; die Erwartung ist invariant wie bei MR3.
+- Fieber hat drei Einträge: Appendektomie vor 20 Jahren (ab 30 Jahren, das Beispiel der PRD), Brille wegen
+  Kurzsichtigkeit, folgenlos verheilte Unterarmfraktur im Kindesalter. Sie sind ein Entwurf für die ärztliche Prüfung;
+  ihre Texte gehören zu den Labels, deren Hashes ein Prüfvermerk nennt.
+
+**A-87 MR6.** Präzisiert PRD §6, A-05 und A-39.
+- MR6 nutzt nur Umrechnungen, die aus Definitionen folgen: Grad Fahrenheit (°F = °C × 1,8 + 32), Deziliter
+  (1 mg/dL = 10 mg/L) und 10⁹/L = 10³/µL. Umrechnungen über eine Molmasse (Kreatinin, Bilirubin) entfallen, bis eine
+  geprüfte Quelle sie belegt.
+- Die Einheiten stehen als `alt_units` am Katalogfeld. Faktor und Versatz gelten als die Dezimalzahlen, als die sie
+  geschrieben sind; die Umrechnung ist exakt, gerundet wird halb von null weg auf die Stellen der Einheit.
+- Eine Variante wählt je umrechenbarem Fakt die kanonische oder eine alternative Einheit und dazu, ob Bezeichnungen als
+  Abkürzung erscheinen. Ohne Abkürzung im Katalog bleibt die Bezeichnung. Die Schreibweise des Basisfalls selbst ist
+  ausgeschlossen.
+- Der Referenzbereich eines Laborwerts wird mit umgerechnet. A-39 prüft gezeigte Werte und gezeigte Referenzgrenzen
+  zurückgerechnet: Jede aktive Regel muss denselben Wahrheitswert behalten. Sonst wird die Variante verworfen und im
+  Satz unter `discarded` gezählt, getrennt von `missing` (zu wenige Möglichkeiten).
+- Die Erwartung ist invariant wie bei MR3.
+
+**A-88 MR7.** Präzisiert PRD §6, A-15 und KONZEPT 4.1.
+- Die Widerspruchsvorlagen stehen als Liste `contradictions` im `catalog.yaml` des Domänenpakets. Eine Vorlage nennt
+  das widersprochene Feld, eine Bedingung allein über dieses Feld (in der Bedingungssprache der Regeln), Quellen für
+  Schwellen, den Abschnitt der Angabe und Bezeichnung und Text je Sprache.
+- Eine Vorlage passt, wenn ihre Bedingung auf den Fakten des Basisfalls wahr ist. Die Variante fügt ihre Angabe als
+  letzte Zeile des Abschnitts ein; Fakten und Schlüssel bleiben die des Basisfalls. Ein Fall ohne passende Vorlage
+  bekommt keine MR7-Variante; der Satz zählt das.
+- Die Erwartung ist absolut und hat nur ein Ziel: Der Feldcode steht unter `contradictions`. Die Entscheidung ist kein
+  Ziel, weil die PRD nur verlangt, dass der Widerspruch gemeldet wird.
+- Fieber hat vier Vorlagen: „afebril“ bei mehr als 38 °C (Fiebergrenze der SIRS-Kriterien, SRC-0001), „wach und voll
+  orientiert“ bei verändertem Bewusstsein, „Nacken weich und frei beweglich“ bei Nackensteifigkeit, „hustet während
+  der Untersuchung wiederholt“ bei verneintem Husten. Sie sind ein Entwurf für die ärztliche Prüfung wie in A-86.
+
+**A-89 Variantenformat und eingecheckter Satz.** Präzisiert KONZEPT 4.7 und A-75.
+- Änderungsarten: `remove_field` (MR1, MR2), `permute_sections` (MR3), `add_facts` (MR4), `language_pair` (MR5),
+  `change_notation` (MR6), `insert_contradiction` (MR7). `facts` sind die kodierten Fakten, aus denen der Schlüssel
+  berechnet wird; `render` hält die Abschnittsreihenfolge. Was MR4, MR6 und MR7 am Text ändern, folgt aus der
+  Änderung und dem Katalog.
+- Eine absolute Erwartung enthält nur die Ziele, die ihre Relation setzt (`decision`, `questions_include`,
+  `contradictions_include`). MR1-Varianten aus v0.1 behalten damit Byte für Byte ihre Form.
+- `proof variants build` baut ohne `--mr` alle Relationen MR1 bis MR7.
+- Der eingecheckte Satz `fever-100/variants/1` bleibt der Satz von v0.1 mit MR1, MR3 und MR5. Seine Varianten sind
+  bytegleich; nur `variants.json` nennt die neuen Eingabe-Hashes. So bleibt der Volllauf aus U9 nachrechenbar. Sätze
+  mit allen Relationen kommen mit Fever-500 (U12).
+
 ## Entscheidungen des Projektverantwortlichen
 
 **D-01 Projekte sind voneinander unabhängig (08.11.2026).** Deine Vorgabe: „nichts abändern. Das heißt, nichts von
