@@ -63,12 +63,12 @@ def test_score_and_compare_two_stub_runs(stub, home, demo):
     state.mode = "invalid"
     second = _run(url, demo, home, "b", "stub-model-b")
     run_a, run_b = runs.load_run(first, packs), runs.load_run(second, packs)
-    assert len(run_a.inputs) == 18  # 3 cases, their MR1 and MR3 variants, in 2 languages
+    assert len(run_a.inputs) == 42  # 3 cases and their MR1-MR4, MR6 and MR7 variants, in 2 languages
     profile_a, profile_b = runs.profile(run_a), runs.profile(run_b)
     assert profile_a["metrics"]["S7_format"]["all"]["value"] == 1.0
     assert profile_b["metrics"]["S7_format"]["all"]["value"] == 0.0
     assert profile_a["deterministic"] is True and profile_a["langs"] == ["zh", "en"]
-    assert set(profile_a["metrics"]["S5_invariance"]) == {"MR1", "MR3", "MR5"}
+    assert set(profile_a["metrics"]["S5_invariance"]) == {"MR1", "MR2", "MR3", "MR4", "MR5", "MR6", "MR7"}
     # The stub always answers "answer" with ddx.alpha; run a's metrics follow from the keys.
     keys = [unit.truth for unit in run_a.inputs]
     expected_s1 = sum(truth.determinability == "answer" for truth in keys)
@@ -76,7 +76,7 @@ def test_score_and_compare_two_stub_runs(stub, home, demo):
     result = runs.compare(run_a, run_b)
     changed = {change["metric"]: change for change in result["metrics"]}
     assert changed["S7_format.all"] == {"metric": "S7_format.all", "a": 1.0, "b": 0.0, "delta": -1.0}
-    assert len(result["units_changed"]) == 18
+    assert len(result["units_changed"]) == 42
     assert all(item["a"]["valid"] and not item["b"]["valid"] for item in result["units_changed"])
     assert result["units_only_in_a"] == result["units_only_in_b"] == []
     same = runs.compare(run_a, runs.load_run(first, packs))
@@ -91,12 +91,12 @@ def test_score_and_compare_from_the_command_line(stub, home, demo, tmp_path):
     second = _run(url, demo, home, "b", "stub-model-b")
     result = runner.invoke(app, ["score", str(first), "--packs", str(packs)])
     assert result.exit_code == 0, result.output
-    assert "S1 decision: " in result.output and "S7 format: 1.0000 (18/18)" in result.output
+    assert "S1 decision: " in result.output and "S7 format: 1.0000 (42/42)" in result.output
     assert "S5 invariance MR5: violations" in result.output and "S6 spread of S1_decision" in result.output
     data = json.loads((first / "profile.json").read_text(encoding="utf-8"))
     assert data["kind"] == "profile" and data["run_status"] == "complete"
     result = runner.invoke(app, ["score", str(second), "--packs", str(packs)])
-    assert result.exit_code == 0 and "16 answered" in result.output and "2 without answer" in result.output
+    assert result.exit_code == 0 and "40 answered" in result.output and "2 without answer" in result.output
     out = tmp_path / "comparison.json"
     result = runner.invoke(app, ["compare", str(first), str(second), "--out", str(out), "--packs", str(packs)])
     assert result.exit_code == 0, result.output

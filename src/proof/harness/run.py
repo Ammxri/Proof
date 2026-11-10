@@ -1,8 +1,8 @@
 """Test run (PR-F07, PR-N01, PR-N02, PR-N03, PR-N05, UF-02): every unit of a collection sent to one provider.
 
-A *unit* is one item in one language: a base case, or a variant with a request of its own (MR1, MR3; MR5 compares
-base answers, A-74). Its messages are the system prompt of the language and the item's text; its request hash keys the
-cache (A-19).
+A *unit* is one item in one language: a base case, or a variant with a request of its own (MR1 to MR4, MR6, MR7;
+MR5 compares base answers, A-74). Its messages are the system prompt of the language and the item's text; its
+request hash keys the cache (A-19).
 
 A run lives in ``$PROOF_HOME/runs/<run id>/``:
 

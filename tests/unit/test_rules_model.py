@@ -12,9 +12,12 @@ from pydantic import ValidationError
 from proof_rules.model import (
     Catalog,
     Compare,
+    ContradictionTemplate,
     DomainSettings,
     FieldDef,
+    IrrelevantFact,
     PackConfig,
+    PatientCondition,
     RefRange,
     Rule,
     Source,
@@ -309,3 +312,63 @@ def test_pack_configuration():
     without_labels = {key: value for key, value in settings.items() if key != "complaint_labels"}
     with pytest.raises(ValidationError, match="complaint_labels"):
         DomainSettings.model_validate(without_labels)
+
+
+# --- Lists of the variants (MR4, MR7; KONZEPT 4.1) -------------------------------------------------------------------
+
+LINE = {
+    "zh": {"name": "备注", "value": "无发热"},
+    "en": {"name": "Note", "value": "afebrile"},
+    "de": {"name": "Anmerkung", "value": "afebril"},
+}
+IRRELEVANT = {"code": "hx.visual_aid", "when": {}, "labels": LINE}
+TEMPLATE = {
+    "id": "FEV-MR7-001",
+    "field": "vital.temp_c",
+    "section": "exam",
+    "when": {"field": "vital.temp_c", "op": "gt", "value": 38.0},
+    "labels": LINE,
+}
+
+
+def test_patient_conditions():
+    assert PatientCondition().fits("f", 18)
+    older_women = PatientCondition(sex=("f",), min_age=30, max_age=80)
+    assert older_women.fits("f", 30) and older_women.fits("f", 80)
+    assert not older_women.fits("m", 40) and not older_women.fits("f", 29) and not older_women.fits("f", 81)
+    with pytest.raises(ValidationError, match="sexes must be distinct"):
+        PatientCondition(sex=("f", "f"))
+    with pytest.raises(ValidationError, match="min_age must not exceed max_age"):
+        PatientCondition(min_age=50, max_age=40)
+    with pytest.raises(ValidationError, match="Input should be 'f' or 'm'"):
+        PatientCondition(sex=("x",))
+
+
+def test_irrelevant_facts_and_contradiction_templates():
+    fact = IrrelevantFact.model_validate(IRRELEVANT)
+    assert fact.section == "hx" and fact.when == PatientCondition()
+    with pytest.raises(ValidationError, match="Field required"):
+        IrrelevantFact.model_validate({key: value for key, value in IRRELEVANT.items() if key != "when"})
+    with pytest.raises(ValidationError, match="must not start or end with whitespace"):
+        IrrelevantFact.model_validate(
+            {**IRRELEVANT, "labels": {**LINE, "de": {"name": "Sehhilfe", "value": " Brille"}}}
+        )
+    template = ContradictionTemplate.model_validate(TEMPLATE)
+    assert template.sources == ()
+    with pytest.raises(ValidationError, match=r"must compare vital.temp_c and nothing else"):
+        ContradictionTemplate.model_validate(
+            {**TEMPLATE, "when": {"all": [TEMPLATE["when"], {"field": "hx.cough", "op": "eq", "value": False}]}}
+        )
+
+
+def test_catalog_lists_are_unique_and_apart_from_the_fields():
+    temperature = _field()
+    catalog = Catalog(fields=(temperature,), irrelevant=(IRRELEVANT,), contradictions=(TEMPLATE,))
+    assert catalog.irrelevant_fact("hx.visual_aid").code == "hx.visual_aid"
+    assert catalog.contradiction("FEV-MR7-001").field == "vital.temp_c"
+    with pytest.raises(ValidationError, match=r"duplicate irrelevant facts: hx.visual_aid"):
+        Catalog(irrelevant=(IRRELEVANT, IRRELEVANT))
+    with pytest.raises(ValidationError, match=r"irrelevant facts must not be catalog fields: vital.temp_c"):
+        Catalog(fields=(temperature,), irrelevant=({**IRRELEVANT, "code": "vital.temp_c"},))
+    with pytest.raises(ValidationError, match="duplicate contradiction ids: FEV-MR7-001"):
+        Catalog(contradictions=(TEMPLATE, TEMPLATE))

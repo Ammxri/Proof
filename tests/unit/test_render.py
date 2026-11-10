@@ -174,6 +174,8 @@ def test_every_unit_of_every_domain_has_a_display(fever, fixture_packs):
             for field in domain.catalog.fields:
                 if field.unit is not None:
                     assert field.unit in table.units, (lang, field.unit)
+                for alt in field.alt_units:
+                    assert alt.unit in table.units, (lang, alt.unit)
     field = fever.catalog.get("vital.temp_c").model_copy(update={"unit": "K"})
     with pytest.raises(RenderError, match="no display for unit 'K'"):
         case_text.format_value(field, 300.0, "de")
@@ -229,3 +231,52 @@ def test_open_reference_ranges(fever):
     assert case_text.format_reference(field, RefRange(upper=10), "de") == "≤ 10 mg/l"
     assert case_text.format_reference(field, RefRange(lower=0.5), "en") == "≥ 0.5 mg/L"
     assert case_text.format_reference(field, RefRange(lower=0, upper=10), "zh") == "0–10 mg/L"
+
+
+def test_reference_ranges_in_an_alternative_unit(fever):
+    """MR6: the reference range is converted with the value, in the decimals of the alternative unit."""
+    field = fever.catalog.get("lab.crp_mg_l")
+    alt = field.alt_units[0]
+    assert case_text.format_reference(field, RefRange(upper=10), "de", alt) == "≤ 1,00 mg/dl"
+    assert case_text.format_reference(field, RefRange(lower=0.5), "en", alt) == "≥ 0.05 mg/dL"
+    assert case_text.format_reference(field, RefRange(lower=0, upper=10), "zh", alt) == "0.00–1.00 mg/dL"
+    assert case_text.format_value(field, 52.4, "de", alt) == "5,24 mg/dl"
+    assert case_text.format_value(fever.catalog.get("hx.cough"), True, "en", alt) == "yes", "only numbers convert"
+
+
+def test_notation_and_added_lines(fever, cases):
+    """MR6 and MR4/MR7 options of render_facts: abbreviations, alternative units, added lines with their spans."""
+    case = cases[0]
+    extra = [
+        case_text.ExtraLine(key="hx.visual_aid", section="hx", name="Sehhilfe", value="Brille"),
+        case_text.ExtraLine(key="FEV-MR7-001", section="exam", name="Anmerkung", value="afebril"),
+    ]
+    rendering = render_facts(
+        fever, "de", case.patient, case.facts, units={"vital.temp_c": "°F"}, abbreviations=True, extra=extra
+    )
+    assert set(rendering.spans) == set(case.facts)
+    assert rendering.extra_text("hx.visual_aid") == "Sehhilfe: Brille"
+    assert rendering.extra_text("FEV-MR7-001") == "Anmerkung: afebril"
+    assert rendering.fact_text("vital.temp_c").startswith("T: ") and rendering.fact_text("vital.temp_c").endswith("°F")
+    assert rendering.fact_text("hx.cough").startswith("Husten: "), "no abbreviation, the name stays"
+    plain = render_facts(fever, "de", case.patient, case.facts)
+    assert plain.extras == {} and render_case(case, fever, "de").text == plain.text
+
+
+@pytest.mark.parametrize(
+    ("options", "message"),
+    [
+        ({"units": {"lab.unknown": "mg/dL"}}, "an alternative unit needs a fact of the case"),
+        ({"units": {"vital.temp_c": "K"}}, "no alternative unit 'K'"),
+        ({"units": {"vital.sbp": "kPa"}}, r"no alternative unit 'kPa' \(available: none\)"),
+        ({"extra": [case_text.ExtraLine("hx.x", "history", "a", "b")]}, "unknown section 'history'"),
+        ({"extra": [case_text.ExtraLine("hx.x", "hx", "a", "b")] * 2}, "added lines need distinct keys"),
+        ({"extra": [case_text.ExtraLine("hx.cough", "hx", "a", "b")]}, "needs a key of its own"),
+        ({"extra": [case_text.ExtraLine("", "hx", "a", "b")]}, "needs a key of its own"),
+        ({"extra": [case_text.ExtraLine(f"a{case_text.END}", "hx", "a", "b")]}, "needs a key of its own"),
+    ],
+)
+def test_bad_notation_or_lines_are_refused(fever, cases, options, message):
+    case = cases[0]
+    with pytest.raises(RenderError, match=message):
+        render_facts(fever, "en", case.patient, case.facts, **options)

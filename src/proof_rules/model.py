@@ -168,7 +168,10 @@ class Bounds(_Model):
 
 
 class AltUnit(_Model):
-    """Alternative unit for display (MR6): ``shown = canonical * factor + offset``, rounded to ``decimals``."""
+    """Alternative unit for display (MR6): ``shown = canonical * factor + offset``, rounded to ``decimals``.
+
+    Factor and offset are read as the decimal numbers they are written as; rounding is half away from zero.
+    """
 
     unit: Text
     factor: Number
@@ -291,8 +294,67 @@ class FieldDef(_Model):
         return None
 
 
+class LineLabel(_Model):
+    """A line of the case text that is no catalog fact (MR4, MR7): a name and the text after it."""
+
+    name: Text
+    value: Text
+
+
+class LineLabels(_Model):
+    zh: LineLabel
+    en: LineLabel
+    de: LineLabel
+
+
+Sex = Literal["f", "m"]
+
+
+class PatientCondition(_Model):
+    """When an irrelevant fact fits a patient: the sexes it fits (any if empty) and an inclusive age range."""
+
+    sex: tuple[Sex, ...] = ()
+    min_age: Annotated[StrictInt, Field(ge=0)] | None = None
+    max_age: Annotated[StrictInt, Field(ge=0)] | None = None
+
+    @model_validator(mode="after")
+    def _consistent(self) -> PatientCondition:
+        if _duplicates(self.sex):
+            raise ValueError("sexes must be distinct")
+        if self.min_age is not None and self.max_age is not None and self.min_age > self.max_age:
+            raise ValueError("min_age must not exceed max_age")
+        return self
+
+    def fits(self, sex: str, age: int) -> bool:
+        if self.sex and sex not in self.sex:
+            return False
+        if self.min_age is not None and age < self.min_age:
+            return False
+        return self.max_age is None or age <= self.max_age
+
+
+class IrrelevantFact(_Model):
+    """A fact no rule uses, for MR4 (KONZEPT 4.1): one more line in the section its code names.
+
+    Its code has the shape of a field code but is no catalog field, so no rule can refer to it (loader). ``when`` is
+    its condition of use: the patients it fits.
+    """
+
+    code: FieldCode
+    labels: LineLabels
+    when: PatientCondition
+
+    @property
+    def section(self) -> str:
+        return self.code.split(".", 1)[0]
+
+
 class Catalog(_Model):
+    """Facts of a domain, plus the two lists of the variants: irrelevant facts (MR4) and contradictions (MR7)."""
+
     fields: tuple[FieldDef, ...] = ()
+    irrelevant: tuple[IrrelevantFact, ...] = ()
+    contradictions: tuple[ContradictionTemplate, ...] = ()
     _index: dict[str, FieldDef] = PrivateAttr(default_factory=dict)
 
     @model_validator(mode="after")
@@ -300,6 +362,16 @@ class Catalog(_Model):
         duplicates = _duplicates(field.code for field in self.fields)
         if duplicates:
             raise ValueError(f"duplicate field codes: {', '.join(duplicates)}")
+        codes = set(self.codes())
+        duplicates = _duplicates(fact.code for fact in self.irrelevant)
+        if duplicates:
+            raise ValueError(f"duplicate irrelevant facts: {', '.join(duplicates)}")
+        clashing = sorted(fact.code for fact in self.irrelevant if fact.code in codes)
+        if clashing:
+            raise ValueError(f"irrelevant facts must not be catalog fields: {', '.join(clashing)}")
+        duplicates = _duplicates(template.id for template in self.contradictions)
+        if duplicates:
+            raise ValueError(f"duplicate contradiction ids: {', '.join(duplicates)}")
         return self
 
     def model_post_init(self, context: Any, /) -> None:
@@ -310,6 +382,12 @@ class Catalog(_Model):
 
     def codes(self) -> tuple[str, ...]:
         return tuple(field.code for field in self.fields)
+
+    def irrelevant_fact(self, code: str) -> IrrelevantFact | None:
+        return next((fact for fact in self.irrelevant if fact.code == code), None)
+
+    def contradiction(self, template_id: str) -> ContradictionTemplate | None:
+        return next((template for template in self.contradictions if template.id == template_id), None)
 
 
 # --- Vocabulary ------------------------------------------------------------------------------------------------------
@@ -425,6 +503,31 @@ Condition = Annotated[
 
 for _model in (AllOf, AnyOf, Not, AtLeast):
     _model.model_rebuild()
+
+
+class ContradictionTemplate(_Model):
+    """A statement that contradicts a fact, for MR7 (KONZEPT 4.1, A-15).
+
+    It fits a case when ``when``, which compares only ``field``, is true on the case's facts; ``sources`` back its
+    thresholds. The statement is one more line of ``section``; the answer must name ``field`` among its
+    contradictions.
+    """
+
+    id: RuleId
+    field: FieldCode
+    section: Section
+    when: Condition
+    sources: tuple[SourceRef, ...] = ()
+    labels: LineLabels
+
+    @model_validator(mode="after")
+    def _compares_its_field(self) -> ContradictionTemplate:
+        if fields_of(self.when) != {self.field}:
+            raise ValueError(f"the condition must compare {self.field} and nothing else")
+        return self
+
+
+Catalog.model_rebuild()
 
 
 def children(condition: Condition) -> tuple[Condition, ...]:

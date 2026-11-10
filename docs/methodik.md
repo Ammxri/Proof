@@ -247,26 +247,47 @@ recomputed by the rule set; its expectation is machine-readable (A-14):
 | Relation | Change | Expectation |
 |---|---|---|
 | MR1 | one critical field of the base case is left out | absolute: the decision the rules give on the variant (`ask`, or `refer_urgent` if another red flag stays visible) and the removed field among the questions |
+| MR2 | one field that is not critical is left out: removing it alone changes nothing in the rules' output | invariant: decision and diagnoses as in the answer to the base case |
 | MR3 | the four sections appear in another order | invariant: decision, diagnoses, red flags and questions as in the answer to the base case |
+| MR4 | an irrelevant fact is added, e.g. an appendectomy 20 years ago | invariant: decision, diagnoses, red flags and questions as in the answer to the base case |
 | MR5 | the base case in two languages (zh–en, zh–de, en–de) | invariant: the two answers to the base case agree |
+| MR6 | facts shown in other units (°C → °F, mg/L → mg/dL, G/L → 10³/µL) and, or, names as abbreviations | invariant: decision, diagnoses, red flags and questions as in the answer to the base case |
+| MR7 | a statement contradicts a fact, e.g. "afebrile" at 39.2 °C | absolute: the field code of that fact among the contradictions |
 
 - A variant does not depend on the language: it is rendered in zh, en and de with the same facts and order, so the
   three languages see identical items (decision A-74). MR5 needs no request of its own; it compares the answers to the
   base case (A-37).
-- Which field MR1 removes and which order MR3 shows is drawn from a stream of the case's seed and the *variant seed*.
-  The same variant seed gives the same variants; a new seed gives new ones, "new variants at the push of a button"
-  (PR-D02, decision A-75). Several variants per relation and case draw without repetition.
-- MR1 only removes fields that are critical in the base case; every case of Fever-100 has at least one.
+- Which field, order, fact, notation or statement a variant gets is drawn from a stream of the case's seed and the
+  *variant seed*. The same variant seed gives the same variants; a new seed gives new ones, "new variants at the push
+  of a button" (PR-D02, decision A-75). Several variants per relation and case draw without repetition.
+- MR1 only removes fields that are critical in the base case; every case of Fever-100 has at least one. MR2 only
+  removes fields that are not; the rules' output on the variant is that of the base case, and there is no required
+  question (decision A-85).
+- MR4 and MR7 take their texts from two lists of the domain's catalog (KONZEPT 4.1), each entry with a condition of
+  use. MR4 adds one irrelevant fact that fits the patient (sex, age) as the last line of its section; no rule uses it
+  (A-86). MR7 adds one statement whose condition holds on the facts, e.g. "afebrile" only above 38 °C, the fever
+  threshold of the SIRS criteria; a case without a fitting statement gets no MR7 variant (A-88). Both lists are
+  drafts for the physician review, which covers their texts in every language.
+- MR6 uses only conversions that follow from definitions: degrees Fahrenheit, the decilitre, and 10⁹/L = 10³/µL.
+  Conversions that need a molar mass (creatinine, bilirubin) are left out until a checked source gives it. A shown
+  number is rounded half away from zero; a lab value's reference range is converted with it. Read back, every number
+  must keep the value of every rule; otherwise the variant is discarded and counted (A-39, A-87).
+- Facts and key of MR4, MR6 and MR7 are those of the base case; only the text differs. MR2 units count as incomplete
+  in S3, like MR1 (A-13).
 
 A variant set lies in `<collection>/variants/<variant seed>/` with `variants.jsonl` and `variants.json` (decision
-A-75). For Fever-100 and variant seed 1: 100 MR1, 100 MR3 and 300 MR5 variants; MR1 expects `ask` 57 times and
-`refer_urgent` 43 times. Per language a model answers 300 units: 100 base cases, 100 MR1 and 100 MR3 variants.
+A-75). The set committed with Fever-100 is the one of v0.1 with variant seed 1 and MR1, MR3 and MR5: 100 MR1, 100 MR3
+and 300 MR5 variants; MR1 expects `ask` 57 times and `refer_urgent` 43 times. Per language a model answers 300 units:
+100 base cases, 100 MR1 and 100 MR3 variants. It stays as it is so that the v0.1 run can be scored again; sets with
+all relations come with Fever-500 (decision A-89). With all relations and variant seed 1, Fever-100 gives 100 variants
+each of MR1, MR2, MR3, MR4 and MR6, 98 of MR7 (two cases fit no statement) and 300 of MR5, so 698 units per language.
 
 ```bash
-uv run proof variants build --collection data/collections/fever-100 --variant-seed 1
+uv run proof variants build --collection data/collections/fever-100 --variant-seed 1 --mr MR1 --mr MR3 --mr MR5
 uv run proof variants validate data/collections/fever-100/variants/1
-uv run proof render data/collections/fever-100 --variants data/collections/fever-100/variants/1 \
-  --variant-id FEV-000001-MR3-1 --lang de
+uv run proof variants build --collection data/collections/fever-100 --variant-seed 1 --out .proof/variants/fever-100-all
+uv run proof render data/collections/fever-100 --variants .proof/variants/fever-100-all \
+  --variant-id FEV-000001-MR7-1 --lang de
 ```
 
 `validate` checks every variant against its base case (change, facts, recomputed key, expectation) and rebuilds the
@@ -324,8 +345,8 @@ invalid; nothing is repaired. A code named twice is still an allowed code (decis
 
 ### 6.4 Test run
 
-A run sends each *unit* to one model: every base case and every variant with a request of its own (MR1, MR3), each in
-every chosen language. A unit's messages are the system prompt of its language and its text.
+A run sends each *unit* to one model: every base case and every variant with a request of its own (MR1 to MR4, MR6,
+MR7), each in every chosen language. A unit's messages are the system prompt of its language and its text.
 
 - Every request has temperature 0; there is no second attempt and no JSON mode (PRD §7, A-38). A unit that fails
   (network, HTTP status, no text) is recorded as an error; `--resume` sends only units without an answer (A-36).
@@ -348,9 +369,9 @@ A run is scored deterministically against the keys of its collection and variant
 |---|---|
 | S1 decision | `decision` equals the key's determinability, over all answered units |
 | S2 questions | recall: required questions named, over units that have any; precision: named questions that are required, over all named questions |
-| S3 red flags | recall of the key's red flags, over units with at least one, separately for complete units (base cases, MR3) and incomplete ones (MR1) |
+| S3 red flags | recall of the key's red flags, over units with at least one, separately for complete units (base cases, MR3, MR4, MR6, MR7) and incomplete ones (MR1, MR2) |
 | S4 diagnoses | at least one key diagnosis named, over units with at least one |
-| S5 invariance | violation rate per relation: MR1 against its absolute expectation, MR3 against the answer to the base case in the same language, MR5 between the answers to the base case in two languages |
+| S5 invariance | violation rate per relation: MR1 and MR7 against their absolute expectation; MR2, MR3, MR4 and MR6 against the answer to the base case in the same language (MR2 in decision and diagnoses only); MR5 between the answers to the base case in two languages |
 | S6 language spread | max − min over the languages of S1 and of both S3 values |
 | S7 format | valid answers among all answered units |
 

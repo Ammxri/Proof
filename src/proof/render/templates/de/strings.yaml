@@ -21,3 +21,6 @@ units:
   "mg/L": " mg/l"
   "µmol/L": " µmol/l"
   "mmol/L": " mmol/l"
+  "°F": " °F"
+  "mg/dL": " mg/dl"
+  "10^3/µL": " ×10³/µl"

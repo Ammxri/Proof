@@ -1,4 +1,7 @@
-"""Variants MR1, MR3, MR5 (PR-F06, PR-M00, PR-MR1, PR-MR3, PR-MR5, PR-D02, A-74, A-75)."""
+"""Variants MR1, MR3, MR5 and variant sets (PR-F06, PR-M00, PR-MR1, PR-MR3, PR-MR5, PR-D02, A-74, A-75, A-89).
+
+MR2, MR4, MR6 and MR7 are tested in ``test_variant_relations.py``.
+"""
 
 from __future__ import annotations
 
@@ -148,10 +151,13 @@ def test_mr5_pairs_the_three_languages(committed, cases):
 
 
 def test_same_seed_same_variants_new_seed_new_variants(committed):
-    """PR-D02: the committed set is rebuilt byte for byte; another seed draws other fields and orders."""
-    rebuilt = sets.build(FEVER_100, 1)
+    """PR-D02: the committed set is rebuilt byte for byte; another seed draws other fields and orders.
+
+    The committed set is the one of v0.1 with MR1, MR3 and MR5 (A-89); it is rebuilt with these relations.
+    """
+    rebuilt = sets.build(FEVER_100, 1, mrs=("MR1", "MR3", "MR5"))
     assert rebuilt.data == b"".join(line + b"\n" for line, _ in committed)
-    other = sets.build(FEVER_100, 2)
+    other = sets.build(FEVER_100, 2, mrs=("MR1", "MR3", "MR5"))
     assert other.data != rebuilt.data
     changes = {variant.variant_id: variant.change for variant in rebuilt.variants if variant.mr != "MR5"}
     differing = sum(variant.change != changes[variant.variant_id] for variant in other.variants if variant.mr != "MR5")
@@ -192,7 +198,7 @@ def test_several_variants_per_case_draw_without_repetition(cases, fever):
     [
         (-1, 1, ("MR1",), "variant seed must not be negative"),
         (1, 0, ("MR1",), "per_case must be at least 1"),
-        (1, 1, ("MR2",), "relations not available: MR2"),
+        (1, 1, ("MR8",), "relations not available: MR8"),
         (1, 1, (), "choose at least one relation"),
     ],
 )
@@ -217,7 +223,7 @@ def test_a_demo_set_is_valid(demo_set):
     _, variants, packs = demo_set
     report = sets.validate(variants, root=packs)
     assert report.ok, report.problems
-    assert report.by_mr == {"MR1": 10, "MR3": 10, "MR5": 30}
+    assert report.by_mr == {"MR1": 10, "MR2": 10, "MR3": 10, "MR4": 10, "MR5": 30, "MR6": 10, "MR7": 10}
 
 
 def _rewrite(path: Path, index: int, change) -> None:
@@ -242,8 +248,9 @@ def _rewrite(path: Path, index: int, change) -> None:
             ["expectation must be the engine's decision"],
         ),
         (0, lambda d: d["facts"].pop("exam.rash"), ["facts differ from the base case"]),
-        (1, lambda d: d["facts"].update({"exam.rash": not d["facts"]["exam.rash"]}), ["facts differ"]),
-        (1, lambda d: d["key"].update({"required_questions": ["exam.rash"]}), ["has no required question"]),
+        # Index 2 is the first MR3 variant (each case lists MR1, MR2, MR3, MR4, MR5, MR6, MR7).
+        (2, lambda d: d["facts"].update({"exam.rash": not d["facts"]["exam.rash"]}), ["facts differ"]),
+        (2, lambda d: d["key"].update({"required_questions": ["exam.rash"]}), ["only MR1 has a required question"]),
         (0, lambda d: d.update({"variant_seed": 9}), ["variant seed differs from the set's"]),
         (
             0,
@@ -340,8 +347,8 @@ def test_variants_commands(demo_set, tmp_path):
         app, ["variants", "validate", str(out), "--collection", str(directory), "--packs", str(packs)]
     )
     assert result.exit_code == 0, result.output
-    result = runner.invoke(app, [*args, "--mr", "MR7"])
-    assert result.exit_code == 1 and "relations not available: MR7" in result.output
+    result = runner.invoke(app, [*args, "--mr", "MR8"])
+    assert result.exit_code == 1 and "relations not available: MR8" in result.output
     (target / sets.VARIANTS_FILE).write_bytes(b"")
     result = runner.invoke(app, ["variants", "validate", str(target), "--packs", str(packs)])
     assert result.exit_code == 1 and "problem(s)" in result.output

@@ -8,6 +8,9 @@ fields:
     lower: 0.1
     source: {ref: SRC-0101, locator: 'mimic-iv/concepts/measurement/inflammation.sql, lines 7 and 16 (value > 0 mg/L; no upper
         limit)'}
+  alt_units:
+  # MR6: 1 mg/dL = 10 mg/L by definition of the decilitre.
+  - {unit: mg/dL, factor: 0.1, decimals: 2}
   labels:
     zh: {name: C反应蛋白, abbr: CRP}
     en: {name: C-reactive protein, abbr: CRP}

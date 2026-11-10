@@ -322,6 +322,8 @@ def variants_build(
     typer.echo(f"variants: {collection.counts_line(summary.variants)}")
     if any(summary.missing.values()):
         typer.echo(f"fewer than asked: {collection.counts_line(summary.missing)}")
+    if any(summary.discarded.values()):
+        typer.echo(f"discarded, a rule value would change (A-39): {collection.counts_line(summary.discarded)}")
     typer.echo(f"MR1 expected decisions: {collection.counts_line(summary.mr1_decisions)}")
     typer.echo(f"units per language (base cases and variants with a request): {summary.units_per_language}")
 
@@ -439,7 +441,8 @@ def run(
         typer.Option("--set", file_okay=False, help="Collection directory, e.g. data/collections/fever-100."),
     ] = None,
     variants_dir: Annotated[
-        Path | None, typer.Option("--variants", file_okay=False, help="Variant set directory (MR1, MR3 units).")
+        Path | None,
+        typer.Option("--variants", file_okay=False, help="Variant set directory (MR1-MR4, MR6, MR7 units)."),
     ] = None,
     langs: Annotated[list[str] | None, typer.Option("--lang", help="Language; repeat (default: zh, en, de).")] = None,
     max_cases: Annotated[

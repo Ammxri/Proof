@@ -91,6 +91,7 @@ def _truths(collection_dir: Path, variants_dir: Path | None, config: Mapping[str
         variant: Variant
         for _, variant in variant_sets.read_variants(path, problems):
             key = variant.key
+            # A-13: a unit is incomplete when a fact of its base case is missing (MR1, MR2).
             complete = variant.change.kind != "remove_field"
             truths[variant.variant_id] = Truth(
                 key.determinability,
@@ -102,7 +103,10 @@ def _truths(collection_dir: Path, variants_dir: Path | None, config: Mapping[str
             spec = variant.expectation
             if isinstance(spec, AbsoluteExpectation):
                 expected[variant.variant_id] = Expected(
-                    "absolute", decision=spec.decision, questions_include=frozenset(spec.questions_include)
+                    "absolute",
+                    decision=spec.decision,
+                    questions_include=frozenset(spec.questions_include),
+                    contradictions_include=frozenset(spec.contradictions_include),
                 )
             else:
                 expected[variant.variant_id] = Expected("invariant", compare=tuple(spec.compare))

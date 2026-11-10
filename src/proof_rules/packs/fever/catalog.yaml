@@ -11,6 +11,9 @@ fields:
       lower: 10.1
       upper: 49.9
       source: {ref: SRC-0101, locator: "mimic-iv/concepts/measurement/vitalsign.sql, lines 56-58 (10 < value < 50 °C)"}
+    alt_units:
+      # MR6: degrees Fahrenheit by definition, °F = °C × 1.8 + 32.
+      - {unit: °F, factor: 1.8, offset: 32, decimals: 1}
     labels:
       zh: {name: 体温}
       en: {name: Body temperature, abbr: T}
@@ -132,7 +135,70 @@ fields:
       lower: 0.1
       upper: 1000
       source: {ref: SRC-0101, locator: "mimic-iii/concepts/pivot/pivoted_lab.sql, lines 154-155 and 189 (0 < value <= 1000 K/µL = G/L)"}
+    alt_units:
+      # MR6: the same number in another notation, 1 G/L = 10^9/L = 10^3/µL (1 µL = 10^-6 L).
+      - {unit: 10^3/µL, factor: 1, decimals: 1}
     labels:
       zh: {name: 白细胞计数, abbr: WBC}
       en: {name: White blood cell count, abbr: WBC}
       de: {name: Leukozyten, abbr: Leuko}
+
+# MR4 (KONZEPT 4.1, A-86): facts no rule uses, shown as one more line of the section their code names. 'when' is the
+# condition of use: the patients a fact fits. Draft, not yet reviewed by a physician (the labels are part of the review).
+irrelevant:
+  - code: hx.previous_surgery
+    when: {min_age: 30}
+    labels:
+      zh: {name: 手术史, value: 20年前行阑尾切除术}
+      en: {name: Previous surgery, value: appendectomy 20 years ago}
+      de: {name: Frühere Operationen, value: Appendektomie vor 20 Jahren}
+  - code: hx.visual_aid
+    when: {}
+    labels:
+      zh: {name: 视力矫正, value: 因近视佩戴眼镜}
+      en: {name: Visual aid, value: glasses for short-sightedness}
+      de: {name: Sehhilfe, value: Brille wegen Kurzsichtigkeit}
+  - code: hx.previous_injury
+    when: {}
+    labels:
+      zh: {name: 外伤史, value: 儿童时期右前臂骨折，已愈合，无后遗症}
+      en: {name: Previous injuries, value: "fracture of the right forearm in childhood, healed without sequelae"}
+      de: {name: Frühere Verletzungen, value: "Unterarmfraktur rechts im Kindesalter, folgenlos verheilt"}
+
+# MR7 (KONZEPT 4.1, A-15, A-88): a statement that contradicts a fact. It fits a case when 'when', which compares only
+# 'field', is true on the case's facts; the answer must then name 'field' among its contradictions. Draft, not yet
+# reviewed by a physician (the labels are part of the review).
+contradictions:
+  - id: FEV-MR7-001
+    field: vital.temp_c
+    section: exam
+    when: {field: vital.temp_c, op: gt, value: 38.0}
+    sources: [{ref: SRC-0001, locator: "Box 1 (SIRS: temperature > 38 °C)"}]
+    labels:
+      zh: {name: 备注, value: 无发热}
+      en: {name: Note, value: afebrile}
+      de: {name: Anmerkung, value: afebril}
+  - id: FEV-MR7-002
+    field: vital.mental_status
+    section: exam
+    when: {field: vital.mental_status, op: eq, value: altered}
+    labels:
+      zh: {name: 备注, value: 神志清楚，定向力完整}
+      en: {name: Note, value: alert and fully oriented}
+      de: {name: Anmerkung, value: wach und voll orientiert}
+  - id: FEV-MR7-003
+    field: exam.neck_stiffness
+    section: exam
+    when: {field: exam.neck_stiffness, op: eq, value: true}
+    labels:
+      zh: {name: 备注, value: 颈软，活动自如}
+      en: {name: Note, value: "neck supple, moves freely"}
+      de: {name: Anmerkung, value: Nacken weich und frei beweglich}
+  - id: FEV-MR7-004
+    field: hx.cough
+    section: exam
+    when: {field: hx.cough, op: eq, value: false}
+    labels:
+      zh: {name: 备注, value: 检查时反复咳嗽}
+      en: {name: Note, value: coughs repeatedly during the examination}
+      de: {name: Anmerkung, value: hustet während der Untersuchung wiederholt}

@@ -9,9 +9,9 @@ reviews:
   date: '<PLATZHALTER: Datum der Prüfung, JJJJ-MM-TT>'
   scope: '<PLATZHALTER: Umfang der Prüfung>'
   templates:
-    labels/fever/en: f359f0867617384837a2f135f3d206f1ddfbeb27593ae8add19b9e8e3226acf0
+    labels/fever/en: 226dba7df052c9ffc2d01c1dfa286f2b25f51520a9c6df63afab46b052a14491
     templates/en/case.j2: a2549ac4910a32607b6909daa4d4f7c15fb01aa9e61bf3850745682eaeef1b5a
-    templates/en/strings.yaml: f7db5fcad41afef156a1644f51e23c23eebb66d89dbfed5da2c366748929f83c
+    templates/en/strings.yaml: 49e59b9cd2e29ae64bc65f90b3b9de94742a24f3885edd8c382992404d21aab5
     templates/en/system_prompt.j2: 0c8476b5c9a5d2e9a65eb2979f13dbf240c0cab4a4d8bf46d710ad6d0d0fde15
   collection: fever-100
   collection_sha256: 5192269bce88e2ade73cfc48a0304068dd1cf0e001ff51c9ab41caed8dae8125

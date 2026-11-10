@@ -300,6 +300,31 @@ def _check_definitions(pack: Pack, context: _Context, problems: list[str]) -> No
             problems.append(
                 f"{pack.name}: bounds of {definition.code} cite unknown source {definition.bounds.source.ref}"
             )
+    _check_variant_lists(pack, context, problems)
+
+
+def _check_variant_lists(pack: Pack, context: _Context, problems: list[str]) -> None:
+    """Irrelevant facts (MR4) and contradiction templates (MR7) of a domain pack (KONZEPT 4.1)."""
+    catalog = pack.catalog
+    if pack.config.kind == "library" and (catalog.irrelevant or catalog.contradictions):
+        problems.append(f"{pack.name}: only domain packs list irrelevant facts and contradictions")
+    for fact in catalog.irrelevant:
+        if fact.code in context.fields:
+            owner = context.field_pack[fact.code]
+            problems.append(f"{pack.name}: irrelevant fact {fact.code} is a field of pack {owner}; rules could use it")
+    for template in catalog.contradictions:
+        where = f"{pack.name}/{CATALOG_FILE} {template.id}"
+        definition = context.fields.get(template.field)
+        if definition is None:
+            problems.append(f"{where}: unknown field {template.field}")
+        else:
+            for compare in comparisons(template.when):
+                problem = compare_problem(compare, definition)
+                if problem:
+                    problems.append(f"{where}: {problem}")
+        for source in template.sources:
+            if source.ref not in context.sources:
+                problems.append(f"{where}: source {source.ref} is not in the source register")
 
 
 def _check_rule(pack: Pack, rule: Rule, context: _Context, problems: list[str]) -> None:
@@ -453,7 +478,19 @@ def _build_domain(
         if source.id not in source_ids:
             sources.append(source)
             source_ids.add(source.id)
-    catalog = Catalog(fields=tuple(fields))
+    catalog = Catalog(
+        fields=tuple(fields), irrelevant=pack.catalog.irrelevant, contradictions=pack.catalog.contradictions
+    )
+    for template in catalog.contradictions:
+        if template.field in context.fields and catalog.get(template.field) is None:
+            problems.append(f"{pack.name}/{CATALOG_FILE} {template.id}: {template.field} is not a field of the domain")
+        for code, side in sorted(reference_bounds_of(template.when)) if require_references else ():
+            reference = pack.references.get(code)
+            if reference is None or getattr(reference, side) is None:
+                problems.append(
+                    f"{pack.name}/{CATALOG_FILE} {template.id}: needs the {side} reference limit of {code}, "
+                    "no profile has it"
+                )
     for definition in catalog.fields:
         if definition.type in ("number", "int") and definition.bounds is None:
             problems.append(f"{pack.name}: numeric field {definition.code} has no physiological bounds (A-65)")

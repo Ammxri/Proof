@@ -63,13 +63,17 @@ code ([`docs/methodik.md`](docs/methodik.md), section 6; answer schema in
 uv run proof render data/collections/fever-100 --case-id FEV-000001 --lang zh --system-prompt
 ```
 
-Variants change a case in one defined way and carry their expectation (MR1, MR3, MR5 so far). A new variant seed gives
-new variants ([`docs/methodik.md`](docs/methodik.md), section 5.5; schema in
+Variants change a case in one defined way and carry their expectation (MR1 to MR7). A new variant seed gives new
+variants ([`docs/methodik.md`](docs/methodik.md), section 5.5; schema in
 [`schema/variant.schema.json`](schema/variant.schema.json)).
 
+The committed set `variants/1` of Fever-100 is the one of v0.1 (MR1, MR3, MR5); a set with all relations goes to its
+own directory:
+
 ```bash
-uv run proof variants build --collection data/collections/fever-100 --variant-seed 1
+uv run proof variants build --collection data/collections/fever-100 --variant-seed 1 --mr MR1 --mr MR3 --mr MR5
 uv run proof variants validate data/collections/fever-100/variants/1
+uv run proof variants build --collection data/collections/fever-100 --variant-seed 1 --out .proof/variants/fever-100-all
 ```
 
 ## Test runs

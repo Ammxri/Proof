@@ -24,9 +24,27 @@ from proof.cases.sampler import SamplerError, load_sampler
 from proof.core import canonical
 from proof.core.hashing import sha256_bytes, sha256_text
 from proof.core.manifest import ManifestBase, new_manifest
-from proof.variants.generator import BUILT_MRS, REQUESTED_MRS, VariantError, check_options, generate
-from proof.variants.model import MR, AbsoluteExpectation, LanguagePair, PermuteSections, RemoveField, Variant
+from proof.variants.generator import (
+    BUILT_MRS,
+    REQUESTED_MRS,
+    VariantError,
+    check_options,
+    fitting_contradictions,
+    fitting_irrelevant,
+    generate,
+    notation_options,
+)
+from proof.variants.model import (
+    MR,
+    AbsoluteExpectation,
+    AddFacts,
+    ChangeNotation,
+    InsertContradiction,
+    RemoveField,
+    Variant,
+)
 from proof.variants.model import variant_json_schema as _variant_schema
+from proof.variants.notation import flipped_rules
 from proof_rules import loader
 from proof_rules.keys import FactError, compute_variant_key
 from proof_rules.model import Domain
@@ -62,10 +80,15 @@ class VariantInputs(collections.Inputs):
 
 
 class VariantSummary(_Model):
-    """Counts per relation; for MR1 the decisions expected and the fields left out."""
+    """Counts per relation; for MR1 the decisions expected and the fields left out.
+
+    ``missing`` counts variants that could not be drawn (too few candidates), ``discarded`` drawn variants that were
+    dropped (MR6 round trip, A-39). Both list every chosen relation but MR5.
+    """
 
     variants: dict[MR, Count]
     missing: dict[MR, Count]
+    discarded: dict[MR, Count]
     units_per_language: Count
     mr1_decisions: dict[str, Count]
     mr1_removed: dict[str, Count]
@@ -100,7 +123,9 @@ def variants_bytes(variants: Iterable[Variant]) -> bytes:
     return canonical.dumps_lines(variant.to_json() for variant in variants)
 
 
-def summarize(variants: Sequence[Variant], missing: dict[str, int], mrs: Sequence[str], cases: int) -> VariantSummary:
+def summarize(
+    variants: Sequence[Variant], missing: dict[str, int], discarded: dict[str, int], mrs: Sequence[str], cases: int
+) -> VariantSummary:
     counts = Counter(variant.mr for variant in variants)
     decisions: Counter[str] = Counter()
     removed: Counter[str] = Counter()
@@ -114,6 +139,7 @@ def summarize(variants: Sequence[Variant], missing: dict[str, int], mrs: Sequenc
     return VariantSummary(
         variants={mr: counts[mr] for mr in mrs},
         missing={mr: count for mr, count in missing.items()},
+        discarded={mr: count for mr, count in discarded.items()},
         units_per_language=cases + requested,
         mr1_decisions={key: decisions[key] for key in sorted(decisions)},
         mr1_removed={key: removed[key] for key in sorted(removed)},
@@ -193,7 +219,7 @@ def build(
             VariantEntry(variant_id=variant.variant_id, sha256=sha256_bytes(canonical.dumps_bytes(variant.to_json())))
             for variant in generated.variants
         ),
-        summary=summarize(generated.variants, dict(generated.missing), chosen, len(cases)),
+        summary=summarize(generated.variants, dict(generated.missing), dict(generated.discarded), chosen, len(cases)),
     )
     return BuiltSet(variants=generated.variants, data=data, manifest=set_manifest)
 
@@ -255,17 +281,47 @@ def read_variants(path: Path, problems: list[str]) -> list[tuple[bytes, Variant]
     return result
 
 
+def _change_problems(variant: Variant, base: Case, domain: Domain) -> list[str]:
+    """Why the change of a variant does not fit its base case and the catalog; empty if it does."""
+    where = variant.variant_id
+    change = variant.change
+    problems = []
+    if isinstance(change, RemoveField):
+        if change.field not in base.facts:
+            problems.append(f"{where}: removes {change.field}, which the base case does not have")
+        critical = change.field in base.key.critical_fields
+        if variant.mr == "MR1" and not critical:
+            problems.append(f"{where}: MR1 must remove a critical field, {change.field} is not critical")
+        if variant.mr == "MR2" and critical:
+            problems.append(f"{where}: MR2 must remove a field that is not critical, {change.field} is critical")
+    elif isinstance(change, AddFacts):
+        fitting = fitting_irrelevant(base, domain)
+        for code in change.facts:
+            if code not in fitting:
+                problems.append(f"{where}: {code} is no irrelevant fact of the catalog that fits the patient")
+    elif isinstance(change, ChangeNotation):
+        if (dict(change.units), change.abbreviations) not in notation_options(base, domain):
+            problems.append(f"{where}: the notation is not one the catalog allows for this case")
+        else:
+            flipped = flipped_rules(domain, base.facts, change.units)
+            if flipped:
+                problems.append(f"{where}: the shown numbers change the value of {', '.join(flipped)} (A-39)")
+    elif isinstance(change, InsertContradiction):
+        template = domain.catalog.contradiction(change.template)
+        if template is None or template.field != change.field:
+            problems.append(f"{where}: no contradiction template {change.template} on {change.field}")
+        elif change.template not in fitting_contradictions(base, domain):
+            problems.append(f"{where}: the condition of {change.template} does not hold on the base case")
+    return problems
+
+
 def check_variant(variant: Variant, base: Case, domain: Domain) -> list[str]:
     """Why a variant does not follow from its base case under the rules; empty if it does."""
     where = variant.variant_id
-    problems = []
     change = variant.change
+    problems = _change_problems(variant, base, domain)
     if isinstance(change, RemoveField):
         expected_facts = {code: value for code, value in base.facts.items() if code != change.field}
-        if change.field not in base.facts:
-            problems.append(f"{where}: removes {change.field}, which the base case does not have")
-        if change.field not in base.key.critical_fields:
-            problems.append(f"{where}: MR1 must remove a critical field, {change.field} is not critical")
     else:
         expected_facts = dict(base.facts)
     if variant.facts != expected_facts:
@@ -278,12 +334,16 @@ def check_variant(variant: Variant, base: Case, domain: Domain) -> list[str]:
     if key != variant.key:
         problems.append(f"{where}: stored key differs from the key the rule set computes")
     expectation = variant.expectation
-    if isinstance(expectation, AbsoluteExpectation):
-        assert isinstance(change, RemoveField)  # noqa: S101 - only MR1 is absolute (model)
+    if variant.mr == "MR1":
+        assert isinstance(change, RemoveField) and isinstance(expectation, AbsoluteExpectation)  # noqa: S101 - model
         if expectation.decision != key.determinability or expectation.questions_include != (change.field,):
             problems.append(f"{where}: expectation must be the engine's decision and the removed field as question")
-    elif isinstance(change, PermuteSections | LanguagePair) and variant.key.required_questions:
-        problems.append(f"{where}: a variant with all facts has no required question")
+    elif variant.mr == "MR2":
+        outcome = (key.determinability, key.red_flags, key.ddx)
+        if outcome != (base.key.determinability, base.key.red_flags, base.key.ddx):
+            problems.append(f"{where}: leaving out {change.field} changes the output; MR2 needs it unchanged")
+    if variant.mr != "MR1" and variant.key.required_questions:
+        problems.append(f"{where}: only MR1 has a required question")
     return problems
 
 

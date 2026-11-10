@@ -2,16 +2,33 @@
   "$defs": {
     "AbsoluteExpectation": {
       "additionalProperties": false,
-      "description": "Target values the answer must meet.",
+      "description": "Target values the answer must meet; a target that is not set is left out of the JSON.",
       "properties": {
+        "contradictions_include": {
+          "default": [],
+          "items": {
+            "pattern": "^(hx|exam|vital|lab)\\.[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "title": "Contradictions Include",
+          "type": "array"
+        },
         "decision": {
-          "enum": [
-            "answer",
-            "ask",
-            "refer_urgent"
+          "anyOf": [
+            {
+              "enum": [
+                "answer",
+                "ask",
+                "refer_urgent"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
           ],
-          "title": "Decision",
-          "type": "string"
+          "default": null,
+          "title": "Decision"
         },
         "kind": {
           "const": "absolute",
@@ -29,10 +46,95 @@
         }
       },
       "required": [
-        "kind",
-        "decision"
+        "kind"
       ],
       "title": "AbsoluteExpectation",
+      "type": "object"
+    },
+    "AddFacts": {
+      "additionalProperties": false,
+      "description": "MR4: irrelevant facts of the catalog are added as lines of their sections; the coded facts stay the same.",
+      "properties": {
+        "facts": {
+          "items": {
+            "pattern": "^(hx|exam|vital|lab)\\.[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Facts",
+          "type": "array"
+        },
+        "kind": {
+          "const": "add_facts",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "facts"
+      ],
+      "title": "AddFacts",
+      "type": "object"
+    },
+    "ChangeNotation": {
+      "additionalProperties": false,
+      "description": "MR6: facts shown in alternative units of the catalog and, if set, names shown as their abbreviations.",
+      "properties": {
+        "abbreviations": {
+          "title": "Abbreviations",
+          "type": "boolean"
+        },
+        "kind": {
+          "const": "change_notation",
+          "title": "Kind",
+          "type": "string"
+        },
+        "units": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^(hx|exam|vital|lab)\\.[a-z][a-z0-9_]*$": {
+              "type": "string"
+            }
+          },
+          "title": "Units",
+          "type": "object"
+        }
+      },
+      "required": [
+        "kind",
+        "units",
+        "abbreviations"
+      ],
+      "title": "ChangeNotation",
+      "type": "object"
+    },
+    "InsertContradiction": {
+      "additionalProperties": false,
+      "description": "MR7: the statement of a contradiction template is added; it contradicts the fact ``field``.",
+      "properties": {
+        "field": {
+          "pattern": "^(hx|exam|vital|lab)\\.[a-z][a-z0-9_]*$",
+          "title": "Field",
+          "type": "string"
+        },
+        "kind": {
+          "const": "insert_contradiction",
+          "title": "Kind",
+          "type": "string"
+        },
+        "template": {
+          "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+          "title": "Template",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "template",
+        "field"
+      ],
+      "title": "InsertContradiction",
       "type": "object"
     },
     "InvariantExpectation": {
@@ -170,7 +272,7 @@
     },
     "RemoveField": {
       "additionalProperties": false,
-      "description": "MR1 and MR2: one fact of the base case is left out.",
+      "description": "MR1 and MR2: one fact of the base case is left out (critical for MR1, not critical for MR2).",
       "properties": {
         "field": {
           "pattern": "^(hx|exam|vital|lab)\\.[a-z][a-z0-9_]*$",
@@ -317,6 +419,9 @@
     "change": {
       "discriminator": {
         "mapping": {
+          "add_facts": "#/$defs/AddFacts",
+          "change_notation": "#/$defs/ChangeNotation",
+          "insert_contradiction": "#/$defs/InsertContradiction",
           "language_pair": "#/$defs/LanguagePair",
           "permute_sections": "#/$defs/PermuteSections",
           "remove_field": "#/$defs/RemoveField"
@@ -332,6 +437,15 @@
         },
         {
           "$ref": "#/$defs/LanguagePair"
+        },
+        {
+          "$ref": "#/$defs/AddFacts"
+        },
+        {
+          "$ref": "#/$defs/ChangeNotation"
+        },
+        {
+          "$ref": "#/$defs/InsertContradiction"
         }
       ],
       "title": "Change"

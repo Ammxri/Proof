@@ -124,7 +124,8 @@ def render_template(lang: str, name: str, context: dict[str, Any]) -> str:
 
 
 def labels(domain: Domain, lang: str) -> dict[str, Any]:
-    """Every label of a domain in one language: complaint, facts with abbreviations and values, codes."""
+    """Every label of a domain in one language: complaint, facts with abbreviations and values, codes, and the lines
+    variants add (irrelevant facts for MR4, contradicting statements for MR7)."""
     check_language(lang)
     fields = {}
     for field in domain.catalog.fields:
@@ -139,6 +140,13 @@ def labels(domain: Domain, lang: str) -> dict[str, Any]:
         "fields": fields,
         "ddx": {term.code: getattr(term.labels, lang) for term in domain.vocabulary.ddx},
         "red_flags": {term.code: getattr(term.labels, lang) for term in domain.vocabulary.red_flags},
+        "irrelevant": {
+            fact.code: getattr(fact.labels, lang).model_dump(mode="json") for fact in domain.catalog.irrelevant
+        },
+        "contradictions": {
+            template.id: getattr(template.labels, lang).model_dump(mode="json")
+            for template in domain.catalog.contradictions
+        },
     }
 
 

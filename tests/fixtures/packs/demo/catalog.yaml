@@ -63,3 +63,42 @@ fields:
       zh: {name: 皮疹}
       en: {name: Rash}
       de: {name: Ausschlag}
+
+# Variant lists for MR4 and MR7 (KONZEPT 4.1), invented test data without clinical meaning.
+irrelevant:
+  - code: hx.fixture_detail
+    when: {}
+    labels:
+      zh: {name: 测试细节, value: 无关}
+      en: {name: Fixture detail, value: irrelevant}
+      de: {name: Testdetail, value: unerheblich}
+  - code: hx.fixture_detail_older
+    when: {min_age: 60}
+    labels:
+      zh: {name: 测试细节二, value: 无关}
+      en: {name: Second fixture detail, value: irrelevant}
+      de: {name: Zweites Testdetail, value: unerheblich}
+  - code: exam.fixture_detail_female
+    when: {sex: [f]}
+    labels:
+      zh: {name: 测试检查, value: 无关}
+      en: {name: Fixture finding, value: irrelevant}
+      de: {name: Testbefund, value: unerheblich}
+contradictions:
+  - id: DEM-MR7-001
+    field: vital.temp_c
+    section: exam
+    when: {field: vital.temp_c, op: ge, value: 38.0}
+    sources: [{ref: SRC-9001, locator: fixture}]
+    labels:
+      zh: {name: 测试备注, value: 无发热}
+      en: {name: Fixture note, value: no fever}
+      de: {name: Testnotiz, value: kein Fieber}
+  - id: DEM-MR7-002
+    field: hx.cough
+    section: vital
+    when: {field: hx.cough, op: eq, value: false}
+    labels:
+      zh: {name: 测试备注, value: 咳嗽}
+      en: {name: Fixture note, value: coughing}
+      de: {name: Testnotiz, value: hustet}

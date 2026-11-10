@@ -9,11 +9,12 @@ never 0. The result is a profile of separate metrics; no value combines them (PR
 - **S1** decision equals the key's determinability, over all units.
 - **S2** recall of the required questions over units that have any, precision over all questions named.
 - **S3** recall of the key's red flags, over units with at least one, separately for complete units (all facts of
-  the base case) and incomplete ones (MR1, a fact missing). Never averaged together.
+  the base case) and incomplete ones (MR1, MR2: a fact missing). Never averaged together.
 - **S4** hit if at least one key diagnosis is named, over units with at least one.
-- **S5** violation rate per relation (A-14): MR1 against its absolute expectation, MR3 against the answer to the base
-  case in the same language, MR5 the answers to the base case in two languages (A-37). Pairs with an invalid answer
-  are left out of the denominator and counted; so are pairs whose partner has no answer.
+- **S5** violation rate per relation (A-14): MR1 and MR7 against their absolute expectation; MR2, MR3, MR4 and MR6
+  against the answer to the base case in the same language (MR2 in decision and diagnoses only); MR5 the answers to
+  the base case in two languages (A-37). Pairs with an invalid answer are left out of the denominator and counted;
+  so are pairs whose partner has no answer.
 - **S6** range (max - min) over the languages of S1 and of both S3 values.
 - **S7** share of valid answers.
 """
@@ -48,12 +49,25 @@ class Truth:
 
 @dataclass(frozen=True)
 class Expected:
-    """The machine-readable expectation of a variant unit (absolute for MR1, invariant for MR3)."""
+    """The machine-readable expectation of a variant unit (absolute for MR1 and MR7, invariant for the others).
+
+    An absolute expectation checks only the targets it sets: the decision, if given, and the codes that must be among
+    the questions and among the contradictions.
+    """
 
     kind: Literal["absolute", "invariant"]
     decision: str | None = None
     questions_include: frozenset[str] = frozenset()
+    contradictions_include: frozenset[str] = frozenset()
     compare: tuple[str, ...] = UNCHANGED
+
+    def met_by(self, item: Evaluated) -> bool:
+        """Whether a valid answer meets this absolute expectation."""
+        return (
+            (self.decision is None or item.decision == self.decision)
+            and self.questions_include <= item.questions
+            and self.contradictions_include <= item.contradictions
+        )
 
 
 @dataclass(frozen=True)
@@ -195,7 +209,7 @@ def s5(
     langs: Sequence[str] = (),
     cases: Sequence[str] = (),
 ) -> dict[str, Invariance]:
-    """Violation rates of MR1, MR3 and MR5.
+    """Violation rates per relation (MR1 to MR7).
 
     ``answered_base`` maps (case id, language) to the base unit's answer; ``langs`` and ``cases`` are the run's
     languages and base cases, so a pair whose partner failed counts as left out.
@@ -211,7 +225,7 @@ def s5(
                 invariance.invalid_excluded += 1
                 continue
             invariance.pairs += 1
-            if item.decision != unit.expected.decision or not unit.expected.questions_include <= item.questions:
+            if not unit.expected.met_by(item):
                 invariance.violations += 1
                 invariance.violated.append(unit.unit_id)
             continue

@@ -402,3 +402,57 @@ def test_lowercase_legacy_keys_are_accepted(packs, edit_yaml):
     """Prototype keys such as eGFR_NIEDRIG start with a lowercase letter."""
     edit_yaml(packs / "labx/migration.yaml", lambda data: data["entries"][1].update(key="eGFR_NIEDRIG"))
     assert loader.check(packs).ok
+
+
+# --- Lists of the variants (MR4, MR7; KONZEPT 4.1) -------------------------------------------------------------------
+
+
+def test_the_domain_carries_its_variant_lists(demo):
+    assert [fact.code for fact in demo.catalog.irrelevant] == [
+        "hx.fixture_detail",
+        "hx.fixture_detail_older",
+        "exam.fixture_detail_female",
+    ]
+    assert [template.id for template in demo.catalog.contradictions] == ["DEM-MR7-001", "DEM-MR7-002"]
+    assert demo.catalog.irrelevant_fact("hx.fixture_detail").section == "hx"
+    assert demo.catalog.irrelevant_fact("hx.nothing") is None and demo.catalog.contradiction("X-1") is None
+
+
+def test_only_domain_packs_list_irrelevant_facts_and_contradictions(packs, edit_yaml):
+    demo = (packs / "demo/catalog.yaml").read_text(encoding="utf-8")
+    lists = demo[demo.index("irrelevant:") :]
+    with (packs / "labx/catalog.yaml").open("a", encoding="utf-8") as handle:
+        handle.write("\n" + lists.replace("DEM-MR7", "LABX-MR7").replace("fixture_detail", "labx_detail"))
+    assert "labx: only domain packs list irrelevant facts and contradictions" in _problems(packs)
+
+
+def test_an_irrelevant_fact_must_not_be_a_field_rules_could_use(packs, edit_yaml):
+    edit_yaml(packs / "demo/catalog.yaml", lambda data: data["irrelevant"][0].update(code="lab.ldl_mmol_l"))
+    assert "irrelevant fact lab.ldl_mmol_l is a field of pack labx" in _problems(packs)
+
+
+def test_contradiction_templates_are_checked(packs, edit_yaml):
+    def change(data):
+        first, second = data["contradictions"]
+        first["sources"] = [{"ref": "SRC-0000", "locator": "x"}]
+        second["when"] = {"field": "hx.cough", "op": "ge", "value": 1}
+        data["contradictions"].append({**second, "id": "DEM-MR7-003", "field": "hx.unknown"})
+        data["contradictions"][-1]["when"] = {"field": "hx.unknown", "op": "eq", "value": True}
+
+    edit_yaml(packs / "demo/catalog.yaml", change)
+    text = _problems(packs)
+    assert "DEM-MR7-001: source SRC-0000 is not in the source register" in text
+    assert "DEM-MR7-002: op 'ge' needs a numeric field, hx.cough is bool" in text
+    assert "DEM-MR7-003: unknown field hx.unknown" in text
+
+
+def test_a_contradiction_needs_a_field_of_the_domain_and_its_reference(packs, edit_yaml):
+    def change(data):
+        data["contradictions"][0].update(
+            field="lab.ldl_mmol_l", when={"field": "lab.ldl_mmol_l", "op": "gt", "value": {"ref": "upper"}}
+        )
+
+    edit_yaml(packs / "demo/catalog.yaml", change)
+    text = _problems(packs)
+    assert "DEM-MR7-001: lab.ldl_mmol_l is not a field of the domain" in text
+    assert "DEM-MR7-001: needs the upper reference limit of lab.ldl_mmol_l, no profile has it" in text

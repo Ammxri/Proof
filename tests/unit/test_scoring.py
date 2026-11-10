@@ -186,6 +186,74 @@ def test_s5_mr3_against_the_base_answer_in_the_same_language():
     assert (mr3["invalid_excluded"], mr3["missing_excluded"]) == (1, 1)
 
 
+MR2_EXPECTED = Expected("invariant", compare=("decision", "ddx"))
+MR7_EXPECTED = Expected("absolute", contradictions_include=frozenset({"vital.c"}))
+
+
+def test_s5_mr2_compares_decision_and_diagnoses_only():
+    """A-14: after leaving out a field that is not critical only decision and diagnoses must stay."""
+    base = truth("answer", ddx=["ddx.a"])
+    gap = truth("answer", ddx=["ddx.a"], complete=False)
+    units = [
+        unit(answer(ddx=["ddx.a"]), base, case="C1"),
+        unit(
+            answer(ddx=["ddx.a"], questions=["hx.b"], red_flags=["rf.x"]),
+            gap,
+            case="C1",
+            mr="MR2",
+            expected=MR2_EXPECTED,
+        ),
+        unit(answer(ddx=["ddx.a"]), base, case="C2"),
+        unit(answer("ask", ddx=["ddx.a"]), gap, case="C2", mr="MR2", expected=MR2_EXPECTED),
+        unit(answer(ddx=["ddx.a"]), base, case="C3"),
+        unit(answer(ddx=["ddx.b"]), gap, case="C3", mr="MR2", expected=MR2_EXPECTED),
+    ]
+    result = score(*units)
+    assert ratio(result["S5_invariance"]["MR2"]["violation_rate"]) == (2, 3, 0.6667)
+
+
+def test_mr2_units_count_as_incomplete_in_s3():
+    """A-13: a unit is incomplete when a fact of its base case is missing, as in MR1 and MR2."""
+    flag = truth("refer_urgent", red_flags=["rf.x"])
+    units = [
+        unit(answer("refer_urgent", red_flags=["rf.x"]), flag, case="C1"),
+        unit(
+            answer(),
+            truth("refer_urgent", red_flags=["rf.x"], complete=False),
+            case="C1",
+            mr="MR2",
+            expected=MR2_EXPECTED,
+        ),
+    ]
+    result = score(*units)["S3_red_flags"]
+    assert ratio(result["complete"]["all"]) == (1, 1, 1.0)
+    assert ratio(result["incomplete"]["all"]) == (0, 1, 0.0)
+
+
+def test_s5_mr7_needs_the_contradicted_field_whatever_the_decision():
+    """A-15: the expectation is met when the field code is among the contradictions; the decision is no target."""
+    key = truth("answer")
+    result = score(
+        unit(answer("ask", contradictions=["vital.c"]), key, mr="MR7", case="C1", expected=MR7_EXPECTED),
+        unit(answer("answer", contradictions=["vital.c", "hx.a"]), key, mr="MR7", case="C2", expected=MR7_EXPECTED),
+        unit(answer("answer", contradictions=["hx.a"]), key, mr="MR7", case="C3", expected=MR7_EXPECTED),
+        unit(answer("answer"), key, mr="MR7", case="C4", expected=MR7_EXPECTED),
+        unit("no json", key, mr="MR7", case="C5", expected=MR7_EXPECTED),
+    )
+    mr7 = result["S5_invariance"]["MR7"]
+    assert ratio(mr7["violation_rate"]) == (2, 4, 0.5)
+    assert mr7["invalid_excluded"] == 1
+
+
+def test_absolute_expectations_check_only_their_targets():
+    item = evaluate(unit(answer("ask", questions=["hx.a"], contradictions=["vital.c"])), ALLOWED)
+    assert Expected("absolute", decision="ask").met_by(item)
+    assert not Expected("absolute", decision="answer").met_by(item)
+    assert Expected("absolute", questions_include=frozenset({"hx.a"})).met_by(item)
+    assert Expected("absolute", contradictions_include=frozenset({"vital.c"})).met_by(item)
+    assert not Expected("absolute", contradictions_include=frozenset({"hx.a"})).met_by(item)
+
+
 def test_s5_mr5_compares_the_base_answers_across_languages():
     """A-37: pairs zh–en, zh–de, en–de of every base case."""
     key = truth("answer", ddx=["ddx.a"])

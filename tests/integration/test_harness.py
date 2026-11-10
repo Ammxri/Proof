@@ -79,11 +79,11 @@ def test_a_run_sends_every_unit_once_with_temperature_zero(stub, home, demo):
     config = _config(_provider(url), demo)
     outcome = harness_run.execute(config, home / "runs" / "one", root=demo[2])
     manifest = outcome.manifest
-    # 4 base cases, 4 MR1 and 4 MR3 variants, each in 3 languages.
-    assert manifest.units.total == 36 == manifest.units.ok == manifest.units.requests
+    # 4 base cases and 4 variants of each relation with a request (MR1-MR4, MR6, MR7), each in 3 languages.
+    assert manifest.units.total == 84 == manifest.units.ok == manifest.units.requests
     assert manifest.status == "complete"
     chats = state.chat_requests()
-    assert len(chats) == 36
+    assert len(chats) == 84
     for request in chats:
         body = request["body"]
         assert body["temperature"] == 0 and body["stream"] is False
@@ -92,7 +92,7 @@ def test_a_run_sends_every_unit_once_with_temperature_zero(stub, home, demo):
         assert [message["role"] for message in body["messages"]] == ["system", "user"]
         assert request["headers"]["Authorization"] == f"Bearer {CANARY}"
     units = harness_run.read_units(outcome.directory)
-    assert {unit["mr"] for unit in units} == {None, "MR1", "MR3"}
+    assert {unit["mr"] for unit in units} == {None, "MR1", "MR2", "MR3", "MR4", "MR6", "MR7"}
     assert {unit["lang"] for unit in units} == {"zh", "en", "de"}
 
 
@@ -119,7 +119,7 @@ def test_the_manifest_records_what_repeats_the_run(stub, home, demo):
     }
     assert data["config"]["provider"]["api_key_env"] == KEY_ENV
     assert data["started_utc"] <= data["finished_utc"] and data["created_utc"]
-    assert data["tokens"]["completion"] == 36 * 20 and data["tokens"]["prompt"] > 0
+    assert data["tokens"]["completion"] == 84 * 20 and data["tokens"]["prompt"] > 0
     tokens = data["tokens_billed"]
     expected = round((tokens["prompt"] * 1.5 + tokens["completion"] * 3) / 1_000_000, 6)
     assert data["cost"] == {"amount": expected, "currency": "EUR"}
@@ -169,7 +169,7 @@ def test_no_second_attempt_after_an_invalid_answer(stub, home, demo):
     state.mode = "invalid"
     outcome = harness_run.execute(_config(_provider(url), demo, max_cases=1, langs=["de"]), home / "r", root=demo[2])
     units = harness_run.read_units(outcome.directory)
-    assert len(units) == 3 == len(state.chat_requests())
+    assert len(units) == 7 == len(state.chat_requests())
     assert {unit["text"] for unit in units} == {"Here is my answer: pneumonia."}
     assert outcome.manifest.status == "complete"
 
@@ -182,17 +182,18 @@ def test_errors_are_recorded_not_retried_and_resume_sends_only_open_units(stub, 
     directory = home / "runs" / "resume"
     outcome = harness_run.execute(config, directory, root=demo[2])
     assert outcome.manifest.status == "incomplete"
-    assert (outcome.manifest.units.error, outcome.manifest.units.ok) == (2, 7)
-    assert len(state.chat_requests()) == 9, "no automatic retry"
+    # One base case and its six variants with a request, in 3 languages: 21 units.
+    assert (outcome.manifest.units.error, outcome.manifest.units.ok) == (2, 19)
+    assert len(state.chat_requests()) == 21, "no automatic retry"
     errors = [unit for unit in harness_run.read_units(directory) if unit["status"] == "error"]
     assert all(CANARY not in unit["error"] and "***" in unit["error"] for unit in errors)
     resumed = harness_run.execute(config, directory, resume=True, root=demo[2])
-    assert len(state.chat_requests()) == 11, "only the two failed units are sent again"
-    assert resumed.manifest.status == "complete" and resumed.manifest.units.ok == 9
+    assert len(state.chat_requests()) == 23, "only the two failed units are sent again"
+    assert resumed.manifest.status == "complete" and resumed.manifest.units.ok == 21
     assert resumed.manifest.run_id == outcome.manifest.run_id
-    assert len(harness_run.read_units(directory)) == 9
+    assert len(harness_run.read_units(directory)) == 21
     lines = (directory / "units.jsonl").read_text(encoding="utf-8").splitlines()
-    assert len(lines) == 9, "the units file holds one line per unit after the run"
+    assert len(lines) == 21, "the units file holds one line per unit after the run"
 
 
 def test_resume_needs_the_same_configuration_and_runs_need_an_empty_directory(stub, home, demo):
@@ -222,7 +223,7 @@ def test_redirects_and_broken_replies_are_errors(stub, home, demo):
     url, state = stub
     state.mode = "redirect"
     outcome = harness_run.execute(_config(_provider(url), demo, max_cases=1, langs=["en"]), home / "a", root=demo[2])
-    assert outcome.manifest.units.error == 3 and len(state.chat_requests()) == 3
+    assert outcome.manifest.units.error == 7 and len(state.chat_requests()) == 7
     assert {unit["error"][:8] for unit in harness_run.read_units(outcome.directory)} == {"HTTP 302"}
     state.mode = "empty"
     outcome = harness_run.execute(_config(_provider(url), demo, max_cases=1, langs=["en"]), home / "b", root=demo[2])
@@ -232,7 +233,7 @@ def test_redirects_and_broken_replies_are_errors(stub, home, demo):
 def test_unreachable_endpoints_are_errors(home, demo):
     provider = _provider("http://127.0.0.1:9/v1", timeout_seconds=2, ollama_digest=False)
     outcome = harness_run.execute(_config(provider, demo, max_cases=1, langs=["zh"]), home / "c", root=demo[2])
-    assert outcome.manifest.units.error == 3
+    assert outcome.manifest.units.error == 7
     assert outcome.manifest.ollama is None
 
 
@@ -291,8 +292,8 @@ def test_command_line_runs(stub, home, demo, tmp_path):
     args = ["run", "--provider", str(provider_file), "--set", str(directory), "--variants", str(variants)]
     result = runner.invoke(app, [*args, "--max-cases", "1", "--lang", "zh", "--out", str(out), "--packs", str(packs)])
     assert result.exit_code == 0, result.output
-    assert "complete" in result.output and "units: 3 ok, 0 error, 0 open of 3; 3 requests" in result.output
-    assert "1/3 DEM-000001@zh: ok (request)" in result.output and "ollama: " in result.output
+    assert "complete" in result.output and "units: 7 ok, 0 error, 0 open of 7; 7 requests" in result.output
+    assert "1/7 DEM-000001@zh: ok (request)" in result.output and "ollama: " in result.output
     result = runner.invoke(app, ["run", "--from-manifest", str(out / "manifest.json"), "--packs", str(packs)])
     assert result.exit_code == 0, result.output
     assert "(cache)" in result.output and "0 requests" in result.output
@@ -302,7 +303,7 @@ def test_command_line_runs(stub, home, demo, tmp_path):
     assert result.exit_code == 1 and "incomplete" in result.output
     result = runner.invoke(app, ["run", "--resume", str(out2), "--packs", str(packs)])
     assert result.exit_code == 0, result.output
-    assert "units: 3 ok" in result.output
+    assert "units: 7 ok" in result.output
     assert CANARY not in result.output
 
 
@@ -329,7 +330,7 @@ def test_ollama_api_runs_without_thinking(stub, home, demo):
     params = {"max_tokens": 64, "seed": 7, "think": False}
     provider = _provider(url.removesuffix("/v1"), api="ollama_chat", api_key_env=None, params=params)
     outcome = harness_run.execute(_config(provider, demo, max_cases=1, langs=["zh"]), home / "o", root=demo[2])
-    assert outcome.manifest.status == "complete" and outcome.manifest.units.ok == 3
+    assert outcome.manifest.status == "complete" and outcome.manifest.units.ok == 7
     for request in state.chat_requests():
         assert request["path"] == "/api/chat"
         body = request["body"]
