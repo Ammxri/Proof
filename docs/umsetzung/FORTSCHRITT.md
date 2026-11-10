@@ -7,7 +7,7 @@
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
 - Die CI ist für U9 unter Windows und Linux grün (Lauf 42628688836 auf `9cd4515`, Lauf 42800130023 auf `08a9137`).
 - Volllauf Qwen und Entwurfspaket Fever-100 sind belegt (Eintrag vom 10.11.2026).
-- U10: Varianten MR2, MR4, MR6, MR7 (Eintrag vom 10.11.2026). Die CI für U10 steht im Eintrag.
+- U10: Varianten MR2, MR4, MR6, MR7 (Eintrag vom 10.11.2026); CI-Lauf 42854678248 auf `5e3c174` grün.
 - **Manuell offen für v0.1:** ärztliche Prüfung je Sprache (`review/*.yaml`), Stand der SynthEHR-Datenlizenz in
   `data/card.yaml`, Läufe westlicher Modelle von EU-Servern (PR-N03).
 
@@ -77,6 +77,10 @@
   Fehlertexte für eine noch nicht gebaute Relation (jetzt MR8). Keine Prüfung entfiel. Der Test des eingecheckten
   Satzes baut ihn mit seinen Relationen MR1, MR3, MR5 nach.
 - Das Testpaket `demo` hat dafür eine kleine MR4- und MR7-Liste mit Testtexten.
+- Lokal (Windows) die ganze Suite ohne Abdeckungsmessung: 878 Tests grün in 3:44 min.
+- CI #22 (Lauf 42854678248) auf `5e3c174`: Erfolg. ubuntu 2:53 (Testschritt mit Abdeckung 2:39), windows 6:04
+  (Testschritt 5:33), alle Schritte grün. Der Testschritt bricht unter 85 % Abdeckung ab. Testzahl und Abdeckung der
+  CI sind nicht abgelesen, weil der eingebaute Browser bei GitHub nicht angemeldet ist.
 
 **Abnahme U10 (KONZEPT §10):**
 - MR2 entfernt nur Felder, deren Ablation nichts ändert: erfüllt.
