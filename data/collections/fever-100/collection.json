@@ -1003,14 +1003,14 @@
   ],
   "cases_sha256": "5192269bce88e2ade73cfc48a0304068dd1cf0e001ff51c9ab41caed8dae8125",
   "complaint": "fever",
-  "created_utc": "2026-11-09T05:47:13Z",
+  "created_utc": "2026-11-10T16:21:51Z",
   "domain": "fever",
   "git": {
-    "commit": "3bc3f331119cb3db899eb223573c7e499beab32b",
+    "commit": "5c26d8b2a78f921fb50b0cd8780e0a49daca9080",
     "dirty": false
   },
   "inputs": {
-    "catalog_sha256": "099c263203032ab41092b16ec892151440513f175d3f6efcdc8527c77f2e5933",
+    "catalog_sha256": "a7395f7f522199fc1a98c4933588713003d7da41193474f50bc066cca1c62abc",
     "profiles_sha256": {
       "lab.bilirubin_umol_l": "11388845dca0640b029d33312f95be25ff15fbb3094cb8b3801ad0fe7b41034d",
       "lab.creatinine_umol_l": "21ff3713297079ed5b4ca1d6ab07593be0a85afa28a7262a68f013419242d3e9",
