@@ -11,6 +11,7 @@ from typer.testing import CliRunner
 
 from proof.cases import collection
 from proof.cli import app
+from proof.core.manifest import GitState
 from proof.harness import run as harness_run
 from proof.harness.providers import PRICE_NOT_GIVEN, Provider, ProviderError, parse_provider
 from proof.variants import sets
@@ -126,6 +127,24 @@ def test_the_manifest_records_what_repeats_the_run(stub, home, demo):
     assert "templates/zh/case.j2" in data["templates_sha256"] and "labels/demo/de" in data["templates_sha256"]
     assert data["config"]["provider"]["origin"] == "other" and data["config"]["provider"]["region"] == "CN"
     assert data["platform"]["python"]
+
+
+def test_the_manifest_names_the_commit_the_run_started_with(stub, home, demo, monkeypatch):
+    """PR-N01: a commit made while the run is going does not end up in its manifest."""
+    url, _ = stub
+    at_start = GitState(commit="a" * 40, dirty=False)
+    current = {"state": at_start}
+    monkeypatch.setattr(harness_run, "git_state", lambda _repo: current["state"])
+
+    def commit_meanwhile(*_progress) -> None:
+        current["state"] = GitState(commit="b" * 40, dirty=False)
+
+    outcome = harness_run.execute(
+        _config(_provider(url), demo), home / "runs" / "g", root=demo[2], progress=commit_meanwhile
+    )
+    assert current["state"].commit == "b" * 40
+    assert outcome.manifest.git == at_start
+    assert harness_run.read_manifest(outcome.directory).git == at_start
 
 
 def test_cached_replies_need_no_http_and_a_repeat_has_the_same_requests(stub, home, demo):

@@ -2,20 +2,94 @@
 
 ## Stand
 
-**09.11.2026 – Phase 3, U9 in Arbeit.**
-- U1 bis U8 sind auf dem Zweig `dev` committet. U9 bringt Datensatzkarte, Release-Paket und Entwurfsmodus.
+**10.11.2026 – Phase 3, U9 abgeschlossen; v0.1 (U1–U9) ist umgesetzt, manuelle Reste sind offen.**
+- U1 bis U9 sind auf dem Zweig `dev` committet.
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U8 unter Windows und Linux grün (Lauf 42590841767 auf `a6a7b3d`). Der Beleg für U9 folgt nach dem
-  Push.
-- Der Volllauf Qwen auf Fever-100 läuft (`.proof/runs/u9-fever100`); Profil und Entwurfspaket folgen.
+- Die CI ist für U9 unter Windows und Linux grün (Lauf 42628688836 auf `9cd4515`). Der Beleg für die Korrektur des
+  Lauf-Manifests folgt nach dem Push.
+- Volllauf Qwen und Entwurfspaket Fever-100 sind belegt (Eintrag vom 10.11.2026).
+- **Manuell offen für v0.1:** ärztliche Prüfung je Sprache (`review/*.yaml`), Stand der SynthEHR-Datenlizenz in
+  `data/card.yaml`, Läufe westlicher Modelle von EU-Servern (PR-N03).
 
 - **Grundregel D-01:** Proof ist ein eigenständiges Projekt. Kein anderes Projekt wird geändert, und es gibt keine
   Abhängigkeit zu NeuroGrid.
 - **Plan:** U1–U14 aus [KONZEPT.md](KONZEPT.md); v0.1 = U1–U9, v0.5 = U10–U12, v1.0 = U13–U14; GO-1 vor U13.
 
-**Nächster Schritt:** U9 abschließen (Volllauf Qwen, Profil, Entwurfspaket Fever-100), danach U10.
+**Nächster Schritt:** U10 (Varianten MR2, MR4, MR6, MR7).
 
 ## Verlauf
+
+### 10.11.2026 – U9 abgeschlossen: Volllauf Qwen, Entwurfspaket Fever-100, CI
+**Fehler gefunden und behoben:** Das Lauf-Manifest las den git-Stand erst beim Schreiben. Wurde während eines Laufs
+committet, nannte das Endmanifest einen Commit, mit dem der Lauf nicht gerechnet hat (PR-N01).
+- `src/proof/harness/run.py` hält den Stand jetzt beim Start fest, bei `--resume` beim Start der Fortsetzung
+  (`test_the_manifest_names_the_commit_the_run_started_with`).
+- Betroffen ist der Volllauf unten. Er startete am 09.11. um 13:19 UTC auf dem sauberen Stand `81a010b`; sein Manifest
+  nennt `9cd4515`, den Stand beim Ende. Das Manifest bleibt als Beleg unverändert.
+- Zwischen beiden Commits änderten sich nur Karte, Release, Vermerkstatus, Befehle und ein neuer Sprachschlüssel
+  (`git diff --stat 81a010b 9cd4515 -- src`). Die Hashes der Systemprompts und Vorlagen gleichen denen des
+  Qwen-Probelaufs aus U7.
+
+**Volllauf Qwen** (`.proof/runs/u9-fever100`, nicht versioniert):
+- Qwen3 8B über Ollama 0.11.11 (Digest `500a1f06…`, 8,2 B Parameter, Q4_K_M); Temperatur 0, Seed 0, `think: false`,
+  höchstens 1024 Tokens.
+- Fever-100 mit Variantensatz Seed 1 in zh, en und de: 900 Einheiten (Fälle, MR1, MR3), alle beantwortet, kein Fehler.
+- 810 Anfragen; 90 Antworten kamen aus dem Zwischenspeicher des Probelaufs (gleiche Anfrage-Hashes).
+- Laufzeit 6705 s (1:51:45 h), 09.11.2026 13:19–15:10 UTC; Tokens 1 116 662 Prompt und 152 181 Antwort; Kosten 0 EUR.
+- Hashes: Sammlung `5192269b…`, Variantensatz `fd918b94…`, Anfragen `75fe3f5e…`.
+- NeuroGrid rechnete beim Start nicht (A-30): Der einzige NeuroGrid-Prozess war ein CI-Warteskript, die Grafikkarte
+  war frei.
+
+**Profil** (`proof score`, `profile.json` mit SHA-256 `04a2ef47…`; ein Messergebnis, keine Aussage über das Modell):
+
+| Kennzahl | gesamt | zh | en | de |
+|---|---|---|---|---|
+| S1 Entscheidung | 0,543 (489/900) | 0,537 | 0,550 | 0,543 |
+| S2 Pflichtfragen, Recall | 0,260 (78/300) | 0,310 | 0,220 | 0,250 |
+| S2 Pflichtfragen, Präzision | 0,031 (78/2554) | 0,026 | 0,030 | 0,040 |
+| S3 Warnzeichen, vollständig | 0,945 (329/348) | 0,931 | 0,991 | 0,914 |
+| S3 Warnzeichen, unvollständig | 0,876 (113/129) | 0,814 | 0,930 | 0,884 |
+| S4 Diagnosen | 0,886 (789/891) | 0,919 | 0,825 | 0,912 |
+| S7 Formattreue | 0,971 (874/900) | 0,997 | 0,917 | 1,000 |
+
+- S5, Verletzungsrate: MR1 0,802 (235/293), MR3 0,790 (226/286), MR5 0,911 (255/280). Wegen ungültiger Antworten
+  fallen 7, 14 und 20 Paare weg; keines ist ohne Partner.
+- S6, Spannweite über die Sprachen: S1 0,013; S3 vollständig 0,078; S3 unvollständig 0,116.
+- 26 Antworten sind ungültig, 25 davon auf Englisch. 24 fragen nach Feldcodes, die die Domäne nicht kennt (z. B.
+  `hx.diabetes`, `hx.cough_details`); eine bricht bei 1024 Tokens ab, eine hat einen Code im falschen Format. Sie
+  zählen als leere Antwort (A-13).
+- Wie im Probelauf fragt Qwen auch bei vollständigen Fällen viel nach (2554 Fragen, Präzision 3 %).
+
+**Entwurfspaket Fever-100** (`.proof/releases/proof-fever-100-0.1.0.dev0-DRAFT`, nicht versioniert):
+- Gebaut mit `proof release --set data/collections/fever-100 --draft` auf dem sauberen Stand `9cd4515`.
+- 45 Dateien, 2,1 MB; `sha256sum -c SHA256SUMS` ohne Fehler; SHA-256 von `SHA256SUMS`: `0c9e6531…`.
+- Darstellungen: 300 Zeilen je Sprache (Fälle, MR1, MR3; MR5 hat keinen eigenen Text).
+- `release.json`: Entwurf, git `9cd4515` ohne offene Änderungen, 16 offene Befunde. Das sind je Sprache 5 Platzhalter
+  in `review/<lang>.yaml` und der Platzhalter der SynthEHR-Datenlizenz in `data/card.yaml`. Kein lokaler Pfad im Paket.
+
+**Matrix nachgezogen:** PR-A03 (Regeln im Release) und PR-C01 (Lizenzen) stehen auf „erfüllt“; das fehlte im Eintrag
+vom 09.11.2026. PR-N01 nennt die Korrektur, PR-L01 den Volllauf.
+
+**Geprüft** (lokal, Windows 11, Python 3.12.15):
+- `tests/integration/test_harness.py`: 20 Tests grün. Die Vollsuite läuft in der CI.
+- `ruff check` und `ruff format --check`: sauber.
+
+**CI:** Lauf 42628688836 (ci #19) auf `9cd4515`, beide Jobs erfolgreich (4:54 min):
+- `test (ubuntu-latest)`: 810 Tests in 94,94 s, Abdeckung 98,76 %, Lizenzprüfung 58 Pakete ohne Befund.
+- `test (windows-latest)`: 810 Tests in 243,33 s, Abdeckung 98,76 %, Lizenzprüfung 59 Pakete ohne Befund, `pip-audit`
+  ohne bekannte Lücke, Wheel `proof 0.1.0.dev0` mit `proof_rules` installiert.
+- Der Beleg für den Commit mit der Manifest-Korrektur folgt nach dem Push.
+
+**Abnahme U9 (DoD aus KONZEPT.md):** erfüllt.
+- Release verweigert ohne gültige Vermerke, je Fehlerfall ein Test; Entwurf in Karte und Ordnername markiert; Karte mit
+  dem Satz aus PR-A01 und allen Pflichtabschnitten; Paket mit vollständiger `SHA256SUMS` (Tests im Eintrag vom
+  09.11.2026).
+- Volllauf Qwen ergibt ein Profil (oben).
+- v0.1-Anforderungen: Jede ist erfüllt, bewusst abgewichen (PR-N10, D-01) oder teilweise mit einem Rest, der manuell
+  ist oder laut Phasenplan später kommt.
+  - Manuell: PR-F05, PR-F10, PR-K08, PR-A02, PR-A06 (ärztliche Prüfung, Datenlizenz SynthEHR); PR-N03 (Läufe
+    westlicher Modelle von EU-Servern).
+  - Später laut Phasenplan: PR-F06 (MR2, MR4, MR6, MR7 in U10); PR-S3, PR-P02, PR-D03 (Bericht und Rangliste in U11).
 
 ### 09.11.2026 – U9 Datensatzkarte und Release-Paket
 **Neue Auslegungen:** A-82 (Datensatzkarte), A-83 (Release-Prüfungen), A-84 (Paketinhalt).
@@ -40,7 +114,7 @@
   `test_repository.py`. Die Vollsuite läuft in der CI, weil der Qwen-Volllauf parallel rechnet.
 - `ruff check` und `ruff format --check`: sauber.
 
-**Abnahme U9 (DoD aus KONZEPT.md):** in Arbeit.
+**Abnahme U9 (DoD aus KONZEPT.md):** in Arbeit; abgeschlossen am 10.11.2026 (Eintrag oben).
 - Release verweigert ohne gültige Vermerke, je Fehlerfall ein Test: fehlender Vermerk, Platzhalter, reine Vorprüfung,
   zh ohne Praxis in China, geänderte zh-Vorlagen, Datum in der Zukunft, Stichprobe ab 0.5, Platzhalter in
   `data/card.yaml`, offene Änderungen, kein git-Arbeitsbaum (`tests/integration/test_release.py`).
@@ -49,7 +123,7 @@
   (`test_the_card_states_the_reference_sentence_in_every_language`, `test_the_card_has_every_required_part`).
 - Paket mit vollständiger `SHA256SUMS` (`test_a_release_with_valid_reviews_is_complete`,
   `test_the_package_check_finds_every_change`).
-- Offen: Volllauf Qwen mit Profil, Entwurfspaket Fever-100, CI-Beleg.
+- Offen: Volllauf Qwen mit Profil, Entwurfspaket Fever-100, CI-Beleg (erledigt, siehe Eintrag oben).
 
 ### 09.11.2026 – U8 Bewertung
 **Neue Auslegung:** A-81 (Einzelheiten der Kennzahlen, Profil, Vergleich).

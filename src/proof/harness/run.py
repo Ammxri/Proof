@@ -6,10 +6,11 @@ cache (A-19).
 
 A run lives in ``$PROOF_HOME/runs/<run id>/``:
 
-- ``manifest.json`` (PR-N01, PR-N02): time stamps (UTC), versions, git commit, platform; the complete provider
-  configuration without secrets, temperature 0, the declared origin and region; collection and variant set with their
-  hashes and seeds; hashes of every system prompt and template; the model versions the replies name and, for Ollama,
-  the model's digest; units, tokens, costs and run time; status ``complete`` or ``incomplete``.
+- ``manifest.json`` (PR-N01, PR-N02): time stamps (UTC), versions, git commit (as the run or its resumption started),
+  platform; the complete provider configuration without secrets, temperature 0, the declared origin and region;
+  collection and variant set with their hashes and seeds; hashes of every system prompt and template; the model
+  versions the replies name and, for Ollama, the model's digest; units, tokens, costs and run time; status
+  ``complete`` or ``incomplete``.
 - ``units.jsonl``: one line per unit with its request hash, status, the answer text, tokens and time.
 
 A unit that fails gets the status ``error`` and is not sent again (A-36); ``--resume`` sends only units without an
@@ -35,7 +36,7 @@ from proof.cases import collection as collections
 from proof.cases.model import Case
 from proof.core.hashing import sha256_bytes, sha256_text
 from proof.core.i18n import LANGUAGES
-from proof.core.manifest import ManifestBase, new_manifest, utc_now
+from proof.core.manifest import GitState, ManifestBase, git_state, new_manifest, utc_now
 from proof.core.paths import proof_home
 from proof.harness.cache import Cache
 from proof.harness.client import Client, Message, Reply, request_hash
@@ -344,6 +345,7 @@ def _manifest(
     started: str,
     seconds: float,
     ollama: dict[str, Any] | None,
+    git: GitState | None,
     finished: bool,
 ) -> RunManifest:
     config = run_plan.config
@@ -364,10 +366,10 @@ def _manifest(
     templates: dict[str, str] = {}
     for lang in config.langs:
         templates.update(template_hashes(lang, [run_plan.domain]))
-    base = new_manifest("run", repo_dir=Path(proof.__file__).resolve().parent)
+    base = new_manifest("run")
     status = "running" if not finished else ("complete" if len(ok) == len(units) else "incomplete")
     return RunManifest(
-        **{**base.model_dump(), "kind": "run"},
+        **{**base.model_dump(), "kind": "run", "git": git},
         run_id=run_id,
         status=status,
         started_utc=started,
@@ -417,6 +419,8 @@ def execute(
 ) -> Outcome:
     """Run (or resume) a test run; returns the run directory and its final manifest."""
     provider = config.provider
+    # The code that answers the units is the code at the start; a commit made while the run goes on is not it.
+    git = git_state(Path(proof.__file__).resolve().parent)
     run_plan = plan(config, root)
     try:
         key = api_key(provider, environ)
@@ -443,7 +447,7 @@ def execute(
     clock = time.perf_counter()
     with Client(provider, key, transport=transport) as client:
         ollama = client.ollama_info() if provider.ollama_digest else None
-        _write_manifest(directory, _manifest(run_plan, run_id, records, started, 0.0, ollama, finished=False))
+        _write_manifest(directory, _manifest(run_plan, run_id, records, started, 0.0, ollama, git, finished=False))
         with units_path.open("a", encoding="utf-8", newline="\n") as log:
             todo = [unit for unit in run_plan.units if records.get(unit.unit_id, {}).get("status") != "ok"]
             for number, unit in enumerate(todo, start=1):
@@ -459,7 +463,7 @@ def execute(
                 log.flush()
                 if progress is not None:
                     progress(number, len(todo), unit, reply, cached)
-    final = _manifest(run_plan, run_id, records, started, time.perf_counter() - clock, ollama, finished=True)
+    final = _manifest(run_plan, run_id, records, started, time.perf_counter() - clock, ollama, git, finished=True)
     ordered = [records[unit.unit_id] for unit in run_plan.units if unit.unit_id in records]
     temporary = directory / (UNITS_FILE + ".tmp")
     temporary.write_text("".join(_line(record) for record in ordered), encoding="utf-8", newline="\n")
