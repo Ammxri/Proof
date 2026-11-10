@@ -5,8 +5,7 @@
 **10.11.2026 – Phase 3, U9 abgeschlossen; v0.1 (U1–U9) ist umgesetzt, manuelle Reste sind offen.**
 - U1 bis U9 sind auf dem Zweig `dev` committet.
 - Das Repository ist `github.com/Ammxri/Proof` (D-07). Gepusht wird nur `dev`.
-- Die CI ist für U9 unter Windows und Linux grün (Lauf 42628688836 auf `9cd4515`). Der Beleg für die Korrektur des
-  Lauf-Manifests folgt nach dem Push.
+- Die CI ist für U9 unter Windows und Linux grün (Lauf 42628688836 auf `9cd4515`, Lauf 42800130023 auf `08a9137`).
 - Volllauf Qwen und Entwurfspaket Fever-100 sind belegt (Eintrag vom 10.11.2026).
 - **Manuell offen für v0.1:** ärztliche Prüfung je Sprache (`review/*.yaml`), Stand der SynthEHR-Datenlizenz in
   `data/card.yaml`, Läufe westlicher Modelle von EU-Servern (PR-N03).
@@ -78,7 +77,15 @@ vom 09.11.2026. PR-N01 nennt die Korrektur, PR-L01 den Volllauf.
 - `test (ubuntu-latest)`: 810 Tests in 94,94 s, Abdeckung 98,76 %, Lizenzprüfung 58 Pakete ohne Befund.
 - `test (windows-latest)`: 810 Tests in 243,33 s, Abdeckung 98,76 %, Lizenzprüfung 59 Pakete ohne Befund, `pip-audit`
   ohne bekannte Lücke, Wheel `proof 0.1.0.dev0` mit `proof_rules` installiert.
-- Der Beleg für den Commit mit der Manifest-Korrektur folgt nach dem Push.
+
+**CI nach der Korrektur:** Lauf 42800130023 (ci #20) auf `08a9137`, beide Jobs erfolgreich (3:52 min), jeder Schritt grün
+(laut Actions-API):
+- `test (ubuntu-latest)` in 2:57 min, Testschritt mit Abdeckung 2:45 min.
+- `test (windows-latest)` in 3:48 min, Testschritt mit Abdeckung 3:12 min.
+- Lint, Lizenzprüfung, `pip-audit` und Wheel-Installation grün; der Testschritt bricht unter 85 % Abdeckung ab
+  (`fail_under`).
+- Testzahl und Abdeckung stehen nur im Protokoll. Das war diesmal nicht lesbar, weil der eingebaute Browser bei GitHub
+  nicht angemeldet ist.
 
 **Abnahme U9 (DoD aus KONZEPT.md):** erfüllt.
 - Release verweigert ohne gültige Vermerke, je Fehlerfall ein Test; Entwurf in Karte und Ordnername markiert; Karte mit
